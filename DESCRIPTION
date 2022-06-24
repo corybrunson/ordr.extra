@@ -1,0 +1,40 @@
+Package: ordr.extra
+Title: 'ordr' Accessors for Additional Ordination Models
+Version: 0.0.0.9000
+Authors@R: c(
+  person(
+      given = "Jason Cory", family = "Brunson",
+      email = "cornelioid@gmail.com",
+      role = c("aut", "cre"),
+      comment = c(ORCID = "0000-0003-3126-9494"))
+  )
+Description: ...
+Depends:
+    R (>= 3.3.0),
+    tibble,
+    ordr
+Imports:
+    scales,
+    dplyr,
+    logisticPCA,
+    PMA,
+    ade4,
+    nipals
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Suggests:
+    testthat (>= 3.0.0),
+    cooccur,
+    knitr
+RoxygenNote: 7.2.0
+Roxygen: list(markdown = TRUE)
+VignetteBuilder: knitr
+Config/testthat/edition: 3
+Collate: 
+    'fun-wrap.r'
+    'ordr-extra.r'
+    'methods-ade4-nipals.r'
+    'methods-logisticpca-lpca.r'
+    'methods-nipals-nipals.r'
+    'methods-pma-cca.r'
