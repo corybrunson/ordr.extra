@@ -54,8 +54,6 @@ air_quality[, seq(4L)] \%>\%
   nipals_ord() \%>\%
   as_tbl_ord() \%>\%
   print() -> air_nipals
-# summarize ordination
-glance(air_nipals)
 # bind dates to observation coordinates
 air_nipals \%>\%
   cbind_rows(air_quality[, 5L, drop = FALSE]) \%>\%
@@ -68,17 +66,6 @@ head(get_rows(air_nipals))
 get_cols(air_nipals)
 # augment measurements with names and scaling parameters
 augment_ord(air_nipals)
-# summarize principal components
-tidy(air_nipals)
-# scree plot of proportion of variance (inertia)
-tidy(air_nipals) \%>\%
-  ggplot(aes(x = .name, y = .prop_var)) +
-  theme_bw() +
-  scale_y_continuous(labels = scales::percent) +
-  geom_col() +
-  labs(x = "", y = "Proportion of inertia")
-# fortification adds all above columns
-fortify(air_nipals)
 # row-principal biplot with monthly ellipses
 air_nipals \%>\%
   augment_ord() \%>\%

@@ -11,22 +11,11 @@ savings_cca <- PMA::CCA(
 )
 # wrap as a 'tbl_ord' object
 (savings_cca <- as_tbl_ord(savings_cca))
-# summarize ordination
-glance(savings_cca)
 # recover canonical variates
 get_rows(savings_cca)
 get_cols(savings_cca)
 # augment canonical variates with variable names
 (savings_cca <- augment_ord(savings_cca))
-# summarize canonical correlations
-tidy(savings_cca)
-# scree plot of canonical correlations
-tidy(savings_cca) %>%
-  ggplot(aes(x = .name, y = .inertia)) +
-  geom_col() +
-  labs(x = "", y = "Inertia (squared canonical correlations)")
-# fortification binds tibbles of canonical variates
-fortify(savings_cca)
 # column-standard biplot of non-zero canonical variates
 nz_rows <- which(apply(recover_rows(savings_cca) != 0, 1L, any))
 nz_cols <- which(apply(recover_cols(savings_cca) != 0, 1L, any))

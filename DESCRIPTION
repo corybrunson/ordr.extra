@@ -11,10 +11,10 @@ Authors@R: c(
 Description: ...
 Depends:
     R (>= 3.3.0),
-    tibble,
     ordr
 Imports:
     scales,
+    tibble,
     dplyr,
     logisticPCA,
     PMA,

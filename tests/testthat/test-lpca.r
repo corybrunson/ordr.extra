@@ -1,5 +1,3 @@
-context("logistic SVD and PCA, classes 'lsvd', 'lpca', & 'clpca'")
-
 data(finches, package = "cooccur")
 fit_lsvd <- logisticSVD_ord(t(finches))
 fit_lpca <- logisticPCA_ord(t(finches))

@@ -61,3 +61,11 @@ ordr::augmentation_cols
 #' @importFrom ordr augmentation_coord
 #' @export
 ordr::augmentation_coord
+
+#' @importFrom ordr supplementation_rows
+#' @export
+ordr::supplementation_rows
+
+#' @importFrom ordr supplementation_cols
+#' @export
+ordr::supplementation_cols
