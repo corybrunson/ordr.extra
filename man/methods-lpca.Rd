@@ -84,7 +84,8 @@ data(finches, package = "cooccur")
 class(finches)
 finches[seq(6L), seq(6L)]
 # logistic singular value decomposition
-finches \%>\% t() \%>\%
+finches \%>\%
+  t() \%>\%
   logisticSVD_ord() \%>\%
   as_tbl_ord() \%>\%
   print() -> finches_lsvd

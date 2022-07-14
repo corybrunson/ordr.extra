@@ -20,7 +20,6 @@
 #' | [nipals::nipals()]                 | No          | No        | Yes       |
 
 #' @name wrap-ord-extra
-#' @importFrom logisticPCA logisticPCA logisticSVD convexLogisticPCA
 #' @inheritParams logisticPCA::logisticPCA
 #' @inheritParams logisticPCA::logisticSVD
 #' @inheritParams logisticPCA::convexLogisticPCA
