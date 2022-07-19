@@ -16,6 +16,7 @@ Depends:
 Imports:
     scales,
     dplyr,
+    candisc,
     logisticPCA,
     PMA,
     ade4,
@@ -35,6 +36,7 @@ Collate:
     'fun-wrap.r'
     'ordr-extra.r'
     'methods-ade4-nipals.r'
+    'methods-candisc.r'
     'methods-logisticpca-lpca.r'
     'methods-nipals-nipals.r'
     'methods-pma-cca.r'

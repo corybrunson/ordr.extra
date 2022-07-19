@@ -8,6 +8,7 @@
 #' @name methods-nipals
 #' @include ordr-extra.r
 #' @template param-methods
+#' @family methods for singular value decomposition-based techniques
 #' @example inst/examples/ex-methods-nipals-airquality.r
 NULL
 

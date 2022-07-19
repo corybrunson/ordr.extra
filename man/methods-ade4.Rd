@@ -90,3 +90,11 @@ air_nipals \%>\%
   ggtitle("Row-principal PCA biplot of 1973 air quality measurements") +
   labs(color = "Month")
 }
+\seealso{
+Other methods for singular value decomposition-based techniques: 
+\code{\link{methods-candisc}},
+\code{\link{methods-lpca}},
+\code{\link{methods-nipals}},
+\code{\link{methods-pma}}
+}
+\concept{methods for singular value decomposition-based techniques}

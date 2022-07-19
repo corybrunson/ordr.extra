@@ -23,6 +23,7 @@
 #' @name methods-pma
 #' @include ordr-extra.r
 #' @template param-methods
+#' @family methods for singular value decomposition-based techniques
 #' @example inst/examples/ex-methods-pma-spc-iris.r
 #' @example inst/examples/ex-methods-pma-cca-savings.r
 NULL

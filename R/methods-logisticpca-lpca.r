@@ -10,6 +10,7 @@
 #' @name methods-lpca
 #' @include ordr-extra.r
 #' @template param-methods
+#' @family methods for singular value decomposition-based techniques
 #' @example inst/examples/ex-methods-lpca-finches.r
 NULL
 

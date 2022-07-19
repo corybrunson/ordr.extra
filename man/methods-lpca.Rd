@@ -176,3 +176,11 @@ finches_clpca \%>\%
   ) +
   expand_limits(x = c(-25, 35))
 }
+\seealso{
+Other methods for singular value decomposition-based techniques: 
+\code{\link{methods-ade4}},
+\code{\link{methods-candisc}},
+\code{\link{methods-nipals}},
+\code{\link{methods-pma}}
+}
+\concept{methods for singular value decomposition-based techniques}
