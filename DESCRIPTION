@@ -11,23 +11,23 @@ Authors@R: c(
 Description: ...
 Depends:
     R (>= 3.3.0),
-    tibble,
     ordr
 Imports:
     scales,
-    dplyr,
+    tibble,
+    dplyr
+Suggests:
     candisc,
     logisticPCA,
     PMA,
     ade4,
-    nipals
-License: GPL-3
-Encoding: UTF-8
-LazyData: true
-Suggests:
+    nipals,
     testthat (>= 3.0.0),
     cooccur,
     knitr
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
 RoxygenNote: 7.2.0
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr

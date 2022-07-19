@@ -52,8 +52,6 @@ air_quality[, seq(4L)] \%>\%
   ade4::nipals(nf = 3L) \%>\%
   as_tbl_ord() \%>\%
   print() -> air_nipals
-# summarize ordination
-glance(air_nipals)
 # bind dates and missingness flags to observation coordinates
 air_nipals \%>\%
   cbind_rows(air_quality[, 5L, drop = FALSE]) \%>\%
@@ -64,18 +62,10 @@ get_conference(air_nipals)
 # recover observation principal coordinates and measurement standard coordinates
 head(get_rows(air_nipals))
 get_cols(air_nipals)
+# recover inertia in each dimension
+get_inertia(air_nipals)
 # augment measurements with names and scaling parameters
 augment_ord(air_nipals)
-# summarize principal components
-tidy(air_nipals)
-# scree plot of inertia
-tidy(air_nipals) \%>\%
-  ggplot(aes(x = .name, y = .inertia)) +
-  theme_bw() +
-  geom_col() +
-  labs(x = "", y = "Inertia")
-# fortification adds all above columns
-fortify(air_nipals)
 # row-principal biplot with monthly ellipses
 air_nipals \%>\%
   augment_ord() \%>\%
