@@ -15,8 +15,9 @@
 
 #' @docType package
 #' @name ordr.extra
-#' @importFrom tibble tibble is_tibble as_tibble
 #' @aliases ordr.extra-package
+#' @importFrom tibble tibble is_tibble as_tibble
+#' @example inst/examples/ex-ordinate.r
 NULL
 
 # not exported from *ordr*

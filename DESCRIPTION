@@ -18,6 +18,7 @@ Imports:
     dplyr
 Suggests:
     candisc,
+    ca,
     logisticPCA,
     PMA,
     ade4,
@@ -36,6 +37,7 @@ Collate:
     'fun-wrap.r'
     'ordr-extra.r'
     'methods-ade4-nipals.r'
+    'methods-ca-ca.r'
     'methods-candisc.r'
     'methods-logisticpca-lpca.r'
     'methods-nipals-nipals.r'

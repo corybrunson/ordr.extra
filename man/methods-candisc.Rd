@@ -98,6 +98,7 @@ biplots of structure correlations and weights". \emph{Psychometrika} 55(3),
 \seealso{
 Other methods for singular value decomposition-based techniques: 
 \code{\link{methods-ade4}},
+\code{\link{methods-ca}},
 \code{\link{methods-lpca}},
 \code{\link{methods-nipals}},
 \code{\link{methods-pma}}
