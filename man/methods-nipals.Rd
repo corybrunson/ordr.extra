@@ -87,6 +87,7 @@ Other methods for singular value decomposition-based techniques:
 \code{\link{methods-candisc}},
 \code{\link{methods-ca}},
 \code{\link{methods-lpca}},
+\code{\link{methods-mjca}},
 \code{\link{methods-pma}}
 }
 \concept{methods for singular value decomposition-based techniques}

@@ -21,6 +21,6 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{ordr}{\code{\link[ordr:tbl_ord]{as_tbl_ord}}, \code{\link[ordr:augmentation]{augmentation_cols}}, \code{\link[ordr:augmentation]{augmentation_coord}}, \code{\link[ordr:augmentation]{augmentation_rows}}, \code{\link[ordr:accessors]{recover_cols}}, \code{\link[ordr:conference]{recover_conference}}, \code{\link[ordr:accessors]{recover_coord}}, \code{\link[ordr:accessors]{recover_inertia}}, \code{\link[ordr:accessors]{recover_rows}}, \code{\link[ordr:supplementation]{supplementation_cols}}, \code{\link[ordr:supplementation]{supplementation_rows}}}
+  \item{ordr}{\code{\link[ordr:tbl_ord]{as_tbl_ord}}, \code{\link[ordr:accessors]{augmentation_cols}}, \code{\link[ordr:accessors]{augmentation_coord}}, \code{\link[ordr:accessors]{augmentation_rows}}, \code{\link[ordr:accessors]{recover_cols}}, \code{\link[ordr:accessors]{recover_conference}}, \code{\link[ordr:accessors]{recover_coord}}, \code{\link[ordr:accessors]{recover_inertia}}, \code{\link[ordr:accessors]{recover_rows}}, \code{\link[ordr:accessors]{supplementation_cols}}, \code{\link[ordr:accessors]{supplementation_rows}}}
 }}
 

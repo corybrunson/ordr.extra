@@ -59,6 +59,7 @@ Other methods for singular value decomposition-based techniques:
 \code{\link{methods-ade4}},
 \code{\link{methods-candisc}},
 \code{\link{methods-lpca}},
+\code{\link{methods-mjca}},
 \code{\link{methods-nipals}},
 \code{\link{methods-pma}}
 }

@@ -38,6 +38,7 @@ Collate:
     'ordr-extra.r'
     'methods-ade4-nipals.r'
     'methods-ca-ca.r'
+    'methods-ca-mjca.r'
     'methods-candisc.r'
     'methods-logisticpca-lpca.r'
     'methods-nipals-nipals.r'
