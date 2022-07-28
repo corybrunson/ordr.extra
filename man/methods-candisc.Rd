@@ -11,8 +11,8 @@
 \alias{augmentation_rows.cancor}
 \alias{augmentation_cols.cancor}
 \alias{augmentation_coord.cancor}
-\alias{supplementation_rows.cancor}
-\alias{supplementation_cols.cancor}
+\alias{recover_supp_rows.cancor}
+\alias{recover_supp_cols.cancor}
 \title{Functionality for canonical correlation ('cancor') and discriminant
 ('candisc') objects}
 \usage{
@@ -34,9 +34,9 @@
 
 \method{augmentation_coord}{cancor}(x)
 
-\method{supplementation_rows}{cancor}(x)
+\method{recover_supp_rows}{cancor}(x)
 
-\method{supplementation_cols}{cancor}(x)
+\method{recover_supp_cols}{cancor}(x)
 }
 \arguments{
 \item{x}{An ordination object.}

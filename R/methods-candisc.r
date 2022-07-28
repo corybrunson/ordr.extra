@@ -122,8 +122,8 @@ augmentation_coord.cancor <- function(x) {
 
 #' @rdname methods-candisc
 #' @export
-supplementation_rows.cancor <- function(x) x$scores$X
+recover_supp_rows.cancor <- function(x) x$scores$X
 
 #' @rdname methods-candisc
 #' @export
-supplementation_cols.cancor <- function(x) x$scores$Y
+recover_supp_cols.cancor <- function(x) x$scores$Y

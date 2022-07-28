@@ -63,10 +63,10 @@ ordr::augmentation_cols
 #' @export
 ordr::augmentation_coord
 
-#' @importFrom ordr supplementation_rows
+#' @importFrom ordr recover_supp_rows
 #' @export
-ordr::supplementation_rows
+ordr::recover_supp_rows
 
-#' @importFrom ordr supplementation_cols
+#' @importFrom ordr recover_supp_cols
 #' @export
-ordr::supplementation_cols
+ordr::recover_supp_cols
