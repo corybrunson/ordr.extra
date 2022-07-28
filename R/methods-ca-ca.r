@@ -7,6 +7,7 @@
 #' @include ordr-extra.r
 #' @template param-methods
 #' @family methods for singular value decomposition-based techniques
+#' @seealso [ordr::methods-correspondence]
 #' @example inst/examples/ex-methods-ca-haireye.r
 NULL
 

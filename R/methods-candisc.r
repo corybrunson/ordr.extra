@@ -12,14 +12,18 @@
 #' using structural correlations, either the interset correlations of \eqn{X}
 #' (equivalent to principal coordinates) are plotted with the intraset
 #' correlations of \eqn{Y} (standard coordinates) or vice-versa, so that their
-#' product recovers the inner product matrix \eqn{XY'}. Where `cc` is the output
-#' of [candisc::cancor()] on centered and scaled data matrices, these are
-#' obtained from `cc$structure`. For consistency with the canonical variate
-#' scores `cc$scores` available as supplementary points, **ordr** takes rows and
-#' columns from the intraset correlations `cc$structure$X.xscores` and
-#' `cc$structure$Y.yscores`, on which no intertia is conferred. ter Braak's
-#' biplots can then be recovered by [balancing][conference] the inertia across
-#' the two factors.
+#' product recovers the inner product matrix \eqn{XY'}. ter Braak's biplots can
+#' then be recovered by balancing the inertia across the two factors.
+#'
+#' For the second, if the variables are distinguished as predictors and
+#' criteria, then the superposition of the interset correlations of the criteria
+#' with the (inertia-free) canonical coefficients of the predictors yields a
+#' biplot that approximates the matrix of coefficients in the multivariate
+#' regression model.
+#'
+#' The methods for [candisc::cancor()] mirror those for [ordr::cancor_ord()] in
+#' **ordr**, though the canonical coefficients (hence the canonical scores) are
+#' inversely scaled by \eqn{n - 1}.
 #' 
 
 #' @template ref-braak1990
@@ -29,6 +33,7 @@
 #' @include ordr-extra.r
 #' @template param-methods
 #' @family methods for singular value decomposition-based techniques
+#' @seealso [ordr::methods-cancor]
 #' @example inst/examples/ex-methods-candisc-savings.r
 NULL
 
@@ -39,7 +44,7 @@ as_tbl_ord.cancor <- as_tbl_ord_default
 #' @rdname methods-candisc
 #' @export
 recover_rows.cancor <- function(x) {
-  res <- x$structure$X.xscores
+  res <- x$coef$X
   colnames(res) <- recover_coord(x)
   res
 }
@@ -47,7 +52,7 @@ recover_rows.cancor <- function(x) {
 #' @rdname methods-candisc
 #' @export
 recover_cols.cancor <- function(x) {
-  res <- x$structure$Y.yscores
+  res <- x$coef$Y
   colnames(res) <- recover_coord(x)
   res
 }
@@ -63,8 +68,20 @@ recover_coord.cancor <- function(x) paste0("can", seq_along(x$cancor))
 #' @rdname methods-candisc
 #' @export
 recover_conference.cancor <- function(x) {
-  # `x$structure$*` are structure correlations; rows grab intraset ones
+  # `x$coef$*` are (inertia-free) canonical weights
   c(0, 0)
+}
+
+#' @rdname methods-candisc
+#' @export
+recover_supp_rows.cancor <- function(x) {
+  rbind(x$scores$X, x$structure$X.xscores)
+}
+
+#' @rdname methods-candisc
+#' @export
+recover_supp_cols.cancor <- function(x) {
+  rbind(x$scores$Y, x$structure$Y.yscores)
 }
 
 #' @rdname methods-candisc
@@ -76,16 +93,29 @@ augmentation_rows.cancor <- function(x) {
   } else {
     tibble(.name = .name)
   }
-  # case scores as supplementary points
-  res_sup <- if (is.null(x$names$row.names)) {
-    tibble_pole(nrow(x$scores$X))
-  } else {
-    tibble(.name = x$names$row.names)
+  res$.element <- "active"
+  
+  # case scores and structure correlations as supplementary points
+  res_sup <- NULL
+  if (! is.null(x$scores$X)) {
+    res_sup_elt <- if (is.null(rownames(x$scores$X))) {
+      tibble_pole(nrow(x$scores$X))
+    } else {
+      tibble(.name = rownames(x$scores$X))
+    }
+    res_sup_elt$.element <- "score"
+    res_sup <- dplyr::bind_rows(res_sup, res_sup_elt)
   }
-  res_sup$.weight <- x$weights
-  # supplement flag
-  res$.supplement <- FALSE
-  res_sup$.supplement <- TRUE
+  if (! is.null(x$structure$X.xscores)) {
+    res_sup_elt <- if (is.null(rownames(x$structure$X.xscores))) {
+      tibble_pole(nrow(x$structure$X.xscores))
+    } else {
+      tibble(.name = rownames(x$structure$X.xscores))
+    }
+    res_sup_elt$.element <- "structure"
+    res_sup <- dplyr::bind_rows(res_sup, res_sup_elt)
+  }
+  
   as_tibble(dplyr::bind_rows(res, res_sup))
 }
 
@@ -98,16 +128,29 @@ augmentation_cols.cancor <- function(x) {
   } else {
     tibble(.name = .name)
   }
-  # case scores as supplementary points
-  res_sup <- if (is.null(x$names$row.names)) {
-    tibble_pole(nrow(x$scores$Y))
-  } else {
-    tibble(.name = x$names$row.names)
+  res$.element <- "active"
+  
+  # case scores and structure correlations as supplementary points
+  res_sup <- NULL
+  if (! is.null(x$scores$Y)) {
+    res_sup_elt <- if (is.null(rownames(x$scores$Y))) {
+      tibble_pole(nrow(x$scores$Y))
+    } else {
+      tibble(.name = rownames(x$scores$Y))
+    }
+    res_sup_elt$.element <- "score"
+    res_sup <- dplyr::bind_rows(res_sup, res_sup_elt)
   }
-  res_sup$.weight <- x$weights
-  # supplement flag
-  res$.supplement <- FALSE
-  res_sup$.supplement <- TRUE
+  if (! is.null(x$structure$Y.yscores)) {
+    res_sup_elt <- if (is.null(rownames(x$structure$Y.yscores))) {
+      tibble_pole(nrow(x$structure$Y.yscores))
+    } else {
+      tibble(.name = rownames(x$structure$Y.yscores))
+    }
+    res_sup_elt$.element <- "structure"
+    res_sup <- dplyr::bind_rows(res_sup, res_sup_elt)
+  }
+  
   as_tibble(dplyr::bind_rows(res, res_sup))
 }
 
@@ -119,11 +162,3 @@ augmentation_coord.cancor <- function(x) {
     .cancor = x$cancor
   )
 }
-
-#' @rdname methods-candisc
-#' @export
-recover_supp_rows.cancor <- function(x) x$scores$X
-
-#' @rdname methods-candisc
-#' @export
-recover_supp_cols.cancor <- function(x) x$scores$Y

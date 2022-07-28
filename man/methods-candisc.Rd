@@ -8,11 +8,11 @@
 \alias{recover_inertia.cancor}
 \alias{recover_coord.cancor}
 \alias{recover_conference.cancor}
+\alias{recover_supp_rows.cancor}
+\alias{recover_supp_cols.cancor}
 \alias{augmentation_rows.cancor}
 \alias{augmentation_cols.cancor}
 \alias{augmentation_coord.cancor}
-\alias{recover_supp_rows.cancor}
-\alias{recover_supp_cols.cancor}
 \title{Functionality for canonical correlation ('cancor') and discriminant
 ('candisc') objects}
 \usage{
@@ -28,15 +28,15 @@
 
 \method{recover_conference}{cancor}(x)
 
+\method{recover_supp_rows}{cancor}(x)
+
+\method{recover_supp_cols}{cancor}(x)
+
 \method{augmentation_rows}{cancor}(x)
 
 \method{augmentation_cols}{cancor}(x)
 
 \method{augmentation_coord}{cancor}(x)
-
-\method{recover_supp_rows}{cancor}(x)
-
-\method{recover_supp_cols}{cancor}(x)
 }
 \arguments{
 \item{x}{An ordination object.}
@@ -52,14 +52,18 @@ correspondence analysis of data matrices \eqn{X} and \eqn{Y}. For the first,
 using structural correlations, either the interset correlations of \eqn{X}
 (equivalent to principal coordinates) are plotted with the intraset
 correlations of \eqn{Y} (standard coordinates) or vice-versa, so that their
-product recovers the inner product matrix \eqn{XY'}. Where \code{cc} is the output
-of \code{\link[candisc:cancor]{candisc::cancor()}} on centered and scaled data matrices, these are
-obtained from \code{cc$structure}. For consistency with the canonical variate
-scores \code{cc$scores} available as supplementary points, \strong{ordr} takes rows and
-columns from the intraset correlations \code{cc$structure$X.xscores} and
-\code{cc$structure$Y.yscores}, on which no intertia is conferred. ter Braak's
-biplots can then be recovered by \link[=conference]{balancing} the inertia across
-the two factors.
+product recovers the inner product matrix \eqn{XY'}. ter Braak's biplots can
+then be recovered by balancing the inertia across the two factors.
+
+For the second, if the variables are distinguished as predictors and
+criteria, then the superposition of the interset correlations of the criteria
+with the (inertia-free) canonical coefficients of the predictors yields a
+biplot that approximates the matrix of coefficients in the multivariate
+regression model.
+
+The methods for \code{\link[candisc:cancor]{candisc::cancor()}} mirror those for \code{\link[ordr:wrap-ord]{ordr::cancor_ord()}} in
+\strong{ordr}, though the canonical coefficients (hence the canonical scores) are
+inversely scaled by \eqn{n - 1}.
 }
 \examples{
 # data frame of life-cycle savings across countries
@@ -70,6 +74,7 @@ savings_cancor <- candisc::cancor(
   LifeCycleSavings[, c("pop15", "pop75")],
   LifeCycleSavings[, c("sr", "dpi", "ddpi")]
 )
+
 # wrap as a 'tbl_ord' object
 (savings_cancor <- as_tbl_ord(savings_cancor))
 # recover canonical weights
@@ -79,16 +84,18 @@ head(get_rows(savings_cancor, elements = "supplementary"))
 head(get_cols(savings_cancor, elements = "supplementary"))
 # augment canonical weights with row names and centers
 (savings_cancor <- augment_ord(savings_cancor))
+
 # column-standard biplot of structure correlations
+# (intraset correlations of first set, interset correlations with second set)
 savings_cancor \%>\%
-  confer_inertia("rows") \%>\%
-  ggbiplot(aes(label = .name),
-           sec.axes = "rows", scale.factor = 1/2, elements = "active") +
-  geom_cols_vector() +
-  geom_cols_text_radiate() +
-  geom_rows_point(color = "forestgreen") +
-  geom_rows_text_repel(color = "forestgreen") +
-  expand_limits(x = c(-.05, .05))
+  confer_inertia("columns") \%>\%
+  ggbiplot(aes(label = .name)) +
+  geom_unit_circle() +
+  geom_rows_vector(elements = "structure") +
+  geom_rows_text_radiate(elements = "structure") +
+  geom_cols_point(elements = "structure", color = "forestgreen") +
+  geom_cols_text_repel(elements = "structure", color = "forestgreen") +
+  expand_limits(x = c(-1, 1), y = c(-1, 1))
 }
 \references{
 ter Braak CJF (1990) "Interpreting canonical correlation analysis through
@@ -96,6 +103,8 @@ biplots of structure correlations and weights". \emph{Psychometrika} 55(3),
 519--531. \doi{10.1007/BF02294765}
 }
 \seealso{
+\link[ordr:methods-cancor]{ordr::methods-cancor}
+
 Other methods for singular value decomposition-based techniques: 
 \code{\link{methods-ade4}},
 \code{\link{methods-ca}},

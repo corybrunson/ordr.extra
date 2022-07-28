@@ -6,6 +6,7 @@ savings_cancor <- candisc::cancor(
   LifeCycleSavings[, c("pop15", "pop75")],
   LifeCycleSavings[, c("sr", "dpi", "ddpi")]
 )
+
 # wrap as a 'tbl_ord' object
 (savings_cancor <- as_tbl_ord(savings_cancor))
 # recover canonical weights
@@ -15,13 +16,15 @@ head(get_rows(savings_cancor, elements = "supplementary"))
 head(get_cols(savings_cancor, elements = "supplementary"))
 # augment canonical weights with row names and centers
 (savings_cancor <- augment_ord(savings_cancor))
+
 # column-standard biplot of structure correlations
+# (intraset correlations of first set, interset correlations with second set)
 savings_cancor %>%
-  confer_inertia("rows") %>%
-  ggbiplot(aes(label = .name),
-           sec.axes = "rows", scale.factor = 1/2, elements = "active") +
-  geom_cols_vector() +
-  geom_cols_text_radiate() +
-  geom_rows_point(color = "forestgreen") +
-  geom_rows_text_repel(color = "forestgreen") +
-  expand_limits(x = c(-.05, .05))
+  confer_inertia("columns") %>%
+  ggbiplot(aes(label = .name)) +
+  geom_unit_circle() +
+  geom_rows_vector(elements = "structure") +
+  geom_rows_text_radiate(elements = "structure") +
+  geom_cols_point(elements = "structure", color = "forestgreen") +
+  geom_cols_text_repel(elements = "structure", color = "forestgreen") +
+  expand_limits(x = c(-1, 1), y = c(-1, 1))

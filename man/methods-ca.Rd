@@ -55,6 +55,8 @@ get_cols(haireye_ca)
 (haireye_ca <- augment_ord(haireye_ca))
 }
 \seealso{
+\link[ordr:methods-correspondence]{ordr::methods-correspondence}
+
 Other methods for singular value decomposition-based techniques: 
 \code{\link{methods-ade4}},
 \code{\link{methods-candisc}},
