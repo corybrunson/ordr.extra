@@ -1,6 +1,7 @@
 # table of admissions and rejections from UC Berkeley
 class(UCBAdmissions)
 head(as.data.frame(UCBAdmissions))
+
 # perform multiple correspondence analysis
 UCBAdmissions %>%
   ca::mjca() %>%
@@ -8,9 +9,11 @@ UCBAdmissions %>%
   # augment profiles with names, masses, distances, and inertias
   augment_ord() %>%
   print() -> admissions_mca
+
 # recover row and column profiles
 head(get_rows(admissions_mca))
 get_cols(admissions_mca)
+
 # column-standard biplot of factor levels
 admissions_mca %>%
   ggbiplot() +
@@ -23,6 +26,7 @@ admissions_mca %>%
   scale_color_brewer(palette = "Dark2") +
   scale_size_area(guide = "none") +
   labs(color = "Factor level", shape = "Factor level")
+
 # column-principal biplot of factor levels
 admissions_mca %>%
   confer_inertia("colprincipal") %>%

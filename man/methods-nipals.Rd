@@ -49,6 +49,7 @@ airquality \%>\%
   transform(Date = as.Date(paste("1973", Month, Day, sep = "-"))) \%>\%
   subset(select = -c(Month, Day)) ->
   air_quality
+
 # NIPALS on air quality measures
 air_quality[, seq(4L)] \%>\%
   nipals_ord() \%>\%
@@ -59,11 +60,13 @@ air_nipals \%>\%
   cbind_rows(air_quality[, 5L, drop = FALSE]) \%>\%
   mutate_rows(missingness = apply(is.na(air_quality[, 1:4]), 1L, any)) ->
   air_nipals
+
 # by default, no inertia is conferred
 get_conference(air_nipals)
 # recover observation and measurement standard coordinates
 head(get_rows(air_nipals))
 get_cols(air_nipals)
+
 # augment measurements with names and scaling parameters
 augment_ord(air_nipals)
 # row-principal biplot with monthly ellipses
@@ -84,10 +87,11 @@ air_nipals \%>\%
 \seealso{
 Other methods for singular value decomposition-based techniques: 
 \code{\link{methods-ade4}},
-\code{\link{methods-candisc}},
-\code{\link{methods-ca}},
+\code{\link{methods-ca-ca}},
+\code{\link{methods-ca-mjca}},
+\code{\link{methods-candisc-cancor}},
 \code{\link{methods-lpca}},
-\code{\link{methods-mjca}},
-\code{\link{methods-pma}}
+\code{\link{methods-pma-cca}},
+\code{\link{methods-pma-spc}}
 }
 \concept{methods for singular value decomposition-based techniques}

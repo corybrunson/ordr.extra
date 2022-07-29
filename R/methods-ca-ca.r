@@ -3,44 +3,45 @@
 #' @description These methods extract data from, and attribute new data to,
 #'   objects of class `"ca"` from the **[ca][ca::ca]** package.
 #'
-#' @name methods-ca
+#' @name methods-ca-ca
 #' @include ordr-extra.r
 #' @template param-methods
 #' @family methods for singular value decomposition-based techniques
+#' @family models from the **ca** package
 #' @seealso [ordr::methods-correspondence]
 #' @example inst/examples/ex-methods-ca-haireye.r
 NULL
 
-#' @rdname methods-ca
+#' @rdname methods-ca-ca
 #' @export
 as_tbl_ord.ca <- as_tbl_ord_default
 
-#' @rdname methods-ca
+#' @rdname methods-ca-ca
 #' @export
 recover_rows.ca <- function(x) x$rowcoord
 
-#' @rdname methods-ca
+#' @rdname methods-ca-ca
 #' @export
 recover_cols.ca <- function(x) x$colcoord
 
-#' @rdname methods-ca
+#' @rdname methods-ca-ca
 #' @export
 recover_inertia.ca <- function(x) x$sv ^ 2
 
-#' @rdname methods-ca
+#' @rdname methods-ca-ca
 #' @export
 recover_conference.ca <- function(x) {
   # `ca::ca()` always returns row and column standard coordinates
   c(0, 0)
 }
 
-#' @rdname methods-ca
+#' @rdname methods-ca-ca
 #' @export
 recover_coord.ca <- function(x) {
   colnames(x$rowcoord)
 }
 
-#' @rdname methods-ca
+#' @rdname methods-ca-ca
 #' @export
 augmentation_rows.ca <- function(x) {
   .name <- rownames(x$rowcoord)
@@ -57,7 +58,7 @@ augmentation_rows.ca <- function(x) {
   )
 }
 
-#' @rdname methods-ca
+#' @rdname methods-ca-ca
 #' @export
 augmentation_cols.ca <- function(x) {
   .name <- rownames(x$colcoord)
@@ -74,7 +75,7 @@ augmentation_cols.ca <- function(x) {
   )
 }
 
-#' @rdname methods-ca
+#' @rdname methods-ca-ca
 #' @export
 augmentation_coord.ca <- function(x){
   tibble(

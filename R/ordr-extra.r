@@ -22,6 +22,7 @@ NULL
 
 # not exported from *ordr*
 #' @importFrom utils getFromNamespace
+
 as_tbl_ord_default <- getFromNamespace("as_tbl_ord_default", "ordr")
 tibble_pole <- getFromNamespace("tibble_pole", "ordr")
 factor_coord <- getFromNamespace("factor_coord", "ordr")

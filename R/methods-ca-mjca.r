@@ -4,18 +4,19 @@
 #' @description These methods extract data from, and attribute new data to,
 #'   objects of class `"mjca"` from the **[ca][ca::mjca]** package.
 #'
-#' @name methods-mjca
+#' @name methods-ca-mjca
 #' @include ordr-extra.r
 #' @template param-methods
 #' @family methods for singular value decomposition-based techniques
+#' @family models from the **ca** package
 #' @example inst/examples/ex-methods-mjca-admissions.r
 NULL
 
-#' @rdname methods-mjca
+#' @rdname methods-ca-mjca
 #' @export
 as_tbl_ord.mjca <- as_tbl_ord_default
 
-#' @rdname methods-mjca
+#' @rdname methods-ca-mjca
 #' @export
 recover_rows.mjca <- function(x) {
   res <- x$rowcoord
@@ -24,7 +25,7 @@ recover_rows.mjca <- function(x) {
   res
 }
 
-#' @rdname methods-mjca
+#' @rdname methods-ca-mjca
 #' @export
 recover_cols.mjca <- function(x) {
   res <- x$colcoord
@@ -33,22 +34,22 @@ recover_cols.mjca <- function(x) {
   res
 }
 
-#' @rdname methods-mjca
+#' @rdname methods-ca-mjca
 #' @export
 recover_inertia.mjca <- function(x) x$sv[seq(ncol(x$rowcoord))] ^ 2
 
-#' @rdname methods-mjca
+#' @rdname methods-ca-mjca
 #' @export
 recover_conference.mjca <- function(x) {
   # `ca::mjca()` methods draw from row and column standard coordinates
   c(0, 0)
 }
 
-#' @rdname methods-mjca
+#' @rdname methods-ca-mjca
 #' @export
 recover_coord.mjca <- function(x) paste0("Dim", seq(ncol(x$rowcoord)))
 
-#' @rdname methods-mjca
+#' @rdname methods-ca-mjca
 #' @export
 augmentation_rows.mjca <- function(x) {
   .name <- x$rownames
@@ -65,7 +66,7 @@ augmentation_rows.mjca <- function(x) {
   )
 }
 
-#' @rdname methods-mjca
+#' @rdname methods-ca-mjca
 #' @export
 augmentation_cols.mjca <- function(x){
   .name <- x$levelnames
@@ -83,7 +84,7 @@ augmentation_cols.mjca <- function(x){
   )
 }
 
-#' @rdname methods-mjca
+#' @rdname methods-ca-mjca
 #' @export
 augmentation_coord.mjca <- function(x){
   tibble(

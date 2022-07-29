@@ -6,6 +6,7 @@ airquality %>%
   transform(Date = as.Date(paste("1973", Month, Day, sep = "-"))) %>%
   subset(select = -c(Month, Day)) ->
   air_quality
+
 # NIPALS on air quality measures
 air_quality[, seq(4L)] %>%
   ade4::nipals(nf = 3L) %>%
@@ -16,6 +17,7 @@ air_nipals %>%
   cbind_rows(air_quality[, 5L, drop = FALSE]) %>%
   mutate_rows(missingness = apply(is.na(air_quality[, 1:4]), 1L, any)) ->
   air_nipals
+
 # by default, inertia is conferred to rows
 get_conference(air_nipals)
 # recover observation principal coordinates and measurement standard coordinates
@@ -23,6 +25,7 @@ head(get_rows(air_nipals))
 get_cols(air_nipals)
 # recover inertia in each dimension
 get_inertia(air_nipals)
+
 # augment measurements with names and scaling parameters
 augment_ord(air_nipals)
 # row-principal biplot with monthly ellipses

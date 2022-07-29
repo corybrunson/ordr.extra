@@ -10,41 +10,34 @@
 #' 
 #' @name methods-lpca
 #' @include ordr-extra.r
-#' @include methods-logisticpca-lsvd.r
+#' @include methods-logisticpca-lpca.r
 #' @template param-methods
 #' @family methods for singular value decomposition-based techniques
 #' @family models from the **logisticPCA** package
-#' @example inst/examples/ex-methods-lpca-finches.r
+#' @example inst/examples/ex-methods-clpca-finches.r
 NULL
 
 #' @importFrom stats plogis
 
 #' @rdname methods-lpca
 #' @export
-as_tbl_ord.lpca <- as_tbl_ord_default
-
-recover_dims_lpca <- function(x, .matrix) {
-  .matrix <- match_factor(.matrix)
-  res <- x[[switch(.matrix, rows = "PCs", cols = "U")]]
-  colnames(res) <- recover_coord(x)
-  res
-}
+as_tbl_ord.clpca <- as_tbl_ord_default
 
 #' @rdname methods-lpca
 #' @export
-recover_rows.lpca <- function(x) recover_dims_lpca(x, "rows")
+recover_rows.clpca <- function(x) recover_dims_lpca(x, "rows")
 
 #' @rdname methods-lpca
 #' @export
-recover_cols.lpca <- function(x) recover_dims_lpca(x, "cols")
+recover_cols.clpca <- function(x) recover_dims_lpca(x, "cols")
 
 #' @rdname methods-lpca
 #' @export
-recover_coord.lpca <- function(x) paste0("LPC", 1:ncol(x$U))
+recover_coord.clpca <- function(x) paste0("LPC", 1:ncol(x$U))
 
 #' @rdname methods-lpca
 #' @export
-augmentation_rows.lpca <- function(x) {
+augmentation_rows.clpca <- function(x) {
   .name <- rownames(x$PCs)
   res <- if (is.null(.name)) {
     tibble_pole(nrow(x$PCs))
@@ -56,7 +49,7 @@ augmentation_rows.lpca <- function(x) {
 
 #' @rdname methods-lpca
 #' @export
-augmentation_cols.lpca <- function(x) {
+augmentation_cols.clpca <- function(x) {
   .name <- rownames(x$U)
   res <- if (is.null(.name)) {
     tibble_pole(nrow(x$U))
@@ -69,8 +62,8 @@ augmentation_cols.lpca <- function(x) {
 
 #' @rdname methods-lpca
 #' @export
-augmentation_coord.lpca <- function(x) {
+augmentation_coord.clpca <- function(x) {
   tibble(
-    .name = factor_coord(recover_coord.lpca(x))
+    .name = factor_coord(recover_coord.clpca(x))
   )
 }
