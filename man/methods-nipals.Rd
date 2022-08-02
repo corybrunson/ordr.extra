@@ -8,9 +8,9 @@
 \alias{recover_inertia.nipals_ord}
 \alias{recover_coord.nipals_ord}
 \alias{recover_conference.nipals_ord}
-\alias{augmentation_rows.nipals_ord}
-\alias{augmentation_cols.nipals_ord}
-\alias{augmentation_coord.nipals_ord}
+\alias{recover_aug_rows.nipals_ord}
+\alias{recover_aug_cols.nipals_ord}
+\alias{recover_aug_coord.nipals_ord}
 \title{Functionality for non-linear iterative PLS ('nipals') objects}
 \usage{
 \method{as_tbl_ord}{nipals_ord}(x)
@@ -25,11 +25,11 @@
 
 \method{recover_conference}{nipals_ord}(x)
 
-\method{augmentation_rows}{nipals_ord}(x)
+\method{recover_aug_rows}{nipals_ord}(x)
 
-\method{augmentation_cols}{nipals_ord}(x)
+\method{recover_aug_cols}{nipals_ord}(x)
 
-\method{augmentation_coord}{nipals_ord}(x)
+\method{recover_aug_coord}{nipals_ord}(x)
 }
 \arguments{
 \item{x}{An ordination object.}

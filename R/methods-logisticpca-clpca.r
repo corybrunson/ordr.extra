@@ -37,7 +37,7 @@ recover_coord.clpca <- function(x) paste0("LPC", 1:ncol(x$U))
 
 #' @rdname methods-lpca
 #' @export
-augmentation_rows.clpca <- function(x) {
+recover_aug_rows.clpca <- function(x) {
   .name <- rownames(x$PCs)
   res <- if (is.null(.name)) {
     tibble_pole(nrow(x$PCs))
@@ -49,7 +49,7 @@ augmentation_rows.clpca <- function(x) {
 
 #' @rdname methods-lpca
 #' @export
-augmentation_cols.clpca <- function(x) {
+recover_aug_cols.clpca <- function(x) {
   .name <- rownames(x$U)
   res <- if (is.null(.name)) {
     tibble_pole(nrow(x$U))
@@ -62,7 +62,7 @@ augmentation_cols.clpca <- function(x) {
 
 #' @rdname methods-lpca
 #' @export
-augmentation_coord.clpca <- function(x) {
+recover_aug_coord.clpca <- function(x) {
   tibble(
     .name = factor_coord(recover_coord.clpca(x))
   )

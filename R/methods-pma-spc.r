@@ -62,7 +62,7 @@ recover_conference.SPC <- function(x) {
 
 #' @rdname methods-pma-spc
 #' @export
-augmentation_rows.SPC <- function(x) {
+recover_aug_rows.SPC <- function(x) {
   .name <- x$rnames
   res <- if (is.null(.name)) {
     tibble_pole(nrow(x$u))
@@ -77,7 +77,7 @@ augmentation_rows.SPC <- function(x) {
 
 #' @rdname methods-pma-spc
 #' @export
-augmentation_cols.SPC <- function(x) {
+recover_aug_cols.SPC <- function(x) {
   .name <- x$cnames
   res <- if (is.null(.name)) {
     tibble_pole(nrow(x$v))
@@ -92,7 +92,7 @@ augmentation_cols.SPC <- function(x) {
 
 #' @rdname methods-pma-spc
 #' @export
-augmentation_coord.SPC <- function(x) {
+recover_aug_coord.SPC <- function(x) {
   tibble(
     .name = factor_coord(recover_coord(x)),
     .sdev = sqrt(x$prop.var.explained)

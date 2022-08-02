@@ -10,9 +10,9 @@
 \alias{recover_conference.cancor}
 \alias{recover_supp_rows.cancor}
 \alias{recover_supp_cols.cancor}
-\alias{augmentation_rows.cancor}
-\alias{augmentation_cols.cancor}
-\alias{augmentation_coord.cancor}
+\alias{recover_aug_rows.cancor}
+\alias{recover_aug_cols.cancor}
+\alias{recover_aug_coord.cancor}
 \title{Functionality for canonical correlation ('cancor') and discriminant
 ('candisc') objects}
 \usage{
@@ -32,11 +32,11 @@
 
 \method{recover_supp_cols}{cancor}(x)
 
-\method{augmentation_rows}{cancor}(x)
+\method{recover_aug_rows}{cancor}(x)
 
-\method{augmentation_cols}{cancor}(x)
+\method{recover_aug_cols}{cancor}(x)
 
-\method{augmentation_coord}{cancor}(x)
+\method{recover_aug_coord}{cancor}(x)
 }
 \arguments{
 \item{x}{An ordination object.}

@@ -9,9 +9,9 @@
 \alias{recover_inertia}
 \alias{recover_coord}
 \alias{recover_conference}
-\alias{augmentation_rows}
-\alias{augmentation_cols}
-\alias{augmentation_coord}
+\alias{recover_aug_rows}
+\alias{recover_aug_cols}
+\alias{recover_aug_coord}
 \alias{recover_supp_rows}
 \alias{recover_supp_cols}
 \title{Objects exported from other packages}
@@ -21,6 +21,6 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{ordr}{\code{\link[ordr:tbl_ord]{as_tbl_ord}}, \code{\link[ordr:augmentation]{augmentation_cols}}, \code{\link[ordr:augmentation]{augmentation_coord}}, \code{\link[ordr:augmentation]{augmentation_rows}}, \code{\link[ordr:recoverers]{recover_cols}}, \code{\link[ordr:conference]{recover_conference}}, \code{\link[ordr:recoverers]{recover_coord}}, \code{\link[ordr:recoverers]{recover_inertia}}, \code{\link[ordr:recoverers]{recover_rows}}, \code{\link[ordr:supplementation]{recover_supp_cols}}, \code{\link[ordr:supplementation]{recover_supp_rows}}}
+  \item{ordr}{\code{\link[ordr:tbl_ord]{as_tbl_ord}}, \code{\link[ordr:augmentation]{recover_aug_cols}}, \code{\link[ordr:augmentation]{recover_aug_coord}}, \code{\link[ordr:augmentation]{recover_aug_rows}}, \code{\link[ordr:recoverers]{recover_cols}}, \code{\link[ordr:conference]{recover_conference}}, \code{\link[ordr:recoverers]{recover_coord}}, \code{\link[ordr:recoverers]{recover_inertia}}, \code{\link[ordr:recoverers]{recover_rows}}, \code{\link[ordr:supplementation]{recover_supp_cols}}, \code{\link[ordr:supplementation]{recover_supp_rows}}}
 }}
 

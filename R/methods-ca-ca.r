@@ -43,7 +43,7 @@ recover_coord.ca <- function(x) {
 
 #' @rdname methods-ca-ca
 #' @export
-augmentation_rows.ca <- function(x) {
+recover_aug_rows.ca <- function(x) {
   .name <- rownames(x$rowcoord)
   res <- if (is.null(.name)) {
     tibble_pole(nrow(x$rowcoord))
@@ -60,7 +60,7 @@ augmentation_rows.ca <- function(x) {
 
 #' @rdname methods-ca-ca
 #' @export
-augmentation_cols.ca <- function(x) {
+recover_aug_cols.ca <- function(x) {
   .name <- rownames(x$colcoord)
   res <- if (is.null(.name)) {
     tibble_pole(nrow(x$colcoord))
@@ -77,7 +77,7 @@ augmentation_cols.ca <- function(x) {
 
 #' @rdname methods-ca-ca
 #' @export
-augmentation_coord.ca <- function(x){
+recover_aug_coord.ca <- function(x){
   tibble(
     .name = factor_coord(recover_coord(x)),
     .sv = x$sv

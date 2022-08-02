@@ -56,7 +56,7 @@ recover_conference.CCA <- function(x) {
 
 #' @rdname methods-pma-cca
 #' @export
-augmentation_rows.CCA <- function(x) {
+recover_aug_rows.CCA <- function(x) {
   .name <- x$xnames
   if (is.null(.name)) {
     tibble_pole(nrow(x$u))
@@ -67,7 +67,7 @@ augmentation_rows.CCA <- function(x) {
 
 #' @rdname methods-pma-cca
 #' @export
-augmentation_cols.CCA <- function(x) {
+recover_aug_cols.CCA <- function(x) {
   .name <- x$znames
   if (is.null(.name)) {
     tibble_pole(nrow(x$v))
@@ -78,7 +78,7 @@ augmentation_cols.CCA <- function(x) {
 
 #' @rdname methods-pma-cca
 #' @export
-augmentation_coord.CCA <- function(x) {
+recover_aug_coord.CCA <- function(x) {
   tibble(
     .name = factor_coord(recover_coord(x)),
     .cancor = x$cors

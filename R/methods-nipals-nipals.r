@@ -41,7 +41,7 @@ recover_conference.nipals_ord <- function(x) {
 
 #' @rdname methods-nipals
 #' @export
-augmentation_rows.nipals_ord <- function(x) {
+recover_aug_rows.nipals_ord <- function(x) {
   .name <- rownames(x[["scores"]])
   if (is.null(.name)) {
     tibble_pole(nrow(x[["scores"]]))
@@ -52,7 +52,7 @@ augmentation_rows.nipals_ord <- function(x) {
 
 #' @rdname methods-nipals
 #' @export
-augmentation_cols.nipals_ord <- function(x) {
+recover_aug_cols.nipals_ord <- function(x) {
   .name <- rownames(x[["loadings"]])
   res <- if (is.null(.name)) {
     tibble_pole(nrow(x[["loadings"]]))
@@ -70,7 +70,7 @@ augmentation_cols.nipals_ord <- function(x) {
 
 #' @rdname methods-nipals
 #' @export
-augmentation_coord.nipals_ord <- function(x) {
+recover_aug_coord.nipals_ord <- function(x) {
   tibble(
     .name = factor_coord(recover_coord(x)),
     .eig = x[["eig"]],

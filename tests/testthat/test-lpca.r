@@ -10,6 +10,6 @@ test_that("`as_tbl_ord()` coerces 'lsvd', 'lpca', & 'clpca' objects", {
 })
 
 test_that("'lsvd' augmentations are consistent with '.element' column", {
-  expect_equal(".element" %in% names(augmentation_rows(fit_lsvd)),
-               ".element" %in% names(augmentation_cols(fit_lsvd)))
+  expect_equal(".element" %in% names(recover_aug_rows(fit_lsvd)),
+               ".element" %in% names(recover_aug_cols(fit_lsvd)))
 })

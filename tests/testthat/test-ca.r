@@ -7,6 +7,6 @@ test_that("`as_tbl_ord()` coerces 'ca' objects", {
 })
 
 test_that("'ca' augmentations are consistent with '.element' column", {
-  expect_equal(".element" %in% names(augmentation_rows(fit_ca)),
-               ".element" %in% names(augmentation_cols(fit_ca)))
+  expect_equal(".element" %in% names(recover_aug_rows(fit_ca)),
+               ".element" %in% names(recover_aug_cols(fit_ca)))
 })

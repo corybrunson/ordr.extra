@@ -8,9 +8,9 @@
 \alias{recover_cols.CCA}
 \alias{recover_inertia.CCA}
 \alias{recover_conference.CCA}
-\alias{augmentation_rows.CCA}
-\alias{augmentation_cols.CCA}
-\alias{augmentation_coord.CCA}
+\alias{recover_aug_rows.CCA}
+\alias{recover_aug_cols.CCA}
+\alias{recover_aug_coord.CCA}
 \title{Functionality for penalized multivariate analysis ('CCA') objects}
 \usage{
 \method{as_tbl_ord}{CCA}(x)
@@ -25,11 +25,11 @@
 
 \method{recover_conference}{CCA}(x)
 
-\method{augmentation_rows}{CCA}(x)
+\method{recover_aug_rows}{CCA}(x)
 
-\method{augmentation_cols}{CCA}(x)
+\method{recover_aug_cols}{CCA}(x)
 
-\method{augmentation_coord}{CCA}(x)
+\method{recover_aug_coord}{CCA}(x)
 }
 \arguments{
 \item{x}{An ordination object.}

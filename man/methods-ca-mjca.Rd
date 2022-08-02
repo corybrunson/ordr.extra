@@ -8,9 +8,9 @@
 \alias{recover_inertia.mjca}
 \alias{recover_conference.mjca}
 \alias{recover_coord.mjca}
-\alias{augmentation_rows.mjca}
-\alias{augmentation_cols.mjca}
-\alias{augmentation_coord.mjca}
+\alias{recover_aug_rows.mjca}
+\alias{recover_aug_cols.mjca}
+\alias{recover_aug_coord.mjca}
 \title{Functionality for multiple and joint correspondence analysis ('mjca')
 objects}
 \usage{
@@ -26,11 +26,11 @@ objects}
 
 \method{recover_coord}{mjca}(x)
 
-\method{augmentation_rows}{mjca}(x)
+\method{recover_aug_rows}{mjca}(x)
 
-\method{augmentation_cols}{mjca}(x)
+\method{recover_aug_cols}{mjca}(x)
 
-\method{augmentation_coord}{mjca}(x)
+\method{recover_aug_coord}{mjca}(x)
 }
 \arguments{
 \item{x}{An ordination object.}

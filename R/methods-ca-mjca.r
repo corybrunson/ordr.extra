@@ -51,7 +51,7 @@ recover_coord.mjca <- function(x) paste0("Dim", seq(ncol(x$rowcoord)))
 
 #' @rdname methods-ca-mjca
 #' @export
-augmentation_rows.mjca <- function(x) {
+recover_aug_rows.mjca <- function(x) {
   .name <- x$rownames
   res <- if (is.null(.name)) {
     tibble_pole(nrow(x$rowcoord))
@@ -68,7 +68,7 @@ augmentation_rows.mjca <- function(x) {
 
 #' @rdname methods-ca-mjca
 #' @export
-augmentation_cols.mjca <- function(x){
+recover_aug_cols.mjca <- function(x){
   .name <- x$levelnames
   res <- if (is.null(.name)) {
     tibble_pole(nrow(x$colcoord))
@@ -86,7 +86,7 @@ augmentation_cols.mjca <- function(x){
 
 #' @rdname methods-ca-mjca
 #' @export
-augmentation_coord.mjca <- function(x){
+recover_aug_coord.mjca <- function(x){
   tibble(
     .name = factor_coord(recover_coord(x)),
     .sv = x$sv[seq(ncol(x$rowcoord))]

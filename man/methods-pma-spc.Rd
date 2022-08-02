@@ -8,9 +8,9 @@
 \alias{recover_cols.SPC}
 \alias{recover_inertia.SPC}
 \alias{recover_conference.SPC}
-\alias{augmentation_rows.SPC}
-\alias{augmentation_cols.SPC}
-\alias{augmentation_coord.SPC}
+\alias{recover_aug_rows.SPC}
+\alias{recover_aug_cols.SPC}
+\alias{recover_aug_coord.SPC}
 \title{Functionality for penalized multivariate analysis ('SPC') objects}
 \usage{
 \method{as_tbl_ord}{SPC}(x)
@@ -25,11 +25,11 @@
 
 \method{recover_conference}{SPC}(x)
 
-\method{augmentation_rows}{SPC}(x)
+\method{recover_aug_rows}{SPC}(x)
 
-\method{augmentation_cols}{SPC}(x)
+\method{recover_aug_cols}{SPC}(x)
 
-\method{augmentation_coord}{SPC}(x)
+\method{recover_aug_coord}{SPC}(x)
 }
 \arguments{
 \item{x}{An ordination object.}

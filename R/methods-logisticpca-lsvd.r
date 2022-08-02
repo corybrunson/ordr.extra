@@ -43,7 +43,7 @@ recover_coord.lsvd <- function(x) paste0("LSC", 1:ncol(x$A))
 
 #' @rdname methods-lpca
 #' @export
-augmentation_rows.lsvd <- function(x) {
+recover_aug_rows.lsvd <- function(x) {
   .name <- rownames(x$A)
   res <- if (is.null(.name)) {
     tibble_pole(nrow(x$A))
@@ -55,7 +55,7 @@ augmentation_rows.lsvd <- function(x) {
 
 #' @rdname methods-lpca
 #' @export
-augmentation_cols.lsvd <- function(x) {
+recover_aug_cols.lsvd <- function(x) {
   .name <- rownames(x$B)
   res <- if (is.null(.name)) {
     tibble_pole(nrow(x$B))
@@ -68,7 +68,7 @@ augmentation_cols.lsvd <- function(x) {
 
 #' @rdname methods-lpca
 #' @export
-augmentation_coord.lsvd <- function(x) {
+recover_aug_coord.lsvd <- function(x) {
   tibble(
     .name = factor_coord(recover_coord.lsvd(x))
   )

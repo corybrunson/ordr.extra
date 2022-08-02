@@ -7,23 +7,23 @@
 \alias{recover_rows.lsvd}
 \alias{recover_cols.lsvd}
 \alias{recover_coord.lsvd}
-\alias{augmentation_rows.lsvd}
-\alias{augmentation_cols.lsvd}
-\alias{augmentation_coord.lsvd}
+\alias{recover_aug_rows.lsvd}
+\alias{recover_aug_cols.lsvd}
+\alias{recover_aug_coord.lsvd}
 \alias{as_tbl_ord.lpca}
 \alias{recover_rows.lpca}
 \alias{recover_cols.lpca}
 \alias{recover_coord.lpca}
-\alias{augmentation_rows.lpca}
-\alias{augmentation_cols.lpca}
-\alias{augmentation_coord.lpca}
+\alias{recover_aug_rows.lpca}
+\alias{recover_aug_cols.lpca}
+\alias{recover_aug_coord.lpca}
 \alias{as_tbl_ord.clpca}
 \alias{recover_rows.clpca}
 \alias{recover_cols.clpca}
 \alias{recover_coord.clpca}
-\alias{augmentation_rows.clpca}
-\alias{augmentation_cols.clpca}
-\alias{augmentation_coord.clpca}
+\alias{recover_aug_rows.clpca}
+\alias{recover_aug_cols.clpca}
+\alias{recover_aug_coord.clpca}
 \title{Functionality for logistic PCA and logistic SVD objects}
 \usage{
 \method{as_tbl_ord}{lsvd}(x)
@@ -34,11 +34,11 @@
 
 \method{recover_coord}{lsvd}(x)
 
-\method{augmentation_rows}{lsvd}(x)
+\method{recover_aug_rows}{lsvd}(x)
 
-\method{augmentation_cols}{lsvd}(x)
+\method{recover_aug_cols}{lsvd}(x)
 
-\method{augmentation_coord}{lsvd}(x)
+\method{recover_aug_coord}{lsvd}(x)
 
 \method{as_tbl_ord}{lpca}(x)
 
@@ -48,11 +48,11 @@
 
 \method{recover_coord}{lpca}(x)
 
-\method{augmentation_rows}{lpca}(x)
+\method{recover_aug_rows}{lpca}(x)
 
-\method{augmentation_cols}{lpca}(x)
+\method{recover_aug_cols}{lpca}(x)
 
-\method{augmentation_coord}{lpca}(x)
+\method{recover_aug_coord}{lpca}(x)
 
 \method{as_tbl_ord}{clpca}(x)
 
@@ -62,11 +62,11 @@
 
 \method{recover_coord}{clpca}(x)
 
-\method{augmentation_rows}{clpca}(x)
+\method{recover_aug_rows}{clpca}(x)
 
-\method{augmentation_cols}{clpca}(x)
+\method{recover_aug_cols}{clpca}(x)
 
-\method{augmentation_coord}{clpca}(x)
+\method{recover_aug_coord}{clpca}(x)
 }
 \arguments{
 \item{x}{An ordination object.}

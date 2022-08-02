@@ -52,17 +52,17 @@ ordr::recover_coord
 #' @export
 ordr::recover_conference
 
-#' @importFrom ordr augmentation_rows
+#' @importFrom ordr recover_aug_rows
 #' @export
-ordr::augmentation_rows
+ordr::recover_aug_rows
 
-#' @importFrom ordr augmentation_cols
+#' @importFrom ordr recover_aug_cols
 #' @export
-ordr::augmentation_cols
+ordr::recover_aug_cols
 
-#' @importFrom ordr augmentation_coord
+#' @importFrom ordr recover_aug_coord
 #' @export
-ordr::augmentation_coord
+ordr::recover_aug_coord
 
 #' @importFrom ordr recover_supp_rows
 #' @export
