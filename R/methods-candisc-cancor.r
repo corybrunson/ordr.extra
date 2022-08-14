@@ -88,11 +88,11 @@ recover_supp_cols.cancor <- function(x) {
 #' @rdname methods-candisc-cancor
 #' @export
 recover_aug_rows.cancor <- function(x) {
-  .name <- x$names$X
-  res <- if (is.null(.name)) {
+  name <- x$names$X
+  res <- if (is.null(name)) {
     tibble_pole(nrow(x$coef$X))
   } else {
-    tibble(.name = .name)
+    tibble(name = name)
   }
   res$.element <- "active"
   
@@ -102,7 +102,7 @@ recover_aug_rows.cancor <- function(x) {
     res_sup_elt <- if (is.null(rownames(x$scores$X))) {
       tibble_pole(nrow(x$scores$X))
     } else {
-      tibble(.name = rownames(x$scores$X))
+      tibble(name = rownames(x$scores$X))
     }
     res_sup_elt$.element <- "score"
     res_sup <- dplyr::bind_rows(res_sup, res_sup_elt)
@@ -111,7 +111,7 @@ recover_aug_rows.cancor <- function(x) {
     res_sup_elt <- if (is.null(rownames(x$structure$X.xscores))) {
       tibble_pole(nrow(x$structure$X.xscores))
     } else {
-      tibble(.name = rownames(x$structure$X.xscores))
+      tibble(name = rownames(x$structure$X.xscores))
     }
     res_sup_elt$.element <- "structure"
     res_sup <- dplyr::bind_rows(res_sup, res_sup_elt)
@@ -123,11 +123,11 @@ recover_aug_rows.cancor <- function(x) {
 #' @rdname methods-candisc-cancor
 #' @export
 recover_aug_cols.cancor <- function(x) {
-  .name <- x$names$Y
-  res <- if (is.null(.name)) {
+  name <- x$names$Y
+  res <- if (is.null(name)) {
     tibble_pole(nrow(x$coef$Y))
   } else {
-    tibble(.name = .name)
+    tibble(name = name)
   }
   res$.element <- "active"
   
@@ -137,7 +137,7 @@ recover_aug_cols.cancor <- function(x) {
     res_sup_elt <- if (is.null(rownames(x$scores$Y))) {
       tibble_pole(nrow(x$scores$Y))
     } else {
-      tibble(.name = rownames(x$scores$Y))
+      tibble(name = rownames(x$scores$Y))
     }
     res_sup_elt$.element <- "score"
     res_sup <- dplyr::bind_rows(res_sup, res_sup_elt)
@@ -146,7 +146,7 @@ recover_aug_cols.cancor <- function(x) {
     res_sup_elt <- if (is.null(rownames(x$structure$Y.yscores))) {
       tibble_pole(nrow(x$structure$Y.yscores))
     } else {
-      tibble(.name = rownames(x$structure$Y.yscores))
+      tibble(name = rownames(x$structure$Y.yscores))
     }
     res_sup_elt$.element <- "structure"
     res_sup <- dplyr::bind_rows(res_sup, res_sup_elt)
@@ -159,7 +159,7 @@ recover_aug_cols.cancor <- function(x) {
 #' @export
 recover_aug_coord.cancor <- function(x) {
   tibble(
-    .name = factor_coord(recover_coord(x)),
-    .cancor = x$cancor
+    name = factor_coord(recover_coord(x)),
+    cancor = x$cancor
   )
 }

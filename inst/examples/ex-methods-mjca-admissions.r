@@ -19,9 +19,9 @@ admissions_mca %>%
   ggbiplot() +
   theme_bw() + theme_biplot() +
   geom_origin() +
-  #geom_rows_point(stat = "unique") +
-  geom_cols_point(aes(color = .factor, shape = .factor, size = .mass)) +
-  geom_cols_text_repel(aes(label = .level, color = .factor),
+  # geom_rows_count() +
+  geom_cols_point(aes(color = factor, shape = factor, size = mass)) +
+  geom_cols_text_repel(aes(label = level, color = factor),
                        show.legend = FALSE) +
   scale_color_brewer(palette = "Dark2") +
   scale_size_area(guide = "none") +
@@ -33,9 +33,9 @@ admissions_mca %>%
   ggbiplot() +
   theme_bw() + theme_biplot() +
   geom_origin() +
-  #geom_rows_point(stat = "unique") +
-  geom_cols_point(aes(color = .factor, shape = .factor, size = .mass)) +
-  geom_cols_text_repel(aes(label = .level, color = .factor),
+  # geom_rows_point(stat = "sum") +
+  geom_cols_point(aes(color = factor, shape = factor, size = mass)) +
+  geom_cols_text_repel(aes(label = level, color = factor),
                        show.legend = FALSE) +
   scale_color_brewer(palette = "Dark2") +
   scale_size_area(guide = "none") +

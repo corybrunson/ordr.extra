@@ -45,11 +45,11 @@ recover_coord.lpca <- function(x) paste0("LPC", 1:ncol(x$U))
 #' @rdname methods-lpca
 #' @export
 recover_aug_rows.lpca <- function(x) {
-  .name <- rownames(x$PCs)
-  res <- if (is.null(.name)) {
+  name <- rownames(x$PCs)
+  res <- if (is.null(name)) {
     tibble_pole(nrow(x$PCs))
   } else {
-    tibble(.name = .name)
+    tibble(name = name)
   }
   res
 }
@@ -57,13 +57,13 @@ recover_aug_rows.lpca <- function(x) {
 #' @rdname methods-lpca
 #' @export
 recover_aug_cols.lpca <- function(x) {
-  .name <- rownames(x$U)
-  res <- if (is.null(.name)) {
+  name <- rownames(x$U)
+  res <- if (is.null(name)) {
     tibble_pole(nrow(x$U))
   } else {
-    tibble(.name = .name)
+    tibble(name = name)
   }
-  res$.mu <- x$mu
+  res$mu <- x$mu
   res
 }
 
@@ -71,6 +71,6 @@ recover_aug_cols.lpca <- function(x) {
 #' @export
 recover_aug_coord.lpca <- function(x) {
   tibble(
-    .name = factor_coord(recover_coord.lpca(x))
+    name = factor_coord(recover_coord.lpca(x))
   )
 }

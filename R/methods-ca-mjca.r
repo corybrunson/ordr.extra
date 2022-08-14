@@ -52,35 +52,35 @@ recover_coord.mjca <- function(x) paste0("Dim", seq(ncol(x$rowcoord)))
 #' @rdname methods-ca-mjca
 #' @export
 recover_aug_rows.mjca <- function(x) {
-  .name <- x$rownames
-  res <- if (is.null(.name)) {
+  name <- x$rownames
+  res <- if (is.null(name)) {
     tibble_pole(nrow(x$rowcoord))
   } else {
-    tibble(.name = .name)
+    tibble(name = name)
   }
   dplyr::bind_cols(
     res,
-    .mass = x$rowmass,
-    .dist = x$rowdist,
-    .inertia = x$rowinertia
+    mass = x$rowmass,
+    dist = x$rowdist,
+    inertia = x$rowinertia
   )
 }
 
 #' @rdname methods-ca-mjca
 #' @export
 recover_aug_cols.mjca <- function(x){
-  .name <- x$levelnames
-  res <- if (is.null(.name)) {
+  name <- x$levelnames
+  res <- if (is.null(name)) {
     tibble_pole(nrow(x$colcoord))
   } else {
-    tibble(.name = .name)
+    tibble(name = name)
   }
   dplyr::bind_cols(
     res,
-    `colnames<-`(x$factors, paste0(".", colnames(x$factors))),
-    .mass = x$colmass,
-    .dist = x$coldist,
-    .inertia = x$colinertia
+    `colnames<-`(x$factors, colnames(x$factors)),
+    mass = x$colmass,
+    dist = x$coldist,
+    inertia = x$colinertia
   )
 }
 
@@ -88,7 +88,7 @@ recover_aug_cols.mjca <- function(x){
 #' @export
 recover_aug_coord.mjca <- function(x){
   tibble(
-    .name = factor_coord(recover_coord(x)),
-    .sv = x$sv[seq(ncol(x$rowcoord))]
+    name = factor_coord(recover_coord(x)),
+    sv = x$sv[seq(ncol(x$rowcoord))]
   )
 }

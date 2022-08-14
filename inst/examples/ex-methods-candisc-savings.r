@@ -21,7 +21,7 @@ head(get_cols(savings_cancor, elements = "supplementary"))
 # (intraset correlations of first set, interset correlations with second set)
 savings_cancor %>%
   confer_inertia("columns") %>%
-  ggbiplot(aes(label = .name)) +
+  ggbiplot(aes(label = name)) +
   geom_unit_circle() +
   geom_rows_vector(elements = "structure") +
   geom_rows_text_radiate(elements = "structure") +

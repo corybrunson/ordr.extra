@@ -57,22 +57,22 @@ recover_conference.CCA <- function(x) {
 #' @rdname methods-pma-cca
 #' @export
 recover_aug_rows.CCA <- function(x) {
-  .name <- x$xnames
-  if (is.null(.name)) {
+  name <- x$xnames
+  if (is.null(name)) {
     tibble_pole(nrow(x$u))
   } else {
-    tibble(.name = .name)
+    tibble(name = name)
   }
 }
 
 #' @rdname methods-pma-cca
 #' @export
 recover_aug_cols.CCA <- function(x) {
-  .name <- x$znames
-  if (is.null(.name)) {
+  name <- x$znames
+  if (is.null(name)) {
     tibble_pole(nrow(x$v))
   } else {
-    tibble(.name = .name)
+    tibble(name = name)
   }
 }
 
@@ -80,7 +80,7 @@ recover_aug_cols.CCA <- function(x) {
 #' @export
 recover_aug_coord.CCA <- function(x) {
   tibble(
-    .name = factor_coord(recover_coord(x)),
-    .cancor = x$cors
+    name = factor_coord(recover_coord(x)),
+    cor = x$cors
   )
 }

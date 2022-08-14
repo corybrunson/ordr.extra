@@ -63,14 +63,14 @@ recover_conference.SPC <- function(x) {
 #' @rdname methods-pma-spc
 #' @export
 recover_aug_rows.SPC <- function(x) {
-  .name <- x$rnames
-  res <- if (is.null(.name)) {
+  name <- x$rnames
+  res <- if (is.null(name)) {
     tibble_pole(nrow(x$u))
   } else {
-    tibble(.name = .name)
+    tibble(name = name)
   }
   if (! is.null(x[["meanx"]])) {
-    res <- dplyr::bind_cols(res, .meanx = x[["meanx"]])
+    res <- dplyr::bind_cols(res, meanx = x[["meanx"]])
   }
   res
 }
@@ -78,14 +78,14 @@ recover_aug_rows.SPC <- function(x) {
 #' @rdname methods-pma-spc
 #' @export
 recover_aug_cols.SPC <- function(x) {
-  .name <- x$cnames
-  res <- if (is.null(.name)) {
+  name <- x$cnames
+  res <- if (is.null(name)) {
     tibble_pole(nrow(x$v))
   } else {
-    tibble(.name = .name)
+    tibble(name = name)
   }
   if (! is.null(x[["meanx"]])) {
-    res <- dplyr::bind_cols(res, .meanx = x[["meanx"]])
+    res <- dplyr::bind_cols(res, meanx = x[["meanx"]])
   }
   res
 }
@@ -94,7 +94,7 @@ recover_aug_cols.SPC <- function(x) {
 #' @export
 recover_aug_coord.SPC <- function(x) {
   tibble(
-    .name = factor_coord(recover_coord(x)),
-    .sdev = sqrt(x$prop.var.explained)
+    name = factor_coord(recover_coord(x)),
+    sdev = sqrt(x$prop.var.explained)
   )
 }

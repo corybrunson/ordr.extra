@@ -14,7 +14,7 @@ finches %>%
 # biplot (inertia is not defined and cannot be conferred)
 finches_clpca %>%
   augment_ord() %>%
-  ggbiplot(aes(label = .name), sec.axes = "cols", scale.factor = 50) +
+  ggbiplot(aes(label = name), sec.axes = "cols", scale.factor = 50) +
   theme_biplot() +
   geom_rows_vector(alpha = .5, color = "darkred") +
   geom_rows_text_radiate(size = 3, color = "darkred") +

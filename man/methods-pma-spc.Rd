@@ -79,7 +79,7 @@ iris_spca \%>\%
   theme_bw() + theme_biplot() +
   scale_color_brewer(type = "qual", palette = 2) +
   # -+- text elements are extremely far removed -+-
-  geom_cols_axis(aes(label = .name, center = .meanx)) +
+  geom_cols_axis(aes(label = name, center = meanx)) +
   geom_rows_point(aes(color = species), alpha = .5) +
   ggtitle("Row-principal sparse PCA biplot of Anderson iris measurements") +
   expand_limits(x = c(-.12, .2))

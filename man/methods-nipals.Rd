@@ -76,7 +76,7 @@ air_nipals \%>\%
   ggbiplot() +
   theme_bw() +
   geom_cols_vector(color = "#444444") +
-  geom_cols_text_radiate(aes(label = .name), color = "#444444") +
+  geom_cols_text_radiate(aes(label = name), color = "#444444") +
   stat_rows_ellipse(aes(color = format(Date, "\%b"))) +
   geom_rows_point(aes(color = format(Date, "\%b")), size = 1, alpha = .5) +
   geom_rows_point(aes(shape = missingness), size = 3) +

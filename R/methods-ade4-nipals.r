@@ -52,28 +52,28 @@ recover_conference.nipals <- function(x) {
 #' @rdname methods-ade4
 #' @export
 recover_aug_rows.nipals <- function(x) {
-  .name <- rownames(x[["li"]])
-  if (is.null(.name)) {
+  name <- rownames(x[["li"]])
+  if (is.null(name)) {
     tibble_pole(nrow(x[["li"]]))
   } else {
-    tibble(.name = .name)
+    tibble(name = name)
   }
 }
 
 #' @rdname methods-ade4
 #' @export
 recover_aug_cols.nipals <- function(x) {
-  .name <- rownames(x[["c1"]])
-  res <- if (is.null(.name)) {
+  name <- rownames(x[["c1"]])
+  res <- if (is.null(name)) {
     tibble_pole(nrow(x[["c1"]]))
   } else {
-    tibble(.name = .name)
+    tibble(name = name)
   }
   if (! is.null(attr(x, "cmeans"))) {
-    res <- dplyr::bind_cols(res, .cmeans = attr(x, "cmeans"))
+    res <- dplyr::bind_cols(res, cmeans = attr(x, "cmeans"))
   }
   if (! is.null(attr(x, "csd"))) {
-    res <- dplyr::bind_cols(res, .csd = attr(x, "csd"))
+    res <- dplyr::bind_cols(res, csd = attr(x, "csd"))
   }
   res
 }
@@ -82,8 +82,8 @@ recover_aug_cols.nipals <- function(x) {
 #' @export
 recover_aug_coord.nipals <- function(x) {
   tibble(
-    .name = factor_coord(recover_coord(x)),
-    .eig = x[["eig"]],
-    .nb = x[["nb"]]
+    name = factor_coord(recover_coord(x)),
+    eig = x[["eig"]],
+    nb = x[["nb"]]
   )
 }

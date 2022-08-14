@@ -25,7 +25,7 @@ nz_rows <- which(apply(recover_rows(savings_cca) != 0, 1L, any))
 nz_cols <- which(apply(recover_cols(savings_cca) != 0, 1L, any))
 savings_cca %>%
   confer_inertia("rows") %>%
-  ggbiplot(aes(label = .name, color = .matrix)) +
+  ggbiplot(aes(label = name, color = .matrix)) +
   theme_bw() +
   geom_origin() +
   geom_unit_circle(linetype = "dotted") +
