@@ -10,6 +10,7 @@
 #' @name methods-pma-cca
 #' @include ordr-extra.r
 #' @template param-methods
+#' @template return-methods
 #' @family methods for singular value decomposition-based techniques
 #' @family models from the **PMA** package
 #' @example inst/examples/ex-methods-pma-cca-savings.r

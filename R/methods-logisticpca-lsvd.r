@@ -11,6 +11,7 @@
 #' @name methods-lpca
 #' @include ordr-extra.r
 #' @template param-methods
+#' @template return-methods
 #' @family methods for singular value decomposition-based techniques
 #' @family models from the **logisticPCA** package
 #' @example inst/examples/ex-methods-lsvd-finches.r

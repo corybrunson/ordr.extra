@@ -6,6 +6,7 @@
 #' @name methods-ca-ca
 #' @include ordr-extra.r
 #' @template param-methods
+#' @template return-methods
 #' @family methods for singular value decomposition-based techniques
 #' @family models from the **ca** package
 #' @seealso [ordr::methods-correspondence]

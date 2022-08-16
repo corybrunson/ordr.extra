@@ -120,6 +120,10 @@ orthogonalization at each iteration.}
 
 \item{verbose}{Default FALSE. Use TRUE or 1 to show some diagnostics.}
 }
+\value{
+Objects slightly modified from the outputs of the original functions,
+with new '*-ord' classes.
+}
 \description{
 These \verb{*_ord} functions wrap functions imported from other
 packages with modifications for use with '\link{tbl_ord}' methods. They
