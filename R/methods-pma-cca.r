@@ -12,8 +12,8 @@
 #' to sparse PCA and to sparse CCA. Their R package **PMA** implements these
 #' specializations as well as one to sparse multiple CCA.
 #'
-#' **Note:** These draft methods produce the biplot of Greenacre (1984), which
-#' are advised against by ter Braak (1990).
+#' **Note:** The methods for class 'CCA' produce the biplot of Greenacre (1984),
+#' which are advised against by ter Braak (1990).
 #' 
 
 #' @template ref-witten2009

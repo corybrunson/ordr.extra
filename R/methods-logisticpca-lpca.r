@@ -7,6 +7,17 @@
 #'   [logisticPCA::convexLogisticPCA()] have `*_ord()` wrappers that add row and
 #'   column names from the input matrix to the output matrices.
 #'
+#' @details
+#'
+#' Landgraf and Lee (2020) provide a new implementation and extension of the
+#' logistic PCA introduced by Collins et al (2001). These methods use techniques
+#' from generalized linear regression to generalize classical principal
+#' components analysis (PCA) to the setting of binary data.
+#' 
+
+#' @template ref-landgraf2020
+#' @template ref-collins2001
+
 #' @name methods-lpca
 #' @include ordr-extra.r
 #' @template param-methods
