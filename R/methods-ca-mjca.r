@@ -4,6 +4,10 @@
 #' @description These methods extract data from, and attribute new data to,
 #'   objects of class `"mjca"` from the **[ca][ca::mjca]** package.
 #'
+#' @template section-ca
+#' 
+#' @template ref-greenacre2007
+#' 
 #' @name methods-ca-mjca
 #' @include ordr-extra.r
 #' @template param-methods

@@ -49,6 +49,15 @@ the model components.
 These methods extract data from, and attribute new data to,
 objects of class \code{"mjca"} from the \strong{\link[ca:mjca]{ca}} package.
 }
+\section{{Single, multiple, and joint CA}}{
+
+
+Greenacre (2007) proposes joint correspondence analysis (JCA) as a
+counterpart to classical multiple correspondence analysis (MCA). These,
+together with classical correspondence analysis (CA), are implemented in the
+\strong{ca} package.
+}
+
 \examples{
 # table of admissions and rejections from UC Berkeley
 class(UCBAdmissions)
@@ -92,6 +101,11 @@ admissions_mca \%>\%
   scale_color_brewer(palette = "Dark2") +
   scale_size_area(guide = "none") +
   labs(color = "Factor level", shape = "Factor level")
+}
+\references{
+Greenacre MJ (2007) \emph{Correspondence Analysis in Practice}, Second Edition.
+Boca Raton: Chapman & Hall/CRC, ISBN 978-1-58488-616-7.
+\url{http://www.carme-n.org/?sec=books2}
 }
 \seealso{
 Other methods for singular value decomposition-based techniques: 

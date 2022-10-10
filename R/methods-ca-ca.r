@@ -3,6 +3,10 @@
 #' @description These methods extract data from, and attribute new data to,
 #'   objects of class `"ca"` from the **[ca][ca::ca]** package.
 #'
+#' @template section-ca
+#' 
+#' @template ref-greenacre2007
+#' 
 #' @name methods-ca-ca
 #' @include ordr-extra.r
 #' @template param-methods

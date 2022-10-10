@@ -48,6 +48,15 @@ the model components.
 These methods extract data from, and attribute new data to,
 objects of class \code{"ca"} from the \strong{\link[ca:ca]{ca}} package.
 }
+\section{{Single, multiple, and joint CA}}{
+
+
+Greenacre (2007) proposes joint correspondence analysis (JCA) as a
+counterpart to classical multiple correspondence analysis (MCA). These,
+together with classical correspondence analysis (CA), are implemented in the
+\strong{ca} package.
+}
+
 \examples{
 # table of hair and eye color data collapsed by sex
 class(HairEyeColor)
@@ -65,6 +74,11 @@ get_rows(haireye_ca)
 get_cols(haireye_ca)
 # augment profiles with names, masses, distances, and inertias
 (haireye_ca <- augment_ord(haireye_ca))
+}
+\references{
+Greenacre MJ (2007) \emph{Correspondence Analysis in Practice}, Second Edition.
+Boca Raton: Chapman & Hall/CRC, ISBN 978-1-58488-616-7.
+\url{http://www.carme-n.org/?sec=books2}
 }
 \seealso{
 \link[ordr:methods-correspondence]{ordr::methods-correspondence}
