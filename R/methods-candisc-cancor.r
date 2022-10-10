@@ -36,7 +36,7 @@
 #' @family methods for singular value decomposition-based techniques
 #' @family models from the **candisc** package
 #' @seealso [ordr::methods-cancor]
-#' @example inst/examples/ex-methods-candisc-savings.r
+#' @example inst/examples/ex-methods-candisc-cancor-savings.r
 NULL
 
 #' @rdname methods-candisc-cancor

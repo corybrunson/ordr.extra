@@ -43,6 +43,7 @@ Collate:
     'methods-logisticpca-lsvd.r'
     'methods-logisticpca-lpca.r'
     'methods-logisticpca-clpca.r'
+    'methods-nipals-empca.r'
     'methods-nipals-nipals.r'
     'methods-pma-cca.r'
     'methods-pma-spc.r'

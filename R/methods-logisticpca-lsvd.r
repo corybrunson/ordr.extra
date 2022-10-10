@@ -15,7 +15,7 @@
 #' @template return-methods
 #' @family methods for singular value decomposition-based techniques
 #' @family models from the **logisticPCA** package
-#' @example inst/examples/ex-methods-lsvd-finches.r
+#' @example inst/examples/ex-methods-logisticpca-lsvd-finches.r
 NULL
 
 #' @importFrom stats plogis

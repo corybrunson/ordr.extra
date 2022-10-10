@@ -6,6 +6,7 @@
 \alias{logisticPCA_ord}
 \alias{convexLogisticPCA_ord}
 \alias{nipals_ord}
+\alias{empca_ord}
 \title{Wrappers for lossy ordination methods}
 \usage{
 logisticSVD_ord(
@@ -57,6 +58,20 @@ nipals_ord(
   startcol = 0,
   fitted = FALSE,
   force.na = FALSE,
+  gramschmidt = TRUE,
+  verbose = FALSE
+)
+
+empca_ord(
+  x,
+  w,
+  ncomp = min(nrow(x), ncol(x)),
+  center = TRUE,
+  scale = TRUE,
+  maxiter = 100,
+  tol = 1e-06,
+  seed = NULL,
+  fitted = FALSE,
   gramschmidt = TRUE,
   verbose = FALSE
 )
@@ -119,6 +134,10 @@ method for missing values, even if there are no missing values in x.}
 orthogonalization at each iteration.}
 
 \item{verbose}{Default FALSE. Use TRUE or 1 to show some diagnostics.}
+
+\item{w}{Numerical matrix of weights.}
+
+\item{seed}{Random seed to use when initializing the random rotation matrix.}
 }
 \value{
 Objects slightly modified from the outputs of the original functions,
@@ -139,6 +158,7 @@ The following table summarizes the wrapped functions:\tabular{llll}{
    \code{\link[logisticPCA:logisticPCA]{logisticPCA::logisticPCA()}} \tab No \tab Yes \tab No \cr
    \code{\link[logisticPCA:convexLogisticPCA]{logisticPCA::convexLogisticPCA()}} \tab No \tab Yes \tab No \cr
    \code{\link[nipals:nipals]{nipals::nipals()}} \tab No \tab No \tab Yes \cr
+   \code{\link[nipals:empca]{nipals::empca()}} \tab No \tab No \tab Yes \cr
 }
 }
 \seealso{

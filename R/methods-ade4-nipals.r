@@ -8,7 +8,7 @@
 #' @template param-methods
 #' @template return-methods
 #' @family methods for singular value decomposition-based techniques
-#' @example inst/examples/ex-methods-ade4-airquality.r
+#' @example inst/examples/ex-methods-ade4-nipals-airquality.r
 NULL
 
 #' @rdname methods-ade4

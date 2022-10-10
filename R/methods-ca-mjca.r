@@ -14,7 +14,7 @@
 #' @template return-methods
 #' @family methods for singular value decomposition-based techniques
 #' @family models from the **ca** package
-#' @example inst/examples/ex-methods-mjca-admissions.r
+#' @example inst/examples/ex-methods-ca-mjca-admissions.r
 NULL
 
 #' @rdname methods-ca-mjca

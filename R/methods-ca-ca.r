@@ -14,7 +14,7 @@
 #' @family methods for singular value decomposition-based techniques
 #' @family models from the **ca** package
 #' @seealso [ordr::methods-correspondence]
-#' @example inst/examples/ex-methods-ca-haireye.r
+#' @example inst/examples/ex-methods-ca-ca-haireye.r
 NULL
 
 #' @rdname methods-ca-ca

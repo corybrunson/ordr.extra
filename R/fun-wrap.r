@@ -18,12 +18,14 @@
 #' | [logisticPCA::logisticPCA()]       | No          | Yes       | No        |
 #' | [logisticPCA::convexLogisticPCA()] | No          | Yes       | No        |
 #' | [nipals::nipals()]                 | No          | No        | Yes       |
+#' | [nipals::empca()]                  | No          | No        | Yes       |
 
 #' @name wrap-ord-extra
 #' @inheritParams logisticPCA::logisticPCA
 #' @inheritParams logisticPCA::logisticSVD
 #' @inheritParams logisticPCA::convexLogisticPCA
 #' @inheritParams nipals::nipals
+#' @inheritParams nipals::empca
 #' @param ... Additional parameters passed to original functions.
 #' @return Objects slightly modified from the outputs of the original functions,
 #'   with new '*-ord' classes.
@@ -110,5 +112,21 @@ nipals_ord <- function(
     force.na = force.na, gramschmidt = gramschmidt, verbose = verbose
   )
   class(res) <- "nipals_ord"
+  res
+}
+
+#' @rdname wrap-ord-extra
+#' @export
+empca_ord <- function (
+    x, w, ncomp = min(nrow(x), ncol(x)), center = TRUE, scale = TRUE,
+    maxiter = 100, tol = 1e-06, seed = NULL, fitted = FALSE, 
+    gramschmidt = TRUE, verbose = FALSE
+) {
+  res <- nipals::empca(
+    x, w, ncomp = ncomp, center = center, scale = scale,
+    maxiter = maxiter, tol = tol, seed = seed, fitted = fitted,
+    gramschmidt = gramschmidt, verbose = verbose
+  )
+  class(res) <- "empca_ord"
   res
 }
