@@ -61,10 +61,10 @@ recover_aug_cols.nipals_ord <- function(x) {
     tibble(name = name)
   }
   if (! identical(x[["center"]], NA)) {
-    res <- dplyr::bind_cols(res, cmeans = attr(x, "center"))
+    res <- dplyr::bind_cols(res, center = x[["center"]])
   }
   if (! identical(x[["scale"]], NA)) {
-    res <- dplyr::bind_cols(res, csd = attr(x, "scale"))
+    res <- dplyr::bind_cols(res, scale = x[["scale"]])
   }
   res
 }
