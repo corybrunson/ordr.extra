@@ -3,16 +3,16 @@ data(finches, package = "cooccur")
 class(finches)
 finches[seq(6L), seq(6L)]
 
-# logistic PCA, omitting ubiquitous finches
+# convex logistic PCA, omitting ubiquitous finches
 finches %>%
   dplyr::filter(dplyr::if_any(where(is.integer), ~ . == 0)) %>%
   t() %>%
-  logisticPCA_ord() %>%
+  convexLogisticPCA_ord() %>%
   as_tbl_ord() %>%
-  print() -> finches_lpca
+  print() -> finches_clpca
 
 # biplot (inertia is not defined and cannot be conferred)
-finches_lpca %>%
+finches_clpca %>%
   augment_ord() %>%
   ggbiplot(aes(label = name), sec.axes = "cols", scale.factor = 50) +
   theme_biplot() +
@@ -23,7 +23,7 @@ finches_lpca %>%
   geom_cols_point(alpha = .5, color = "royalblue3",
                   subset = -grep("Geospiza", rownames(finches))) +
   ggtitle(
-    "Logistic PCA of the Galapagos island finches",
+    "Convex logistic PCA of the Galapagos island finches",
     "Islands (finches) scaled to the primary (secondary) axes"
   ) +
   expand_limits(x = c(-25, 35))

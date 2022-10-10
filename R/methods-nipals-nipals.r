@@ -8,6 +8,8 @@
 #' @name methods-nipals
 #' @include ordr-extra.r
 #' @template param-methods
+#' @template return-methods
+#' @family methods for singular value decomposition-based techniques
 #' @example inst/examples/ex-methods-nipals-airquality.r
 NULL
 
@@ -40,40 +42,40 @@ recover_conference.nipals_ord <- function(x) {
 
 #' @rdname methods-nipals
 #' @export
-augmentation_rows.nipals_ord <- function(x) {
-  .name <- rownames(x[["scores"]])
-  if (is.null(.name)) {
+recover_aug_rows.nipals_ord <- function(x) {
+  name <- rownames(x[["scores"]])
+  if (is.null(name)) {
     tibble_pole(nrow(x[["scores"]]))
   } else {
-    tibble(.name = .name)
+    tibble(name = name)
   }
 }
 
 #' @rdname methods-nipals
 #' @export
-augmentation_cols.nipals_ord <- function(x) {
-  .name <- rownames(x[["loadings"]])
-  res <- if (is.null(.name)) {
+recover_aug_cols.nipals_ord <- function(x) {
+  name <- rownames(x[["loadings"]])
+  res <- if (is.null(name)) {
     tibble_pole(nrow(x[["loadings"]]))
   } else {
-    tibble(.name = .name)
+    tibble(name = name)
   }
   if (! identical(x[["center"]], NA)) {
-    res <- dplyr::bind_cols(res, .cmeans = attr(x, "center"))
+    res <- dplyr::bind_cols(res, cmeans = attr(x, "center"))
   }
   if (! identical(x[["scale"]], NA)) {
-    res <- dplyr::bind_cols(res, .csd = attr(x, "scale"))
+    res <- dplyr::bind_cols(res, csd = attr(x, "scale"))
   }
   res
 }
 
 #' @rdname methods-nipals
 #' @export
-augmentation_coord.nipals_ord <- function(x) {
+recover_aug_coord.nipals_ord <- function(x) {
   tibble(
-    .name = factor_coord(recover_coord(x)),
-    .eig = x[["eig"]],
-    .R2 = x[["R2"]],
-    .iter = x[["iter"]]
+    name = factor_coord(recover_coord(x)),
+    eig = x[["eig"]],
+    R2 = x[["R2"]],
+    iter = x[["iter"]]
   )
 }

@@ -7,3 +7,8 @@ test_that("`as_tbl_ord()` coerces 'nipals' & 'nipals_ord' objects", {
   expect_equal(class(fit_nipals_ord), "nipals_ord")
   expect_true(valid_tbl_ord(as_tbl_ord(fit_nipals_ord)))
 })
+
+test_that("'nipals_ord' augmentations are consistent with '.element' column", {
+  expect_equal(".element" %in% names(recover_aug_rows(fit_ade4_nipals)),
+               ".element" %in% names(recover_aug_cols(fit_ade4_nipals)))
+})

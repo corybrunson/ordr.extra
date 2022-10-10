@@ -8,9 +8,9 @@
 \alias{recover_inertia.nipals_ord}
 \alias{recover_coord.nipals_ord}
 \alias{recover_conference.nipals_ord}
-\alias{augmentation_rows.nipals_ord}
-\alias{augmentation_cols.nipals_ord}
-\alias{augmentation_coord.nipals_ord}
+\alias{recover_aug_rows.nipals_ord}
+\alias{recover_aug_cols.nipals_ord}
+\alias{recover_aug_coord.nipals_ord}
 \title{Functionality for non-linear iterative PLS ('nipals') objects}
 \usage{
 \method{as_tbl_ord}{nipals_ord}(x)
@@ -25,14 +25,24 @@
 
 \method{recover_conference}{nipals_ord}(x)
 
-\method{augmentation_rows}{nipals_ord}(x)
+\method{recover_aug_rows}{nipals_ord}(x)
 
-\method{augmentation_cols}{nipals_ord}(x)
+\method{recover_aug_cols}{nipals_ord}(x)
 
-\method{augmentation_coord}{nipals_ord}(x)
+\method{recover_aug_coord}{nipals_ord}(x)
 }
 \arguments{
 \item{x}{An ordination object.}
+}
+\value{
+The recovery generics \verb{recover_*()} return \link[=recoverers]{core model components}, \link[=conference]{distribution of inertia},
+\link[=supplementation]{supplementary elements}, and \link[=augmentation]{intrinsic metadata}; but they require methods for each model class to
+tell them what these components are.
+
+The generic \code{\link[=as_tbl_ord]{as_tbl_ord()}} returns its input wrapped in the 'tbl_ord'
+class. Its methods determine what model classes it is allowed to wrap. It
+then provides 'tbl_ord' methods with access to the recoverers and hence to
+the model components.
 }
 \description{
 These methods extract data from, and attribute new data to,
@@ -49,6 +59,7 @@ airquality \%>\%
   transform(Date = as.Date(paste("1973", Month, Day, sep = "-"))) \%>\%
   subset(select = -c(Month, Day)) ->
   air_quality
+
 # NIPALS on air quality measures
 air_quality[, seq(4L)] \%>\%
   nipals_ord() \%>\%
@@ -59,11 +70,13 @@ air_nipals \%>\%
   cbind_rows(air_quality[, 5L, drop = FALSE]) \%>\%
   mutate_rows(missingness = apply(is.na(air_quality[, 1:4]), 1L, any)) ->
   air_nipals
+
 # by default, no inertia is conferred
 get_conference(air_nipals)
 # recover observation and measurement standard coordinates
 head(get_rows(air_nipals))
 get_cols(air_nipals)
+
 # augment measurements with names and scaling parameters
 augment_ord(air_nipals)
 # row-principal biplot with monthly ellipses
@@ -73,7 +86,7 @@ air_nipals \%>\%
   ggbiplot() +
   theme_bw() +
   geom_cols_vector(color = "#444444") +
-  geom_cols_text_radiate(aes(label = .name), color = "#444444") +
+  geom_cols_text_radiate(aes(label = name), color = "#444444") +
   stat_rows_ellipse(aes(color = format(Date, "\%b"))) +
   geom_rows_point(aes(color = format(Date, "\%b")), size = 1, alpha = .5) +
   geom_rows_point(aes(shape = missingness), size = 3) +
@@ -81,3 +94,14 @@ air_nipals \%>\%
   ggtitle("Row-principal PCA biplot of 1973 air quality measurements") +
   labs(color = "Month")
 }
+\seealso{
+Other methods for singular value decomposition-based techniques: 
+\code{\link{methods-ade4}},
+\code{\link{methods-ca-ca}},
+\code{\link{methods-ca-mjca}},
+\code{\link{methods-candisc-cancor}},
+\code{\link{methods-lpca}},
+\code{\link{methods-pma-cca}},
+\code{\link{methods-pma-spc}}
+}
+\concept{methods for singular value decomposition-based techniques}

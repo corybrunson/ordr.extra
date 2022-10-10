@@ -22,3 +22,5 @@ README.Rmd
 
 # custom files and directories
 ^ignore$
+^sandbox$
+

@@ -15,12 +15,14 @@
 
 #' @docType package
 #' @name ordr.extra
-#' @importFrom tibble tibble is_tibble as_tibble
 #' @aliases ordr.extra-package
+#' @importFrom tibble tibble is_tibble as_tibble
+#' @example inst/examples/ex-ordinate.r
 NULL
 
 # not exported from *ordr*
 #' @importFrom utils getFromNamespace
+
 as_tbl_ord_default <- getFromNamespace("as_tbl_ord_default", "ordr")
 tibble_pole <- getFromNamespace("tibble_pole", "ordr")
 factor_coord <- getFromNamespace("factor_coord", "ordr")
@@ -50,22 +52,22 @@ ordr::recover_coord
 #' @export
 ordr::recover_conference
 
-#' @importFrom ordr augmentation_rows
+#' @importFrom ordr recover_aug_rows
 #' @export
-ordr::augmentation_rows
+ordr::recover_aug_rows
 
-#' @importFrom ordr augmentation_cols
+#' @importFrom ordr recover_aug_cols
 #' @export
-ordr::augmentation_cols
+ordr::recover_aug_cols
 
-#' @importFrom ordr augmentation_coord
+#' @importFrom ordr recover_aug_coord
 #' @export
-ordr::augmentation_coord
+ordr::recover_aug_coord
 
-#' @importFrom ordr supplementation_rows
+#' @importFrom ordr recover_supp_rows
 #' @export
-ordr::supplementation_rows
+ordr::recover_supp_rows
 
-#' @importFrom ordr supplementation_cols
+#' @importFrom ordr recover_supp_cols
 #' @export
-ordr::supplementation_cols
+ordr::recover_supp_cols

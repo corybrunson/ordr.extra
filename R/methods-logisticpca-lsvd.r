@@ -11,45 +11,44 @@
 #' 
 #' @name methods-lpca
 #' @include ordr-extra.r
-#' @include methods-logisticpca-lsvd.r
 #' @template param-methods
 #' @template return-methods
 #' @family methods for singular value decomposition-based techniques
 #' @family models from the **logisticPCA** package
-#' @example inst/examples/ex-methods-lpca-finches.r
+#' @example inst/examples/ex-methods-lsvd-finches.r
 NULL
 
 #' @importFrom stats plogis
 
 #' @rdname methods-lpca
 #' @export
-as_tbl_ord.lpca <- as_tbl_ord_default
+as_tbl_ord.lsvd <- as_tbl_ord_default
 
-recover_dims_lpca <- function(x, .matrix) {
+recover_dims_lsvd <- function(x, .matrix) {
   .matrix <- match_factor(.matrix)
-  res <- x[[switch(.matrix, rows = "PCs", cols = "U")]]
+  res <- x[[switch(.matrix, rows = "A", cols = "B")]]
   colnames(res) <- recover_coord(x)
   res
 }
 
 #' @rdname methods-lpca
 #' @export
-recover_rows.lpca <- function(x) recover_dims_lpca(x, "rows")
+recover_rows.lsvd <- function(x) recover_dims_lsvd(x, "rows")
 
 #' @rdname methods-lpca
 #' @export
-recover_cols.lpca <- function(x) recover_dims_lpca(x, "cols")
+recover_cols.lsvd <- function(x) recover_dims_lsvd(x, "cols")
 
 #' @rdname methods-lpca
 #' @export
-recover_coord.lpca <- function(x) paste0("LPC", 1:ncol(x$U))
+recover_coord.lsvd <- function(x) paste0("LSC", 1:ncol(x$A))
 
 #' @rdname methods-lpca
 #' @export
-recover_aug_rows.lpca <- function(x) {
-  name <- rownames(x$PCs)
+recover_aug_rows.lsvd <- function(x) {
+  name <- rownames(x$A)
   res <- if (is.null(name)) {
-    tibble_pole(nrow(x$PCs))
+    tibble_pole(nrow(x$A))
   } else {
     tibble(name = name)
   }
@@ -58,10 +57,10 @@ recover_aug_rows.lpca <- function(x) {
 
 #' @rdname methods-lpca
 #' @export
-recover_aug_cols.lpca <- function(x) {
-  name <- rownames(x$U)
+recover_aug_cols.lsvd <- function(x) {
+  name <- rownames(x$B)
   res <- if (is.null(name)) {
-    tibble_pole(nrow(x$U))
+    tibble_pole(nrow(x$B))
   } else {
     tibble(name = name)
   }
@@ -71,8 +70,8 @@ recover_aug_cols.lpca <- function(x) {
 
 #' @rdname methods-lpca
 #' @export
-recover_aug_coord.lpca <- function(x) {
+recover_aug_coord.lsvd <- function(x) {
   tibble(
-    name = factor_coord(recover_coord.lpca(x))
+    name = factor_coord(recover_coord.lsvd(x))
   )
 }

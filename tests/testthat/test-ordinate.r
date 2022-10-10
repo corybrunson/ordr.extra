@@ -6,6 +6,7 @@ rdata <- data.frame(
 )
 
 test_that("`ordinate()` can handle appropriate models", {
-  expect_error(ordinate(rdata, everything(), ade4::nipals), regexp = NA)
-  expect_error(ordinate(rdata, everything(), nipals_ord), regexp = NA)
+  expect_error(ordinate(rdata, ca::ca), regexp = NA)
+  expect_error(ordinate(rdata, ade4::nipals), regexp = NA)
+  expect_error(ordinate(rdata, nipals_ord), regexp = NA)
 })

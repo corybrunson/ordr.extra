@@ -9,19 +9,23 @@ savings_cca <- PMA::CCA(
   xnames = names(LifeCycleSavings)[c(2L, 3L)],
   znames = names(LifeCycleSavings)[c(1L, 4L, 5L)]
 )
+
 # wrap as a 'tbl_ord' object
 (savings_cca <- as_tbl_ord(savings_cca))
+
 # recover canonical variates
 get_rows(savings_cca)
 get_cols(savings_cca)
+
 # augment canonical variates with variable names
 (savings_cca <- augment_ord(savings_cca))
+
 # column-standard biplot of non-zero canonical variates
 nz_rows <- which(apply(recover_rows(savings_cca) != 0, 1L, any))
 nz_cols <- which(apply(recover_cols(savings_cca) != 0, 1L, any))
 savings_cca %>%
   confer_inertia("rows") %>%
-  ggbiplot(aes(label = .name, color = .matrix)) +
+  ggbiplot(aes(label = name, color = .matrix)) +
   theme_bw() +
   geom_origin() +
   geom_unit_circle(linetype = "dotted") +
