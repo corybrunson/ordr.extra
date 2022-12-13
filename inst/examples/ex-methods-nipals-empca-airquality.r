@@ -11,6 +11,14 @@ rand_wts <- matrix(nrow = nrow(air_quality), ncol = ncol(air_quality) - 1L)
 rand_wts[] <- runif(n = prod(dim(rand_wts)))
 
 # EMPCA on weighted air quality measures
-air_empca <- empca_ord(x = air_quality[, seq(4L)], w = rand_wts)
-# augmented tbl_ord
-augment_ord(as_tbl_ord(air_empca))
+air_empca <-
+  ordinate(x = air_quality, model = empca_ord, cols = 1:4, w = rand_wts)
+
+# compare original and fitted data
+head(air_quality)
+{ get_rows(air_empca) %*%
+    diag(get_inertia(air_empca)) %*%
+    t(get_cols(air_empca)) } %>%
+  sweep(2L, air_empca$scale, "*") %>%
+  sweep(2L, air_empca$center, "+") %>%
+  head()

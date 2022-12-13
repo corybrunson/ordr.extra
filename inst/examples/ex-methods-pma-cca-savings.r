@@ -7,7 +7,9 @@ savings_cca <- PMA::CCA(
   LifeCycleSavings[, c(1L, 4L, 5L)],
   K = 2L, penaltyx = .7, penaltyz = .7,
   xnames = names(LifeCycleSavings)[c(2L, 3L)],
-  znames = names(LifeCycleSavings)[c(1L, 4L, 5L)]
+  znames = names(LifeCycleSavings)[c(1L, 4L, 5L)],
+  # prevent errors
+  typex = "standard", typez = "standard"
 )
 
 # wrap as a 'tbl_ord' object

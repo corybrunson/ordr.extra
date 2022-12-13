@@ -32,7 +32,9 @@ ordinate(airquality, cols = c("Ozone", "Solar.R", "Wind", "Temp"), ade4::nipals)
 ordinate(
   x = LifeCycleSavings[, c(2L, 3L)],
   z = LifeCycleSavings[, c(1L, 4L, 5L)],
-  model = PMA::CCA, K = 2L, penaltyx = .5, penaltyz = .5
+  model = PMA::CCA, K = 2L, penaltyx = .5, penaltyz = .5,
+  # prevent errors
+  typex = "standard", typez = "standard"
 )
 
 # lSVD of finches data
