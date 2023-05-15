@@ -1,5 +1,6 @@
 # until {smoothSurv} is restored to CRAN
 # remotes::install_version("smoothSurv", version = "2.5")
+# remotes::install_version("Icens", version = "1.24.0")
 # remotes::install_version("icensBKL", version = "1.4")
 
 # example biplot
