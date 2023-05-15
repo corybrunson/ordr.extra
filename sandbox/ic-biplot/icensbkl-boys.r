@@ -6,11 +6,11 @@
 # example biplot
 # https://ibiostat.be/online-resources/icbook/supplemental
 
-# library(icensBKL)
+library(icensBKL)
 data("tandmob", package = "icensBKL")
 # manually run biplot definition script
 # https://github.com/cran/icensBKL
-source("sandbox/ic-biplot/icbiplot.R")
+# source("sandbox/ic-biplot/icbiplot.R")
 
 # data management
 
