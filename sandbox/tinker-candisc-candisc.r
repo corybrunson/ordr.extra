@@ -13,10 +13,7 @@ iris.mod <-
   lm(cbind(Petal.Length, Sepal.Length, Petal.Width, Sepal.Width) ~ Species,
      data=iris)
 iris.can <- candisc::candisc(iris.mod, data=iris)
-#-- assign colors and symbols corresponding to species
-col <- c("red", "brown", "green3")
-pch <- 1:3
-plot(iris.can, col=col, pch=pch)
+plot(iris.can)
 
 heplots::heplot(iris.can)
 

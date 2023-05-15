@@ -1,93 +1,65 @@
-#' @title Functionality for canonical correlation ('cancor') objects
+#' @title Functionality for canonical discriminant ('candisc') objects
 #'
 #' @description These methods extract data from, and attribute new data to,
-#'   objects of class 'cancor' from the **[candisc][candisc::candisc-package]**
+#'   objects of class 'candisc' from the **[candisc][candisc::candisc-package]**
 #'   package.
-#'
-#' @details
-#'
-#' ter Braak (1990) recommends two families of biplots for the canonical
-#' correspondence analysis of data matrices \eqn{X} and \eqn{Y}. For the first,
-#' using structural correlations, either the interset correlations of \eqn{X}
-#' (equivalent to principal coordinates) are plotted with the intraset
-#' correlations of \eqn{Y} (standard coordinates) or vice-versa, so that their
-#' product recovers the inner product matrix \eqn{XY'}. ter Braak's biplots can
-#' then be recovered by balancing the inertia across the two factors.
-#'
-#' For the second, if the variables are distinguished as predictors and
-#' criteria, then the superposition of the interset correlations of the criteria
-#' with the (inertia-free) canonical coefficients of the predictors yields a
-#' biplot that approximates the matrix of coefficients in the multivariate
-#' regression model.
-#'
-#' The methods for [candisc::cancor()] mirror those for [ordr::cancor_ord()] in
-#' **ordr**, though the canonical coefficients (hence the canonical scores) are
-#' inversely scaled by \eqn{n - 1}.
 #' 
 
-#' @template ref-braak1990
-#'   
-
-#' @name methods-candisc-cancor
+#' @name methods-candisc-candisc
 #' @include ordr-extra.r
 #' @template param-methods
 #' @template return-methods
-#' @family methods for singular value decomposition-based techniques
+#' @family methods for eigen-decomposition-based techniques
 #' @family models from the **candisc** package
 #' @seealso [ordr::methods-cancor]
-#' @example inst/examples/ex-methods-candisc-cancor-savings.r
 NULL
 
-#' @rdname methods-candisc-cancor
+#' @rdname methods-candisc-candisc
 #' @export
-as_tbl_ord.cancor <- as_tbl_ord_default
+as_tbl_ord.candisc <- as_tbl_ord_default
 
-#' @rdname methods-candisc-cancor
+#' @rdname methods-candisc-candisc
 #' @export
-recover_rows.cancor <- function(x) {
-  res <- x$coef$X
-  colnames(res) <- recover_coord(x)
-  res
-}
+recover_rows.candisc <- function(x) x$means
 
-#' @rdname methods-candisc-cancor
+#' @rdname methods-candisc-candisc
 #' @export
-recover_cols.cancor <- function(x) {
+recover_cols.candisc <- function(x) {
   res <- x$coef$Y
   colnames(res) <- recover_coord(x)
   res
 }
 
-#' @rdname methods-candisc-cancor
+#' @rdname methods-candisc-candisc
 #' @export
-recover_inertia.cancor <- function(x) x$cancor^2
+recover_inertia.candisc <- function(x) x$eigenvalues
 
-#' @rdname methods-candisc-cancor
+#' @rdname methods-candisc-candisc
 #' @export
-recover_coord.cancor <- function(x) paste0("can", seq_along(x$cancor))
+recover_coord.candisc <- function(x) paste0("can", seq_along(x$cancor))
 
-#' @rdname methods-candisc-cancor
+#' @rdname methods-candisc-candisc
 #' @export
-recover_conference.cancor <- function(x) {
+recover_conference.candisc <- function(x) {
   # `x$coef$*` are (inertia-free) canonical weights
   c(0, 0)
 }
 
-#' @rdname methods-candisc-cancor
+#' @rdname methods-candisc-candisc
 #' @export
-recover_supp_rows.cancor <- function(x) {
+recover_supp_rows.candisc <- function(x) {
   rbind(x$scores$X, x$structure$X.xscores)
 }
 
-#' @rdname methods-candisc-cancor
+#' @rdname methods-candisc-candisc
 #' @export
-recover_supp_cols.cancor <- function(x) {
+recover_supp_cols.candisc <- function(x) {
   rbind(x$scores$Y, x$structure$Y.yscores)
 }
 
-#' @rdname methods-candisc-cancor
+#' @rdname methods-candisc-candisc
 #' @export
-recover_aug_rows.cancor <- function(x) {
+recover_aug_rows.candisc <- function(x) {
   name <- x$names$X
   res <- if (is.null(name)) {
     tibble_pole(nrow(x$coef$X))
@@ -120,9 +92,9 @@ recover_aug_rows.cancor <- function(x) {
   as_tibble(dplyr::bind_rows(res, res_sup))
 }
 
-#' @rdname methods-candisc-cancor
+#' @rdname methods-candisc-candisc
 #' @export
-recover_aug_cols.cancor <- function(x) {
+recover_aug_cols.candisc <- function(x) {
   name <- x$names$Y
   res <- if (is.null(name)) {
     tibble_pole(nrow(x$coef$Y))
@@ -155,9 +127,9 @@ recover_aug_cols.cancor <- function(x) {
   as_tibble(dplyr::bind_rows(res, res_sup))
 }
 
-#' @rdname methods-candisc-cancor
+#' @rdname methods-candisc-candisc
 #' @export
-recover_aug_coord.cancor <- function(x) {
+recover_aug_coord.candisc <- function(x) {
   tibble(
     name = factor_coord(recover_coord(x)),
     cancor = x$cancor

@@ -29,7 +29,7 @@ Suggests:
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 Config/testthat/edition: 3
@@ -40,6 +40,7 @@ Collate:
     'methods-ca-ca.r'
     'methods-ca-mjca.r'
     'methods-candisc-cancor.r'
+    'methods-candisc-candisc.r'
     'methods-logisticpca-lsvd.r'
     'methods-logisticpca-lpca.r'
     'methods-logisticpca-clpca.r'

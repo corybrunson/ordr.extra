@@ -13,8 +13,7 @@
 \alias{recover_aug_rows.cancor}
 \alias{recover_aug_cols.cancor}
 \alias{recover_aug_coord.cancor}
-\title{Functionality for canonical correlation ('cancor') and discriminant
-('candisc') objects}
+\title{Functionality for canonical correlation ('cancor') objects}
 \usage{
 \method{as_tbl_ord}{cancor}(x)
 
@@ -53,8 +52,8 @@ the model components.
 }
 \description{
 These methods extract data from, and attribute new data to,
-objects of class 'cancor' and 'candisc' from the
-\strong{\link[candisc:candisc-package]{candisc}} package.
+objects of class 'cancor' from the \strong{\link[candisc:candisc-package]{candisc}}
+package.
 }
 \details{
 ter Braak (1990) recommends two families of biplots for the canonical
@@ -124,6 +123,9 @@ Other methods for singular value decomposition-based techniques:
 \code{\link{methods-nipals-nipals}},
 \code{\link{methods-pma-cca}},
 \code{\link{methods-pma-spc}}
+
+Other models from the \strong{candisc} package: 
+\code{\link{methods-candisc-candisc}}
 }
 \concept{methods for singular value decomposition-based techniques}
 \concept{models from the \strong{candisc} package}
