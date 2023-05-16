@@ -51,8 +51,8 @@ We can use **ordr** syntax to model these data using joint correspondence analys
 
 [^array]: Note that `ca::mjca()` takes the array as input; it can also take a data frame as input, but it must be properly formatted for this technique, which `as.data.frame()` does not do.
 
-```{r jca}
-admissions_jca <- ordinate(UCBAdmissions, ca::mjca, lambda = "JCA")
+```{r jca, warning=FALSE}
+(admissions_jca <- ordinate(UCBAdmissions, ca::mjca, lambda = "JCA"))
 ```
 
 We can then generate a monoplot[^monoplot] of the group masses for each of the three categorical variables:
