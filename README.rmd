@@ -20,10 +20,10 @@ devtools::load_all()
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-This is an extension of [**ordr**](https://cran.r-project.org/package=ordr), a **tidyverse** extension for managing ordination models and rendering biplots.
+This is an extension of [the **ordr** package](https://cran.r-project.org/package=ordr), a **tidyverse** extension for managing ordination models and rendering biplots.
 **ordr** provides methods for handling only some of the most common techniques, so **ordr.extra** provides methods for several additional techniques.
 
-This package is like **broom**; it can expand to accommodate additional models until they exceed the bandwidth of its maintainer(s).
+This package is like **broom** in that it can expand to accommodate additional models until they exceed the bandwidth of its maintainer(s).
 See [this issue](https://github.com/corybrunson/ordr.extra/issues/2) for additional discussion, and please comment with any additional suggestions!
 
 ## installation
@@ -59,7 +59,7 @@ We can then generate a monoplot[^monoplot] of the group masses for each of the t
 
 [^monoplot]: This is a monoplot because JCA is based on the SVD of a case-by-variable matrix, and only variable elements are plotted here.
 
-```{r biplot}
+```{r biplot, fig.height=3}
 admissions_jca %>%
   confer_inertia("colprincipal") %>%
   ggbiplot() +
