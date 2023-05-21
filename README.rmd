@@ -36,6 +36,11 @@ You can install the development version as follows:
 devtools::install_github("corybrunson/ordr.extra")
 ```
 
+Note:
+This package extends tools from **ordr** to classes of ordination models from several additional packages, but _it does not depend on these packages_.
+The reason is so that someone interested in working with, say, **candisc** models does not have to also install **ca**, **PMA**, and the other packages **ordr.extra** supports.
+The trade-off is that this user must manually install **ca** as well.
+
 ## example
 
 Joint correspondence analysis[^jca], implemented in the **ca** package, essentially applies PCA to a high-dimensional contingency table reformatted as a data frame with one observation per row.

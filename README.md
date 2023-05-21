@@ -31,6 +31,13 @@ version as follows:
 devtools::install_github("corybrunson/ordr.extra")
 ```
 
+Note: This package extends tools from **ordr** to classes of ordination
+models from several additional packages, but *it does not depend on
+these packages*. The reason is so that someone interested in working
+with, say, **candisc** models does not have to also install **ca**,
+**PMA**, and the other packages **ordr.extra** supports. The trade-off
+is that this user must manually install **ca** as well.
+
 ## example
 
 Joint correspondence analysis[^1], implemented in the **ca** package,
