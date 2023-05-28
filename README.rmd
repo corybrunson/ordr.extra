@@ -39,7 +39,7 @@ devtools::install_github("corybrunson/ordr.extra")
 Note:
 This package extends tools from **ordr** to classes of ordination models from several additional packages, but _it does not depend on these packages_.
 The reason is so that someone interested in working with, say, **candisc** models does not have to also install **ca**, **PMA**, and the other packages **ordr.extra** supports.
-The trade-off is that this user must manually install **ca** as well.
+The trade-off is that this user must manually install **candisc** as well.
 
 ## example
 
@@ -49,14 +49,18 @@ To illustrate the technique, recall the UC Berkeley admissions data set, reforma
 [^jca]: Greenacre MJ (2005) "From Correspondence Analysis to Multiple and Joint Correspondence Analysis". Available at SSRN: <https://ssrn.com/abstract=847664>
 
 ```{r data}
+# inspect admissions data
 head(as.data.frame(UCBAdmissions))
 ```
 
-We can use **ordr** syntax to model these data using joint correspondence analysis with the function `ca::mjca()`[^array]:
+We can use **ordr** syntax to model these data using joint correspondence analysis with the function `ca::mjca()`[^array], once we've ensured that **ca** is installed:
 
-[^array]: Note that `ca::mjca()` takes the array as input; it can also take a data frame as input, but it must be properly formatted for this technique, which `as.data.frame()` does not do.
+[^array]: Note that the array is being passed as input. `ca::mjca()` can also take data frame input, but it requires a format that differs from that produced by `as.data.frame()`.
 
 ```{r jca, warning=FALSE}
+# install {ca} if not already installed
+if (! "ca" %in% rownames(installed.packages())) install.packages("ca")
+# fit JCA model to admissions data
 (admissions_jca <- ordinate(UCBAdmissions, ca::mjca, lambda = "JCA"))
 ```
 
@@ -65,6 +69,7 @@ We can then generate a monoplot[^monoplot] of the group masses for each of the t
 [^monoplot]: This is a monoplot because JCA is based on the SVD of a case-by-variable matrix, and only variable elements are plotted here.
 
 ```{r biplot, fig.height=3}
+# build biplot of admissions JCA model with variance distributed to variables
 admissions_jca %>%
   confer_inertia("colprincipal") %>%
   ggbiplot() +

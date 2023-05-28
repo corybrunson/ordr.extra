@@ -36,7 +36,7 @@ models from several additional packages, but *it does not depend on
 these packages*. The reason is so that someone interested in working
 with, say, **candisc** models does not have to also install **ca**,
 **PMA**, and the other packages **ordr.extra** supports. The trade-off
-is that this user must manually install **ca** as well.
+is that this user must manually install **candisc** as well.
 
 ## example
 
@@ -47,6 +47,7 @@ the technique, recall the UC Berkeley admissions data set, reformatted
 here as a data frame of counts:
 
 ``` r
+# inspect admissions data
 head(as.data.frame(UCBAdmissions))
 #>      Admit Gender Dept Freq
 #> 1 Admitted   Male    A  512
@@ -58,9 +59,13 @@ head(as.data.frame(UCBAdmissions))
 ```
 
 We can use **ordr** syntax to model these data using joint
-correspondence analysis with the function `ca::mjca()`[^2]:
+correspondence analysis with the function `ca::mjca()`[^2], once we’ve
+ensured that **ca** is installed:
 
 ``` r
+# install {ca} if not already installed
+if (! "ca" %in% rownames(installed.packages())) install.packages("ca")
+# fit JCA model to admissions data
 (admissions_jca <- ordinate(UCBAdmissions, ca::mjca, lambda = "JCA"))
 #> # A tbl_ord of class 'mjca': (4526 x 5) x (10 x 5)'
 #> # 5 coordinates: Dim1, Dim2, ..., Dim5
@@ -95,6 +100,7 @@ We can then generate a monoplot[^3] of the group masses for each of the
 three categorical variables:
 
 ``` r
+# build biplot of admissions JCA model with variance distributed to variables
 admissions_jca %>%
   confer_inertia("colprincipal") %>%
   ggbiplot() +
@@ -118,9 +124,9 @@ acknowledgments.
     Joint Correspondence Analysis”. Available at SSRN:
     <https://ssrn.com/abstract=847664>
 
-[^2]: Note that `ca::mjca()` takes the array as input; it can also take
-    a data frame as input, but it must be properly formatted for this
-    technique, which `as.data.frame()` does not do.
+[^2]: Note that the array is being passed as input. `ca::mjca()` can
+    also take data frame input, but it requires a format that differs
+    from that produced by `as.data.frame()`.
 
 [^3]: This is a monoplot because JCA is based on the SVD of a
     case-by-variable matrix, and only variable elements are plotted
