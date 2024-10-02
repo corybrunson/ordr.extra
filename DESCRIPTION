@@ -6,7 +6,11 @@ Authors@R: c(
       given = "Jason Cory", family = "Brunson",
       email = "cornelioid@gmail.com",
       role = c("aut", "cre"),
-      comment = c(ORCID = "0000-0003-3126-9494"))
+      comment = c(ORCID = "0000-0003-3126-9494")),
+  person(
+      given = "John", family = "Gracey",
+      email = "jbgracey6@gmail.com"
+      role = c("aut"))
   )
 Description: ...
 Depends:
@@ -28,7 +32,7 @@ Suggests:
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.1
+RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 Config/testthat/edition: 3
@@ -46,3 +50,4 @@ Collate:
     'methods-nipals-nipals.r'
     'methods-pma-cca.r'
     'methods-pma-spc.r'
+    'methods-psych-principal.R'
