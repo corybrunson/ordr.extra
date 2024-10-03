@@ -19,7 +19,7 @@
 #' @template return-methods
 #' @family methods for eigen-decomposition-based techniques
 #' @family models from the psych package
-#' @example inst/examples/ex-methods-principal-iris.r
+#' @example inst/examples/ex-methods-psych-principal-iris.R
 NULL
 
 #' @rdname methods-principal

@@ -2,9 +2,11 @@
 class(iris)
 head(iris)
 
+if (require(psych)) {# {psych}
+
 # compute unscaled row-principal components of scaled measurements
 iris[, -5] |>
-  principal(nfactors = 4, rotate = "none") |>
+  psych::principal(nfactors = 4, rotate = "none") |>
   as_tbl_ord() |>
   print() -> iris_pca
 
@@ -14,3 +16,5 @@ get_cols(iris_pca)
 
 # augment measurement coordinates with names and scaling parameters
 (iris_pca <- augment_ord(iris_pca))
+
+}# {psych}
