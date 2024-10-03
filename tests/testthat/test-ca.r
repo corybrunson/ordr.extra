@@ -1,3 +1,5 @@
+skip_if_not_installed("ca")
+
 fit_ca <- ca::ca(HairEyeColor[, , "Male"])
 
 test_that("`as_tbl_ord()` coerces 'ca' objects", {
