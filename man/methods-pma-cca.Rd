@@ -65,6 +65,9 @@ specializations as well as one to sparse multiple CCA.
 # data frame of life-cycle savings across countries
 class(LifeCycleSavings)
 head(LifeCycleSavings)
+
+if (require(PMA)) {# {PMA}
+
 # canonical correlation analysis of age distributions and financial factors
 savings_cca <- PMA::CCA(
   LifeCycleSavings[, c(2L, 3L)],
@@ -100,6 +103,8 @@ savings_cca \%>\%
   geom_rows_point(subset = nz_rows) +
   geom_rows_text_repel(subset = nz_rows) +
   expand_limits(x = c(-1, 1), y = c(-1, 1))
+
+}# {PMA}
 }
 \references{
 Witten DM, Tibshirani R, & Hastie T (2009) "A penalized matrix decomposition,

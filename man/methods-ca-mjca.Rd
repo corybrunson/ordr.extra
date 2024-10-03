@@ -63,6 +63,8 @@ together with classical correspondence analysis (CA), are implemented in the
 class(UCBAdmissions)
 head(as.data.frame(UCBAdmissions))
 
+if (require(ca)) {# {ca}
+
 # perform multiple correspondence analysis
 UCBAdmissions \%>\%
   ca::mjca() \%>\%
@@ -97,6 +99,8 @@ admissions_mca \%>\%
   geom_cols_text_repel(aes(label = level), show.legend = FALSE) +
   scale_size_area(guide = "none") +
   labs(shape = "Factor level")
+
+}# {ca}
 }
 \references{
 Greenacre MJ (2007) \emph{Correspondence Analysis in Practice}, Second Edition.
