@@ -148,6 +148,8 @@ column names from the input matrix to the output matrices.
 }
 
 \examples{
+if (require(logisticPCA) && require(cooccur)) {# {logisticPCA}
+
 # site-species data frame of Sanderson Galapagos finches data
 data(finches, package = "cooccur")
 class(finches)
@@ -187,6 +189,10 @@ finches_lsvd \%>\%
     "Islands (finches) scaled to the primary (secondary) axes"
   ) +
   expand_limits(x = c(-80, 60))
+
+}# {logisticPCA}
+if (require(logisticPCA) && require(cooccur)) {# {logisticPCA}
+
 # site-species data frame of Sanderson Galapagos finches data
 data(finches, package = "cooccur")
 class(finches)
@@ -216,6 +222,10 @@ finches_lpca \%>\%
     "Islands (finches) scaled to the primary (secondary) axes"
   ) +
   expand_limits(x = c(-25, 35))
+
+}# {logisticPCA}
+if (require(logisticPCA) && require(cooccur)) {# {logisticPCA}
+
 # site-species data frame of Sanderson Galapagos finches data
 data(finches, package = "cooccur")
 class(finches)
@@ -245,6 +255,8 @@ finches_clpca \%>\%
     "Islands (finches) scaled to the primary (secondary) axes"
   ) +
   expand_limits(x = c(-25, 35))
+
+}# {logisticPCA}
 }
 \references{
 Landgraf AJ & Lee Y (2020) "Dimensionality reduction for binary data through

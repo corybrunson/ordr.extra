@@ -1,6 +1,9 @@
 # incomplete air quality measurements from New York
 class(airquality)
 head(airquality)
+
+if (require(nipals)) {# {nipals}
+
 # single date variable
 airquality %>%
   transform(Date = as.Date(paste("1973", Month, Day, sep = "-"))) %>%
@@ -40,3 +43,5 @@ air_nipals %>%
   scale_shape_manual(values = c(`TRUE` = 1L, `FALSE` = NA)) +
   ggtitle("Row-principal PCA biplot of 1973 air quality measurements") +
   labs(color = "Month")
+
+}# {nipals}

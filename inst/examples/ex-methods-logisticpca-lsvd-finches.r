@@ -1,3 +1,5 @@
+if (require(logisticPCA) && require(cooccur)) {# {logisticPCA}
+
 # site-species data frame of Sanderson Galapagos finches data
 data(finches, package = "cooccur")
 class(finches)
@@ -37,3 +39,5 @@ finches_lsvd %>%
     "Islands (finches) scaled to the primary (secondary) axes"
   ) +
   expand_limits(x = c(-80, 60))
+
+}# {logisticPCA}

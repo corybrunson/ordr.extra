@@ -1,6 +1,9 @@
 # incomplete air quality measurements from New York
 class(airquality)
 head(airquality)
+
+if (require(nipals)) {# {nipals}
+
 # single date variable
 airquality %>%
   transform(Date = as.Date(paste("1973", Month, Day, sep = "-"))) %>%
@@ -22,3 +25,5 @@ head(air_quality)
   sweep(2L, air_empca$scale, "*") %>%
   sweep(2L, air_empca$center, "+") %>%
   head()
+
+}# {nipals}

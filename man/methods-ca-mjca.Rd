@@ -63,6 +63,8 @@ together with classical correspondence analysis (CA), are implemented in the
 class(UCBAdmissions)
 head(as.data.frame(UCBAdmissions))
 
+if (require(ca)) {# {ca}
+
 # perform multiple correspondence analysis
 UCBAdmissions \%>\%
   ca::mjca() \%>\%
@@ -81,12 +83,10 @@ admissions_mca \%>\%
   theme_bw() + theme_biplot() +
   geom_origin() +
   # geom_rows_count() +
-  geom_cols_point(aes(color = factor, shape = factor, size = mass)) +
-  geom_cols_text_repel(aes(label = level, color = factor),
-                       show.legend = FALSE) +
-  scale_color_brewer(palette = "Dark2") +
+  geom_cols_point(aes(shape = factor, size = mass)) +
+  geom_cols_text_repel(aes(label = level), show.legend = FALSE) +
   scale_size_area(guide = "none") +
-  labs(color = "Factor level", shape = "Factor level")
+  labs(shape = "Factor level")
 
 # column-principal biplot of factor levels
 admissions_mca \%>\%
@@ -95,12 +95,12 @@ admissions_mca \%>\%
   theme_bw() + theme_biplot() +
   geom_origin() +
   # geom_rows_point(stat = "sum") +
-  geom_cols_point(aes(color = factor, shape = factor, size = mass)) +
-  geom_cols_text_repel(aes(label = level, color = factor),
-                       show.legend = FALSE) +
-  scale_color_brewer(palette = "Dark2") +
+  geom_cols_point(aes(shape = factor, size = mass)) +
+  geom_cols_text_repel(aes(label = level), show.legend = FALSE) +
   scale_size_area(guide = "none") +
-  labs(color = "Factor level", shape = "Factor level")
+  labs(shape = "Factor level")
+
+}# {ca}
 }
 \references{
 Greenacre MJ (2007) \emph{Correspondence Analysis in Practice}, Second Edition.

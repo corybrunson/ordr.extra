@@ -1,6 +1,9 @@
 # data frame of Anderson iris species measurements
 class(iris)
 head(iris)
+
+if (require(PMA)) {# {PMA}
+
 # compute principal components of scaled measurements
 iris_spca <- PMA::SPC(
   as.matrix(iris[, -5L]),
@@ -33,3 +36,5 @@ iris_spca %>%
   geom_rows_point(aes(color = species), alpha = .5) +
   ggtitle("Row-principal sparse PCA biplot of Anderson iris measurements") +
   expand_limits(x = c(-.12, .2))
+
+}# {PMA}
