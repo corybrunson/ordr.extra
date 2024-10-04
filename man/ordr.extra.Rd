@@ -51,7 +51,3 @@ data(finches, package = "cooccur")
 ordinate(finches, logisticSVD_ord)
 }# {logisticPCA}
 }
-\author{
-\strong{Maintainer}: Jason Cory Brunson \email{cornelioid@gmail.com} (\href{https://orcid.org/0000-0003-3126-9494}{ORCID})
-
-}

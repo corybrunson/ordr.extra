@@ -77,67 +77,7 @@ empca_ord(
 )
 }
 \arguments{
-\item{x}{matrix with all binary entries}
-
-\item{k}{number of principal components to return}
-
-\item{quiet}{logical; whether the calculation should give feedback}
-
-\item{max_iters}{number of maximum iterations}
-
-\item{conv_criteria}{convergence criteria. The difference between average deviance
-in successive iterations}
-
-\item{random_start}{logical; whether to randomly inititalize the parameters. If \code{FALSE},
-function will use an eigen-decomposition as starting value}
-
 \item{...}{Additional parameters passed to original functions.}
-
-\item{partial_decomp}{logical; if \code{TRUE}, the function uses the rARPACK package
-to more quickly calculate the eigen-decomposition. This is usually faster than standard
-eigen-decomponsition when \code{ncol(x) > 100} and \code{k} is small}
-
-\item{main_effects}{logical; whether to include main effects in the model}
-
-\item{m}{value to approximate the saturated model. If \code{m = 0}, m is solved for}
-
-\item{ss_factor}{step size multiplier. Amount by which to multiply the step size. Quadratic
-convergence rate can be proven for \code{ss_factor = 1}, but I have found higher values
-sometimes work better. The default is \code{ss_factor = 4}.
-If it is not converging, try \code{ss_factor = 1}.}
-
-\item{ncomp}{Maximum number of principal components to extract from x.}
-
-\item{center}{If TRUE, subtract the mean from each column of x before PCA.}
-
-\item{scale}{if TRUE, divide the standard deviation from each column of x before PCA.}
-
-\item{maxiter}{Maximum number of NIPALS iterations for each
-principal component.}
-
-\item{tol}{Default 1e-9 tolerance for testing convergence of the NIPALS
-iterations for each principal component.}
-
-\item{startcol}{Determine the starting column of x for the iterations
-of each principal component.
-If 0, use the column of x that has maximum absolute sum.
-If a number, use that column of x.
-If a function, apply the function to each column of x and choose the column
-with the maximum value of the function.}
-
-\item{fitted}{Default FALSE. If TRUE, return the fitted (reconstructed) value of x.}
-
-\item{force.na}{Default FALSE. If TRUE, force the function to use the
-method for missing values, even if there are no missing values in x.}
-
-\item{gramschmidt}{Default TRUE. If TRUE, perform Gram-Schmidt 
-orthogonalization at each iteration.}
-
-\item{verbose}{Default FALSE. Use TRUE or 1 to show some diagnostics.}
-
-\item{w}{Numerical matrix of weights.}
-
-\item{seed}{Random seed to use when initializing the random rotation matrix.}
 }
 \value{
 Objects slightly modified from the outputs of the original functions,
