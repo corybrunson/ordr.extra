@@ -9,7 +9,7 @@ Authors@R: c(
       comment = c(ORCID = "0000-0003-3126-9494")),
   person(
       given = "John", family = "Gracey",
-      email = "jbgracey6@gmail.com"
+      email = "jbgracey6@gmail.com",
       role = c("aut"))
   )
 Description: ...
@@ -28,7 +28,8 @@ Suggests:
     nipals,
     testthat (>= 3.0.0),
     cooccur,
-    knitr
+    knitr,
+    psych
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
