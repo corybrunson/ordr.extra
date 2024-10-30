@@ -1,4 +1,6 @@
-fit_principal <- principal(iris[, -5], nfactors = 4, rotate = "none")
+skip_if_not_installed("psych")
+
+fit_principal <- psych::principal(iris[, -5], nfactors = 4, rotate = "none")
 
 test_that("'principal' accessors have consistent dimensions", {
   expect_equal(ncol(get_rows(fit_principal)), ncol(get_cols(fit_principal)))
