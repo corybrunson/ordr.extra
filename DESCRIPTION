@@ -51,4 +51,5 @@ Collate:
     'methods-nipals-nipals.r'
     'methods-pma-cca.r'
     'methods-pma-spc.r'
+    'methods-psych-fa.R'
     'methods-psych-principal.R'

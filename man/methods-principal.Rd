@@ -81,6 +81,13 @@ get_cols(iris_pca)
 
 }# {psych}
 }
+\seealso{
+Other methods for eigen-decomposition-based techniques: 
+\code{\link{methods-fa}}
+
+Other models from the psych package: 
+\code{\link{methods-fa}}
+}
 \author{
 John Gracey
 }
