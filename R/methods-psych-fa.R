@@ -100,8 +100,19 @@ recover_aug_cols.fa <- function(x) {
     tibble(name = name)
   }
   res$uniqueness <- x$uniquenesses
+  
+  # weights as supplementary points
+  name <- rownames(x[["weights"]])
+  res_sup <- if (is.null(name)) {
+    tibble(.rows = nrow(x[["weights"]]))
+  } else {
+    tibble(name = name)
+  }
+  
+  # supplement flag
   res$.element <- "active"
-  res
+  res_sup$.element <- "weight"
+  as_tibble(dplyr::bind_rows(res, res_sup))
 }
 
 #' @rdname methods-fa
