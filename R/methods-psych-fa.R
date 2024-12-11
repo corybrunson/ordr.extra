@@ -100,6 +100,12 @@ recover_aug_cols.fa <- function(x) {
     tibble(name = name)
   }
   res$uniqueness <- x$uniquenesses
+  res$communality <- x$communality
+  res$complexity <- x$complexity
+  
+  # supplement flag
+  res$.element <- "active"
+  res <- res[c(".element", setdiff(names(res), ".element"))]  # reorder columns
   
   # weights as supplementary points
   name <- rownames(x[["weights"]])
@@ -110,8 +116,8 @@ recover_aug_cols.fa <- function(x) {
   }
   
   # supplement flag
-  res$.element <- "active"
   res_sup$.element <- "weight"
+  res_sup <- res_sup[c(".element", setdiff(names(res_sup), ".element"))]  # reorder columns
   as_tibble(dplyr::bind_rows(res, res_sup))
 }
 
