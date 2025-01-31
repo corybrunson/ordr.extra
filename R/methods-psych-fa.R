@@ -15,17 +15,17 @@
 #' 
 
 #' @name methods-fa
-#' @include ord-tbl.r
+#' @author John Gracey
 #' @template param-methods
 #' @template return-methods
 #' @family methods for eigen-decomposition-based techniques
 #' @family models from the psych package
-#' @example inst/examples/ex-methods-fa-swiss.r
+#' @example inst/examples/ex-methods-psych-fa-swiss.R
 NULL
 
 #' @rdname methods-fa
 #' @export
-as_tbl_ord.fa <- ordr:::as_tbl_ord_default
+as_tbl_ord.fa <- as_tbl_ord_default
 
 recover_dims_fa <- function(x, .matrix) unclass(x[["loadings"]])
 
