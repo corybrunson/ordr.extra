@@ -6,7 +6,7 @@ swiss_fa <- psych::fa(r = swiss, nfactors = 2L, rotate = "varimax", scores = "re
                fm = "ml")
 
 # wrap as a 'tbl_ord' object
-(swiss_fa <- as_tbl_ord.fa(swiss_fa))
+(swiss_fa <- as_tbl_ord(swiss_fa))
 
 # recover loadings
 get_cols(swiss_fa, elements = "active")
