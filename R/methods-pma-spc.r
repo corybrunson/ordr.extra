@@ -66,7 +66,7 @@ recover_conference.SPC <- function(x) {
 recover_aug_rows.SPC <- function(x) {
   name <- x$rnames
   res <- if (is.null(name)) {
-    tibble_pole(nrow(x$u))
+    tibble(.rows = nrow(x$u))
   } else {
     tibble(name = name)
   }
@@ -81,7 +81,7 @@ recover_aug_rows.SPC <- function(x) {
 recover_aug_cols.SPC <- function(x) {
   name <- x$cnames
   res <- if (is.null(name)) {
-    tibble_pole(nrow(x$v))
+    tibble(.rows = nrow(x$v))
   } else {
     tibble(name = name)
   }

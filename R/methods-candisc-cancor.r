@@ -91,7 +91,7 @@ recover_supp_cols.cancor <- function(x) {
 recover_aug_rows.cancor <- function(x) {
   name <- x$names$X
   res <- if (is.null(name)) {
-    tibble_pole(nrow(x$coef$X))
+    tibble(.rows = nrow(x$coef$X))
   } else {
     tibble(name = name)
   }
@@ -101,7 +101,7 @@ recover_aug_rows.cancor <- function(x) {
   res_sup <- NULL
   if (! is.null(x$scores$X)) {
     res_sup_elt <- if (is.null(rownames(x$scores$X))) {
-      tibble_pole(nrow(x$scores$X))
+      tibble(.rows = nrow(x$scores$X))
     } else {
       tibble(name = rownames(x$scores$X))
     }
@@ -110,7 +110,7 @@ recover_aug_rows.cancor <- function(x) {
   }
   if (! is.null(x$structure$X.xscores)) {
     res_sup_elt <- if (is.null(rownames(x$structure$X.xscores))) {
-      tibble_pole(nrow(x$structure$X.xscores))
+      tibble(.rows = nrow(x$structure$X.xscores))
     } else {
       tibble(name = rownames(x$structure$X.xscores))
     }
@@ -126,7 +126,7 @@ recover_aug_rows.cancor <- function(x) {
 recover_aug_cols.cancor <- function(x) {
   name <- x$names$Y
   res <- if (is.null(name)) {
-    tibble_pole(nrow(x$coef$Y))
+    tibble(.rows = nrow(x$coef$Y))
   } else {
     tibble(name = name)
   }
@@ -136,7 +136,7 @@ recover_aug_cols.cancor <- function(x) {
   res_sup <- NULL
   if (! is.null(x$scores$Y)) {
     res_sup_elt <- if (is.null(rownames(x$scores$Y))) {
-      tibble_pole(nrow(x$scores$Y))
+      tibble(.rows = nrow(x$scores$Y))
     } else {
       tibble(name = rownames(x$scores$Y))
     }
@@ -145,7 +145,7 @@ recover_aug_cols.cancor <- function(x) {
   }
   if (! is.null(x$structure$Y.yscores)) {
     res_sup_elt <- if (is.null(rownames(x$structure$Y.yscores))) {
-      tibble_pole(nrow(x$structure$Y.yscores))
+      tibble(.rows = nrow(x$structure$Y.yscores))
     } else {
       tibble(name = rownames(x$structure$Y.yscores))
     }
