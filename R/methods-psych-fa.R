@@ -68,7 +68,8 @@ recover_supp_rows.fa <- function(x) {
 #' @rdname methods-fa
 #' @export
 recover_supp_cols.fa <- function(x) {
-  x[["weights"]]
+  solve(t(x[["weights"]]) %*% x[["weights"]]) %*% t(x[["weights"]]) |>
+    t()
 }
 
 #' @rdname methods-fa
@@ -107,7 +108,7 @@ recover_aug_cols.fa <- function(x) {
   res$.element <- "active"
   res <- res[c(".element", setdiff(names(res), ".element"))]  # reorder columns
   
-  # weights as supplementary points
+  # transposed pseudoinverse of weights as supplementary points
   name <- rownames(x[["weights"]])
   res_sup <- if (is.null(name)) {
     tibble(.rows = nrow(x[["weights"]]))
