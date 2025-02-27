@@ -29,7 +29,8 @@ Suggests:
     testthat (>= 3.0.0),
     cooccur,
     knitr,
-    psych
+    psych,
+    rmarkdown
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
