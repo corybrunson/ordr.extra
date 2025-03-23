@@ -27,8 +27,6 @@ NULL
 #' @export
 as_tbl_ord.fa <- as_tbl_ord_default
 
-recover_dims_fa <- function(x, .matrix) unclass(x[["loadings"]])
-
 #' @rdname methods-fa
 #' @export
 recover_rows.fa <- function(x) {
@@ -56,7 +54,7 @@ recover_coord.fa <- function(x) {
 #' @export
 recover_conference.fa <- function(x) {
   # loadings are assigned half the diagonal from the eigendecomposition
-  c(.5, .5)
+  c(1, 1)
 }
 
 #' @rdname methods-fa
@@ -117,7 +115,7 @@ recover_aug_cols.fa <- function(x) {
   }
   
   # supplement flag
-  res_sup$.element <- "weight"
+  res_sup$.element <- "inv_weight"
   res_sup <- res_sup[c(".element", setdiff(names(res_sup), ".element"))]  # reorder columns
   as_tibble(dplyr::bind_rows(res, res_sup))
 }
@@ -129,3 +127,4 @@ recover_aug_coord.fa <- function(x) {
     name = factor_coord(recover_coord(x))
   )
 }
+
