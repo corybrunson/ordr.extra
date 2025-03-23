@@ -36,7 +36,9 @@ recover_rows.fa <- function(x) {
 
 #' @rdname methods-fa
 #' @export
-recover_cols.fa <- function(x) recover_dims_fa(x, "cols")
+recover_cols.fa <- function(x) {
+  unclass(x[["loadings"]])
+}
 
 #' @rdname methods-fa
 #' @export
