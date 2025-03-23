@@ -116,14 +116,9 @@ recover_aug_cols.fa <- function(x) {
   }
   
   # supplement flag
-
   res_sup$.element <- "inv_weight"
-  res_sup <- res_sup[c(".element", setdiff(names(res_sup), ".element"))]  # reorder columns
-
-
-
-
-
+  # reorder columns
+  res_sup <- res_sup[c(".element", setdiff(names(res_sup), ".element"))]
   as_tibble(dplyr::bind_rows(res, res_sup))
 }
 
