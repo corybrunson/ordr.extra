@@ -68,8 +68,10 @@ through both score calculations.
 class(swiss)
 head(swiss)
 # perform factor analysis
-swiss_fa <- psych::fa(r = swiss, nfactors = 2L, rotate = "varimax", scores = "regression", 
-               fm = "ml")
+swiss_fa <- psych::fa(
+  r = swiss, nfactors = 2L, rotate = "varimax", scores = "regression", 
+  fm = "ml"
+)
 
 # wrap as a 'tbl_ord' object
 (swiss_fa <- as_tbl_ord(swiss_fa))
