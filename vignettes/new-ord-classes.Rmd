@@ -651,7 +651,6 @@ As before, we should conclude by running `devtools::check()`, then submit a pull
 # Comparison of PCA and FA
 
 ```{r, echo = FALSE}
-hcw <- read_excel("C:/Users/jbgra/Desktop/GDA/HCW/hcw_data.xlsx")
 scaled_hcw <- scale(hcw[37:50])
 ```
 
