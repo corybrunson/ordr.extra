@@ -14,7 +14,7 @@ Authors@R: c(
   )
 Description: ...
 Depends:
-    R (>= 3.3.0),
+    R (>= 3.5),
     ordr
 Imports:
     tibble,
