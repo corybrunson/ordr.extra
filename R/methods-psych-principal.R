@@ -28,8 +28,8 @@ as_tbl_ord.principal <- as_tbl_ord_default
 #' @rdname methods-principal
 #' @export
 recover_rows.principal <- function(x) {
-  matrix(nrow = 0, ncol = ncol(x[["scores"]]),
-         dimnames = list(NULL, colnames(x[["scores"]])))
+  matrix(nrow = 0, ncol = ncol(x[["loadings"]]),
+         dimnames = list(NULL, colnames(x[["loadings"]])))
 }
 
 #' @rdname methods-principal
@@ -59,7 +59,11 @@ recover_conference.principal <- function(x) {
 #' @rdname methods-principal
 #' @export
 recover_supp_rows.principal <- function(x) {
-  x[["scores"]]
+  if (is.null(x[["scores"]])) {
+    matrix(numeric(0), nrow = 0, ncol = 0)
+  }
+  else
+    x[["scores"]]
 }
 
 #' @rdname methods-principal

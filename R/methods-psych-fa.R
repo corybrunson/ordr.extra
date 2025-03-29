@@ -30,8 +30,8 @@ as_tbl_ord.fa <- as_tbl_ord_default
 #' @rdname methods-fa
 #' @export
 recover_rows.fa <- function(x) {
-  matrix(nrow = 0, ncol = ncol(x[["scores"]]),
-         dimnames = list(NULL, colnames(x[["scores"]])))
+  matrix(nrow = 0, ncol = ncol(x[["loadings"]]),
+         dimnames = list(NULL, colnames(x[["loadings"]])))
 }
 
 #' @rdname methods-fa
@@ -62,7 +62,11 @@ recover_conference.fa <- function(x) {
 #' @rdname methods-fa
 #' @export
 recover_supp_rows.fa <- function(x) {
-  x[["scores"]]
+  if (is.null(x[["scores"]])) {
+    matrix(numeric(0), nrow = 0, ncol = 0)
+  }
+  else
+    x[["scores"]]
 }
 
 #' @rdname methods-fa
