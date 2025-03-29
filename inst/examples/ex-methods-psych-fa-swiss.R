@@ -24,5 +24,6 @@ head(get_rows(swiss_fa, elements = "score"))
 swiss_fa %>%
   ggbiplot() +
   theme_bw() +
-  geom_cols_vector(elements = "inv_weight") + 
+  geom_cols_vector() + 
+  geom_cols_vector(elements = "inv_weight")
   expand_limits(x = c(-2, 2.5), y = c(-1.5, 2))
