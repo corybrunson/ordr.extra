@@ -5,7 +5,7 @@
 #' pandemic.
 #' 
 #' @format ## `hcw`
-#' A data frame with 467 rows and 50 columns:
+#' A data frame with 467 rows and 49 columns:
 #' \describe{
 #'   \item{record_id}{Subject identifier}
 #'   \item{hc_prov}{Subject is a healthcare provider: 1 = TRUE, 0 = FALSE}
