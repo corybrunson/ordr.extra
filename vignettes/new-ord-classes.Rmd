@@ -652,7 +652,7 @@ As before, we should conclude by running `devtools::check()`, then submit a pull
 # Comparison of PCA and FA
 
 ```{r, echo = TRUE}
-scaled_hcw <- scale(hcw[36:49])
+scaled_hcw <- scale(hcw[, tail(colnames(hcw), 14)])
 ```
 
 Having demonstrated PCA and FA independently of each other, we now apply both to one data set for comparison. The data comes from a 2022 study on burnout in healthcare workers (HCW) during the Covid-19 pandemic (Guastello et al., 2022). In particular, we use data from a fourteen-item Likert scale questionnaire, the Healthcare System Communication Questionnaire, surveying HCW perceptions of hospital administration. The original study applied PCA followed by an oblimin rotation (a type of oblique rotation) to the data to examine whether it had psychometric properties. It was seen that with two principal components, the questions generally loaded strongly onto just one of the two components. Those that loaded strongly onto the first principal component generally pertained to consideration from leadership, and those that loaded strongly onto the second generally pertained to structure in the hospital. The principal components were named accordingly.
