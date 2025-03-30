@@ -701,6 +701,7 @@ hcw_unrotated_pca <- scaled_hcw |>
   ordinate(~ principal(., nfactors = 2L, rotate = "none"))
 biplot.psych(hcw_unrotated_pca)
 ```
+
 Not only are the observations spread slightly more, but the data appears more evenly distributed compared to the previous biplots. 
 
 Additionally, most variable vectors in the unrotated PCA biplot no longer load as clearly onto a single component. This makes it more challenging to determine the latent variables that explain the variance in our original variables. In this case, the study from which our data was obtained termed the two principal components _consideration_ and _structure_, respectively. That PCA as well as the FA we performed both allow us to easily make statements such as, "Question 4 on the questionnaire strongly assesses consideration, whilst question 12 strongly assesses structure." In a PCA without rotation, such interpretations are not as clear.
