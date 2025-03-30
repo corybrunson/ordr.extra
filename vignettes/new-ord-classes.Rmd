@@ -8,24 +8,25 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-```{r, echo = FALSE, warning = FALSE, message = FALSE}
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(
+  comment = '', fig.width = 6, fig.height = 6
+)
+```
+
+```{r, echo = TRUE, warning = FALSE, message = FALSE}
 library(psych)
 library(ordr)
 library(ordr.extra)
 library(GPArotation)
 library(tibble)
 library(testthat)
-library(readxl)
 scaled_iris <- scale(iris[1:4])
 as_tbl_ord.principal <- ordr:::as_tbl_ord_default
 as_tbl_ord.fa <- ordr:::as_tbl_ord_default
 factor_coord <- function(x) {
   if (any(duplicated(x))) stop("Duplicated coordinates detected.")
   factor(x, levels = x)
-}
-recover_rows.factanal <- function(x) {
-  matrix(nrow = 0L, ncol = ncol(x[["loadings"]]),
-         dimnames = list(NULL, colnames(x[["loadings"]])))
 }
 ```
 
@@ -39,7 +40,7 @@ Principal component analysis (PCA) is a geometric statistical method by which mu
 
 PCA begins with a data set and works to take the (linear) combinations of variables that capture the most variance; the ratios of these combinations are called loadings. The resulting principal components correspond to new, *orthogonal* axes on which we can represent our data.
 
-# Recovery for PCA Methods
+### Recovery for PCA Methods
 
 ### EVD and SVD
 
@@ -373,7 +374,7 @@ However, FA differs greatly from PCA in that factors are chosen to explain corre
 
 Base R contains the FA function `stats::factanal()`, but additional FA functions exist across the package ecosystem (e.g. `psych::fa()`). As with PCA, **ordr** aims to integrate methods of FA into the **tidyverse** package. We will demonstrate that integrating FA methods into Tidyverse workflows via **ordr** is much like integrating PCA methods. This is due in large part to the similar linear algebra behind the two methods and the similar ways they are interpreted.
 
-```{r, echo = FALSE, warning = FALSE, message = FALSE}
+```{r, echo = TRUE, warning = FALSE, message = FALSE}
 scaled_swiss <- scale(swiss)
 fa_stats <- factanal(scaled_swiss, factors = 2, rotation = "none", scores = "regression")
 (fa_tbl_ord <- as_tbl_ord(fa_stats))
@@ -381,7 +382,7 @@ fa_stats <- factanal(scaled_swiss, factors = 2, rotation = "none", scores = "reg
 
 Since **ordr** has already been extended to handle objects from `stats::factanal()`, we can use a "factanal" object as reference in writing methods for "fa" objects.
 
-# Recovery for FA Methods
+### Recovery for FA Methods
 
 ### Decomposition
 
@@ -650,8 +651,8 @@ As before, we should conclude by running `devtools::check()`, then submit a pull
 
 # Comparison of PCA and FA
 
-```{r, echo = FALSE}
-scaled_hcw <- scale(hcw[37:50])
+```{r, echo = TRUE}
+scaled_hcw <- scale(hcw[36:49])
 ```
 
 Having demonstrated PCA and FA independently of each other, we now apply both to one data set for comparison. The data comes from a 2022 study on burnout in healthcare workers (HCW) during the Covid-19 pandemic (Guastello et al., 2022). In particular, we use data from a fourteen-item Likert scale questionnaire, the Healthcare System Communication Questionnaire, surveying HCW perceptions of hospital administration. The original study applied PCA followed by an oblimin rotation (a type of oblique rotation) to the data to examine whether it had psychometric properties. It was seen that with two principal components, the questions generally loaded strongly onto just one of the two components. Those that loaded strongly onto the first principal component generally pertained to consideration from leadership, and those that loaded strongly onto the second generally pertained to structure in the hospital. The principal components were named accordingly.
@@ -663,7 +664,10 @@ We begin by recreating this PCA.
 hcw_pca <- scaled_hcw |>
   ordinate(~ principal(., nfactors = 2L, rotate = "oblimin"))
 sum(hcw_pca$values[1:2]) / sum(hcw_pca$values[1:14]) # agrees with % variance captured from the paper
+hcw_pca$loadings
 ```
+
+These loadings approximately equal those in Guastello et al., 2022.
 
 Next, we perform FA on the same centered and scaled data, again followed by an oblimin rotation. We also produce biplots for both analyses.
 
@@ -702,3 +706,7 @@ Not only are the observations spread slightly more, but the data appears more ev
 Additionally, most variable vectors in the unrotated PCA biplot no longer load as clearly onto a single component. This makes it more challenging to determine the latent variables that explain the variance in our original variables. In this case, the study from which our data was obtained termed the two principal components _consideration_ and _structure_, respectively. That PCA as well as the FA we performed both allow us to easily make statements such as, "Question 4 on the questionnaire strongly assesses consideration, whilst question 12 strongly assesses structure." In a PCA without rotation, such interpretations are not as clear.
 
 Ultimately, we see that FA is useful for obtaining a simply structure with interpretable latent variables. If we want a similar result that captures more variance, we may opt for PCA followed by rotation. And if we want to capture more variance still, perhaps at the expense of interpretability, then unrotated PCA delivers that.
+
+# Sources
+
+1. Guastello, A. D., Brunson, J. C., Sambuco, N., Dale, L. P., Tracy, N. A., Allen, B. R., & Mathews, C. A. (2024). Predictors of professional burnout and fulfilment in a longitudinal analysis on nurses and healthcare workers in the COVID-19 pandemic. Journal of clinical nursing, 33(1), 288–303. https://doi.org/10.1111/jocn.16463

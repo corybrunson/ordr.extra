@@ -39,6 +39,7 @@ Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Collate: 
+    'data.r'
     'fun-wrap.r'
     'ordr-extra.r'
     'methods-ade4-nipals.r'
