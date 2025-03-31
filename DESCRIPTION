@@ -14,7 +14,7 @@ Authors@R: c(
   )
 Description: ...
 Depends:
-    R (>= 3.3.0),
+    R (>= 3.5),
     ordr
 Imports:
     tibble,
@@ -29,7 +29,9 @@ Suggests:
     testthat (>= 3.0.0),
     cooccur,
     knitr,
-    psych
+    psych,
+    rmarkdown,
+    GPArotation
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -38,6 +40,7 @@ Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Collate: 
+    'data.r'
     'fun-wrap.r'
     'ordr-extra.r'
     'methods-ade4-nipals.r'

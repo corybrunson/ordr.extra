@@ -1,0 +1,713 @@
+---
+title: "Writing Recovery Methods for New Ordination Classes"
+output: 
+  rmarkdown::html_vignette:
+    toc: TRUE
+vignette: >
+  %\VignetteIndexEntry{new-ord-classes}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(
+  comment = '', fig.width = 6, fig.height = 6
+)
+```
+
+```{r, echo = TRUE, warning = FALSE, message = FALSE}
+library(psych)
+library(ordr)
+library(ordr.extra)
+library(GPArotation)
+library(tibble)
+library(testthat)
+scaled_iris <- scale(iris[1:4])
+as_tbl_ord.principal <- ordr:::as_tbl_ord_default
+as_tbl_ord.fa <- ordr:::as_tbl_ord_default
+factor_coord <- function(x) {
+  if (any(duplicated(x))) stop("Duplicated coordinates detected.")
+  factor(x, levels = x)
+}
+```
+
+# Introduction
+
+In this vignette, we outline the process of extending **ordr** to incorporate new ordination methods. To this end, we discuss two ordination techniques--principal component analysis and factor analysis--and demonstrate how to reflect each technique's underlying mathematical theory as we integrate their R implementations into **ordr**. In addition to showing how ordination elements are extracted and recompiled for the `tbl_ord` end product, we illustrate how unit tests and examples are written to complete a contribution. Finally, we apply both of our example contributions to the package on a single data set to illustrate the theoretical unity between ordination methods that **ordr** seeks to convey.
+
+# Principal Component Analysis
+
+Principal component analysis (PCA) is a geometric statistical method by which multivariate data is reduced to have fewer dimensions, expending as little variance as possible in the process.
+
+PCA begins with a data set and works to take the (linear) combinations of variables that capture the most variance; the ratios of these combinations are called loadings. The resulting principal components correspond to new, *orthogonal* axes on which we can represent our data.
+
+### Recovery for PCA Methods
+
+### EVD and SVD
+
+We begin by distinguishing two methods of decomposition for PCA, both of which decompose the centered and scaled data matrix $\bar{X}_{n\times p}$.
+
+The first method of decomposition is singular value decomposition (SVD), used in such PCA functions as `stats::prcomp()` in R. In SVD, we denote the matrix of normalized eigenvectors of $\bar{X}\bar{X}^T$ as $U$ and refer to $U$ as the *left singular vectors*. On the other hand, $V$ is the matrix of normalized eigenvectors of $\bar{X}^T\bar{X}$, called the *right singular vectors*. In either matrix, the columns are the eigenvectors. We refer to the square roots of the positive eigenvalues corresponding to $U$ and $V$ as *singular values*. The diagonal matrix $D$ comprises the singular values in descending order. With these three matrices defined, the final decomposition becomes $$\bar{X}_{n\times{p}} = U_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^T.$$
+
+Drawing upon this equation and the indices of $U$ and $V$ that multiply into the decomposition, we may refer to $U$ and $V$ as our "rows" and "columns," respectively, in our recovery code.
+
+The second method is eigenvalue decomposition (EVD) or eigendecomposition, used in `stats::princomp()` and `psych::principal()`. In EVD, we do not decompose $X$ itself but its covariance matrix $X^TX$. To understand EVD in terms of SVD, again take $X=UDV^T$. Then when we consider the covariance matrix, we have
+$$
+\begin{align*}
+(\bar{X}_{n\times{p}})^T\bar{X}_{n\times{p}} &= (U_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^T)^TU_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^T \tag{1}\\
+&= ((V_{p\times{p}})^T)^TD_{p\times{p}}^T(U_{n\times{p}})^TU_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^T \tag{2}\\
+&= V_{p\times{p}}D_{p\times{p}}D_{p\times{p}}(V_{p\times{p}})^T \tag{3}\\
+&= V_{p\times{p}}(D_{p\times{p}})^2(V_{p\times{p}})^T \tag{4}.
+\end{align*}
+$$
+
+Note: we use the orthogonality of $U$ to obtain (3) as $U^T=U^{-1}$.
+
+In either decomposition, $V$ is the loadings matrix. The columns contain the linear combinations of variables that load on each principal component. In SVD, $U$ is used to find the scores; in EVD, $\bar{X}$ must be multiplied into the decomposition to obtain scores, demonstrated later.
+
+### Necessary Recovery Methods
+
+Now that we have discussed the decompositions that serve as foundation for PCA (and later in the vignette, FA), we can frame the recovery methods behind **ordr**.
+
+1. `ordr::recover_inertia()`, which should return the eigenvalues of our EVD or the squared singular values of our SVD; that is, we should obtain the diagonal entries of $D^2$.
+2. `ordr::recover_conference()`, which should indicate whether the inertia we found is distributed to the observations or variables (or, potentially, both or neither).
+3. `ordr::recover_cols()`, which should return the matrix whose columns multiply into the corresponding decomposition.
+4. `ordr::recover_supp_cols()`, which, if appropriate or necessary, should return a column element that is obtained by multiplying some matrix through the decomposition.
+5. `ordr::recover_rows()`, which should return the matrix whose rows multiply into the corresponding decomposition.
+6. `ordr::recover_supp_rows()`, which, if appropriate or necessary, should return a row element that is obtained by multiplying some matrix through the decomposition.
+7. `ordr::recover_coord()`, which should return the coordinate names of our ordination object.
+8. `ordr::recover_aug_rows()` and (9) `ordr::recover_aug_cols()`, which do not recover raw elements of the PCA but rather reassemble previously recovered elements for the function `ordr::augment_ord()`.
+
+These recoverers are all necessary to produce a "tbl_ord" like we have below.
+
+```{r}
+pca_stats <- prcomp(scaled_iris, rank. = 4)
+(tbl_ord <- as_tbl_ord(pca_stats))
+```
+
+### Conference of Inertia
+
+The conference of inertia determines how the variance of our data is distributed. This will take effect in the geometry of PCA biplots. And because this conference directly impacts the row and column elements that we will need to recover, we ought to recover conference of inertia early on.
+
+To this end, let us first recover the inertia itself, using the recovery method for `stats::prcomp()` as a benchmark against the `values` element of an analogous `principal` object (which is simply the eigenvalues of the input covariance matrix).
+
+```{r}
+pca_psych <- principal(scaled_iris, nfactors = 4, rotate = "none") # conduct PCA on the same X
+recover_inertia(pca_stats) / pca_psych$values
+```
+
+Notice that $149=n-1.$ So, to obtain the inertia from a "principal" object, we need only to multiply the `values` element by $n-1$. Thus we define `recover_inertia.principal()` as follows.
+
+```{r}
+recover_inertia.principal <- function(x) {
+  x[["values"]] * (nrow(x[["scores"]]) - 1)
+}
+
+recover_inertia.principal(pca_psych)
+```
+Now, our inertia is consistent with that recovered from the `prcomp` object.
+
+With the inertia established, next we consider how it is conferred. Not distributing the inertia (i.e. not multiplying out the matrix $D$ in SVD or EVD) maintains $U$ and $V$ as matrices of unit vectors. Thus, we say that the cases and variables are in standard coordinates. But when we *do* distribute the inertia to one or both other matrices in the decomposition, we obtain the cases and/or variables in principal coordinates.
+
+Assuming we do wish to have principal coordinates, EVD-based techniques leave only the option of conferring inertia onto one matrix of singular vectors. This depends on the implementation (and how we interpret it), and in the case of `psych::principal()` it would be the right singular vectors. However, the conference of inertia in SVD-based techniques depends on the user's motivation. In short, if the user wishes to maintain the approximate Euclidean distances between data cases, then conference onto the left singular vectors is ideal. If instead the user wishes to maintain the approximate correlations between variables, then conference onto the right singular vectors is ideal.
+
+```{r}
+recover_conference(pca_stats)
+```
+
+The conference recovery method is, so far, always a static vector, since the methods don't confer inertia differently based on the input. Here, we see that `stats::prcomp()` automatically confers all inertia onto the left singular vectors (a conference of $(0,1)$, alternatively, would indicate that a PCA has conferred its inertia onto the right singular vectors). This means that the scores of `pca_stats` are in principal coordinates and the loadings are in standard coordinates.
+
+When we recover the conference of inertia in `psych::principal()`, we would expect a $(0,1)$ conference given that `psych::principal()` is built around EVD (i.e. there are no rows $U$ to confer onto, only the columns $V^T$). We can check this expectation as follows:
+
+```{r}
+cov <- cov(scaled_iris) # X*X from EVD
+evd <- eigen(cov)
+(evd$vectors %*% diag(sqrt(evd$values))) / unclass(pca_psych$loadings) # observe loadings are equal to VD up to sign
+```
+Note that we use elementwise division to show equality rather than `all.equal()` or `identical()` because rounding errors may result in small differences in computation despite mathematical equivalence.
+
+Hence, we have $L_{p\times{p}} = V_{p\times{p}}D_{p\times{p}}$, where $L$ denotes the loadings matrix. Since $L$ will be the matrix we recover for the right factor, this implies a $(0,1)$ conference. As such, we define the following recovery method.
+
+```{r}
+recover_conference.principal <- function(x) {
+  c(0, 1)
+}
+
+recover_conference.principal(pca_psych)
+```
+
+To illustrate the entire decomposition, we have the following code.
+
+```{r}
+cov / (evd$vectors %*% diag(evd$values) %*% t(evd$vectors))
+```
+
+As indicated by the matrix of all $1$s, the covariance matrix and product of matrices are equal.
+
+### Row and Column Elements
+
+As mentioned in the context of SVD, we can classify elements of PCA by what they "contribute" to the decomposition. That is, we can refer to those elements whose rows [columns] are multiplied into the decomposition as "row elements" ["column elements"]. Then when we consider EVD-based PCA, recall that EVD acts on the covariance matrix $X^TX$, the column-wise inner product. Thus the loadings, $VD$, are active column elements.
+
+```{r}
+recover_cols.principal <- function(x) {
+  unclass(x[["loadings"]])
+}
+
+recover_cols.principal(pca_psych)
+```
+But since we are drawing upon a column-wise inner product, we do not have an active row element in our PCA. Instead, we treat the scores as _supplementary_ elements. In EVD-based methods like `psych::principal()`, we can still obtain $X$ by multiplying the rows of scores by transposed loadings with full inertia. 
+
+```{r}
+head((pca_psych$scores %*% t(pca_psych$loadings)) / scaled_iris) # matrix of all 1s indicates equality
+```
+
+Hence, the scores constitute our supplementary rows. And that $\bar{X}_{n \times p}$ is obtained by multiplying the scores by the loadings with full intertia shows the scores are in standard coordinates (i.e. no inertia has been conferred onto them).
+
+```{r}
+recover_rows.principal <- function(x) {
+  matrix(nrow = 0, ncol = ncol(x[["loadings"]]),
+         dimnames = list(NULL, colnames(x[["loadings"]])))
+}
+
+recover_rows.principal(pca_psych)
+
+recover_supp_rows.principal <- function(x) {
+  x[["scores"]]
+}
+
+head(recover_supp_rows.principal(pca_psych))
+```
+
+### PCA Followed by Rotation
+
+Next, we discuss the topic of rotations in PCA. Rotation is an optional step in PCA wherein our loadings matrix is multiplied by a rotation matrix. The motivation for doing so is to achieve a "simple structure" (i.e. a structure in which the latent variables behind our principal components provide an interpretable, explainable solution). We seek to extend **ordr** to work with these PCAs followed by rotation because, as we will demonstrate, rotations are changes of basis. Thus, the analysis of such a model can be completely different than that of the corresponding unrotated model. So, it makes sense to recover elements from the rotated model in its own right rather than simply recover the rotation separately, then extract all the same elements as we would from the unrotated PCA.
+
+Before getting back into the details of extending **ordr**, we make a disclaimer about precision of language in regards to rotations. Because rotations can compromise the orthogonality of our principal components and because that orthogonality is a fundamental aspect of PCA, it is contested that PCA with rotation is still PCA. Thus, we will refer to these solutions as "PCA *followed by* a rotation."
+
+We classify rotations as either orthogonal or oblique. The prior necessarily preserves orthogonality between the principal axes; the latter does not. And (mathematically speaking), oblique rotations are not rotations at all since they are not angle-preserving.
+
+```{r, warning=FALSE}
+pca <- principal(scaled_iris, rotate = "none", nfactors = 4)
+pca_orth <- principal(scaled_iris, rotate = "varimax", nfactors = 4) # orthogonal example
+pca_ob <- principal(scaled_iris, rotate = "oblimin", nfactors = 4) # oblique example
+biplot.psych(pca, choose = c(1,2))
+biplot.psych(pca_orth, choose = c("RC1","RC2"))
+biplot.psych(pca_ob, choose = c("TC1","TC2"))
+```
+
+Here, we see analogous biplots for the same PCA followed by no rotation, followed by an orthogonal rotation, and followed by an oblique rotation, respectively. As illustrated by the biplots, both orthogonal and oblique rotations shift the variable vectors' endpoints among the rotated principal axes (since these endpoints are the rotated loadings). However, both categories of rotation preserve the correlation between variable vectors among the rotated principal axes (the angles between vectors appear to change in the oblique rotation biplot, but recall that the rotated PC1 and rotated PC2 are non-orthogonal, and the biplot does not communicate this).
+
+Now let us compare the categories of rotation by examining the linear algebra at play. In PCA followed by an orthogonal rotation, our loadings are the original loadings matrix $L_{p\times{p}}$ multiplied by the orthogonal rotation matrix $T_{p\times{p}}$.
+
+```{r}
+pca_orth$loadings[,c("RC1", "RC2", "RC3", "RC4")] / (pca$loadings %*% pca_orth$rot.mat) # matrices are equal up to sign
+```
+
+But in the oblique case, we have two loadings matrices. The first is the *pattern matrix* $L_{p\times{p}}$, which represents the loadings as we first defined them (i.e. the coefficients in our linear combination of variables that forms each principal component, prior to any rotation). The second is the *structure matrix* $S_{p\times{p}} = L_{p\times{p}}T_{p\times{p}}$. Below, we demonstrate that the extractable loadings element from an oblique-transformed `principal` object is the structure matrix.
+
+```{r}
+pca_ob$loadings[,c("TC1", "TC2", "TC3", "TC4")] / (pca$loadings %*% pca_ob$rot.mat) # LT equals the extracted loadings matrix up to sign
+```
+
+The pattern matrix is useful when we want to consider the principal components apart from their correlations with one another. It directly explains how much each principal component loads into each variable. On the other hand, the structure matrix contains correlations between factors and variables, and it tends to be more stable between samples. Notably, the structure matrix can be obtained from the pattern matrix by multiplying the latter by $\Phi_{p\times p}$, the interfactor correlation matrix.
+
+```{r}
+(pca_ob$loadings %*% pca_ob$Phi) / pca_ob$Structure
+```
+
+This is why we have just one loadings matrix in the orthogonal case: $\Phi_{p\times p}$ is just the identity matrix.
+
+When choosing between an orthogonal and oblique rotation following PCA, the right choice depends on what we wish to prioritize. An orthogonal rotation keeps more faithful to the data. But if we want to convey that there is significant correlation in the variables, or if we want a more interpretable biplot, then an oblique rotation may be more appropriate. Moreover, various different rotations suitable for different goals exist within either category.
+
+For **ordr**, we use the same recovery method for rotated PCAs as for unrotated. Furthermore, we opt against adding recovery methods for the rotation matrices, the motivation being that rotations do not necessarily uphold key characteristics of PCA (namely orthogonality and maximal captured variance). Because of this, it is debated whether PCA followed by rotation/transformation is PCA at all; thus, it may be misguided to take the rotation matrix as an element of PCA for **ordr**.
+
+```{r}
+recover_cols.principal(pca_ob)
+recover_cols.principal(pca_orth)
+```
+
+### Augmentation
+
+At this point, we have recovered almost all of the elements from our PCA. The last elements to recover will be annotations to the matrix factors, including the inertia. First, we recover the names of the coordinates.
+
+```{r}
+recover_coord.principal <- function(x) {
+  colnames(x[["loadings"]])
+}
+
+recover_coord.principal(pca_psych)
+```
+Now, the last step in writing `psych::principal()` into **ordr** is the augmentation functions that are essential to inspecting and understanding a `tbl_ord` object. Essentially, the purpose of these functions is to place a name to the various PCA elements that have been extracted and join these elements with information that is not part of the matrix decomposition. The augmented matrices are where the user should see whether PCA elements come from the rows or columns and whether they are active or supplementary. Moreover, they should offer the user measures such as the mean and standard deviation when available from the original function output. We write the following functions accordingly.
+
+Starting with `recover_aug_rows.principal()`, our function should be defined to indicate that no row elements are active, and that the supplementary elements are scores.
+
+```{r}
+recover_aug_rows.principal <- function(x) {
+  res <- tibble(.rows = 0L)
+  
+  # scores as supplementary points
+  name <- rownames(x[["scores"]])
+  res_sup <- if (is.null(name)) {
+    tibble(.rows = nrow(x[["scores"]]))
+  } else {
+    tibble(name = name)
+  }
+  
+  # supplement flag
+  res$.element <- "active"
+  res_sup$.element <- "score"
+  as_tibble(dplyr::bind_rows(res, res_sup))
+}
+```
+
+We must also be sure that the number of rows in the augmented matrix agree with those of the extracted matrix.
+
+```{r}
+ordr:::as_tbl_ord(pca_psych) |>
+  recover_aug_rows.principal() |>
+  nrow()
+```
+
+The scores constitute a $150 \times 4$ matrix, consistent with the dimensions. We similarly define and validate `recover_aug_cols.principal()`. Here, we will augment the column vectors with attributes `center` and `scale` since these values correspond to the variables and are required for some biplot layers like calibrated axes.
+
+```{r}
+recover_aug_cols.principal <- function(x) {
+  name <- rownames(x[["loadings"]])
+  res <- if (is.null(name)) {
+    tibble(.rows = nrow(x[["loadings"]]))
+  } else {
+    tibble(name = name)
+  }
+  res$.element <- "active"
+  res
+}
+
+ordr:::as_tbl_ord(pca_psych) |>
+  recover_aug_cols.principal() |>
+  nrow()
+```
+Last, we write `recover_aug_coord.principal()` to add coordinate names and a column of standard deviations (which are directly provided in the output of `psych::principal()`, so users may expect them) to the loadings element we recovered. Again, we will verify that the number of rows is what we would expect.
+
+```{r}
+recover_aug_coord.principal <- function(x) {
+  data.frame(
+    name = recover_coord.principal(x),
+    sdev = sqrt(x[["values"]][seq(1, ncol(x[["loadings"]]))])
+  )
+}
+
+ordr:::as_tbl_ord(pca_psych) |>
+  recover_aug_coord.principal() |>
+  nrow()
+```
+
+With these functions defined, we can obtain the `tbl_ord` object below in two concise ways, either by making our existing "principal" object a `tbl_ord` or by generating the `tbl_ord` from scratch.
+
+```{r}
+ordr:::as_tbl_ord(pca_psych) |>
+  augment_ord()
+
+ordr:::ordinate(scaled_iris, ~ principal(., nfactors = 4, rotate = "none"))
+```
+
+### Examples, Unit Tests, and Submission
+
+With all of our recoverers written and validated, we finalize the contribution to **ordr.extra** by defining and documenting the recoverers in a "methods" file following the same pattern as `methods-stats-prcomp.r`.
+
+Then, we need to write an "examples" script following the same pattern as `ex-methods-prcomp-iris.r`. The example looks as follows:
+
+```{r}
+# data frame of Anderson iris species measurements
+class(iris)
+head(iris)
+
+if (require(psych)) {# {psych}
+
+# compute unscaled row-principal components of scaled measurements
+iris[, -5] |>
+  psych::principal(nfactors = 4, rotate = "none") |>
+  as_tbl_ord() |>
+  print() -> iris_pca
+
+# recover observation principal coordinates and measurement standard coordinates
+head(get_rows(iris_pca))
+get_cols(iris_pca)
+
+# augment measurement coordinates with names and scaling parameters
+(iris_pca <- augment_ord(iris_pca))
+
+}# {psych}
+```
+
+The last file to complete our contribution is a unit test script. Again, we can follow the format of the analogous `test-stats-prcomp.r` and write the following:
+
+```{r}
+fit_principal <- psych::principal(iris[, -5], nfactors = 4, rotate = "none")
+
+test_that("'principal' accessors have consistent dimensions", {
+  expect_equal(ncol(get_rows(fit_principal)), ncol(get_cols(fit_principal)))
+  expect_equal(ncol(get_rows(fit_principal)),
+               length(recover_inertia(fit_principal)))
+})
+
+test_that("'principal' has specified distribution of inertia", {
+  expect_type(recover_conference(fit_principal), "double")
+  expect_vector(recover_conference(fit_principal), size = 2L)
+})
+
+test_that("'principal' augmentations are consistent with '.element' column", {
+  expect_equal(".element" %in% names(recover_aug_rows(fit_principal)),
+               ".element" %in% names(recover_aug_cols(fit_principal)))
+})
+
+test_that("`as_tbl_ord()` coerces 'principal' objects", {
+  expect_true(valid_tbl_ord(as_tbl_ord(fit_principal)))
+})
+```
+
+The function `devtools::check()` is useful for verifying that the contribution will not generate errors or warnings. Once the extension has been formatted and checked, the last step is to submit a pull request following the guidelines of `CONTRIBUTING.md`. 
+
+# Factor Analysis
+
+Factor analysis (FA) is a family of dimension-reducing methods of geometric data analysis. Unlike PCA, FA assumes the existence of latent variables (factors) behind a set of data, the number of which is less than the number of variables originally taken to be in the set. And just like principal components, the factors in FA are linear combinations of the variables, and the variables are said to load onto the factors.
+
+However, FA differs greatly from PCA in that factors are chosen to explain correlations between the variables, not to capture maximal variance. Thus, it is not assumed that factors are uncorrelated and orthogonal.
+
+Base R contains the FA function `stats::factanal()`, but additional FA functions exist across the package ecosystem (e.g. `psych::fa()`). As with PCA, **ordr** aims to integrate methods of FA into the **tidyverse** package. We will demonstrate that integrating FA methods into Tidyverse workflows via **ordr** is much like integrating PCA methods. This is due in large part to the similar linear algebra behind the two methods and the similar ways they are interpreted.
+
+```{r, echo = TRUE, warning = FALSE, message = FALSE}
+scaled_swiss <- scale(swiss)
+fa_stats <- factanal(scaled_swiss, factors = 2, rotation = "none", scores = "regression")
+(fa_tbl_ord <- as_tbl_ord(fa_stats))
+```
+
+Since **ordr** has already been extended to handle objects from `stats::factanal()`, we can use a "factanal" object as reference in writing methods for "fa" objects.
+
+### Recovery for FA Methods
+
+### Decomposition
+
+Recall that PCA takes either the EVD or SVD from a data set $X_{n\times{p}}$, and in either case, the loadings are the matrix of eigenvectors $V_{p\times{p}}$ which is ordered such that each eigenvector captures more variance than the next. So, whether we generate, say, $k$ or $k+1$ principal components, the $k$ leading principal components are the same. This is not generally the case in FA.
+
+Since FA assumes correlation between the factors, the number of factors we take affects the loadings of those factors. Observe the comparison below.
+
+```{r, echo = TRUE, warning = FALSE, message = FALSE}
+fa(scaled_swiss, nfactors = 1)$loadings
+fa(scaled_swiss, nfactors = 2)$loadings
+```
+
+Clearly, neither factor in our two-factor FA is the same as that given by our one-factor FA. Because of this, you'll notice that the dimensions of elements in our decomposition reflect the number $k$ of factors being taken.
+
+The model for FA is $$R_{p\times{p}} \approx L_{p\times{k}}(L_{p\times{k}})^T + U_{p\times{p}}^2.$$ Importantly, FA uses the correlation matrix $R$ rather than the covariance. But by centering and scaling our data, the correlation matrix is made equal to the covariance, giving us $$(\bar{X}_{n\times{p}})^T\bar{X}_{n\times{p}} \approx L_{p\times{k}}(L_{p\times{k}})^T + U_{p\times{p}}^2.$$ Then, as with EVD methods of PCA, we decompose the covariance matrix into the product of a loadings matrix and its transpose. However, there is no diagonal matrix of inertia here, and we add to the decomposition a residuals matrix $U^2$.
+
+Below, we illustrate this decomposition using `psych::fa()`.
+
+```{r}
+fa_psych <- psych::fa(r = swiss, nfactors = 2L, rotate = "none", scores = "regression", fm = "ml")
+
+cor_swiss <- cov(scaled_swiss)
+L <- fa_psych$loadings
+Usquared <- fa_psych$residual
+
+cor_swiss / (L %*% t(L) + Usquared)
+```
+One last characteristic of the FA decomposition that we need to bear in mind when incorporating ``psych::fa()` into **ordr** is that the loadings matrix varies by the method of FA performed, unlike in PCA where EVD and SVD yield the same loadings. Compared to PCA, the methods for FA are more manifold (`psych::fa()` is capable of twelve different FA methods). As such, we will hold the factoring method of `psych::fa()` fixed as we expand **ordr** around it, and then verify that the expansion holds when the factoring method is changed.
+
+### Row and Column Elements
+
+Based on the decomposition and that the factor vectors are the *columns* of the loadings matrix, we take the factor loadings to be our active column elements in FA. 
+
+As for row elements, the decomposition does not yield a matrix of row vectors because $L$, which corresponds to the columns, is multiplied by its own transpose (as in the EVD implementation of PCA). But, we will treat the scores as supplementary row elements. To explain this decision, let us first introduce the weights matrix, $W_{p\times{k}} = R^{-1}_{p\times{p}}L_{p\times{k}}$. 
+
+```{r}
+(w <- fa_psych$weights) / (solve(cor_swiss) %*% fa_psych$loadings) # the matrix of 1s indicates equality
+```
+
+The scores are obtained by multiplying the centered data matrix by the weights (i.e. $S_{n\times{k}} = \bar{X}_{n\times{p}}W_{p\times{k}}$).
+
+```{r}
+head(fa_psych$scores / (scaled_swiss %*% w)) # the matrix of 1s indicates equality
+```
+
+Then to validate the choice of scores as supplementary row elements, we seek out a decomposition in which the scores constitute row elements. To this end, we define the pseudoinverse of $W_{p\times k}$ as $W^+_{k\times p}=((W_{p\times k})^TW_{p\times k})^{-1}(W_{p\times k})^T.$ Then $\bar{X}_{n\times p}W_{p\times k}W^+_{k\times p}=S_{n\times k}W^+_{k\times p}$ (since $W^+$ is not a true inverse, $WW^+$ is not necessarily the identity matrix). We illustrate the equation below.
+
+```{r}
+w_inv <- solve(t(w) %*% w) %*% t(w) # define pseudoinverse W^+
+head((scaled_swiss %*% w %*% w_inv) / (fa_psych$scores %*% w_inv)) # matrix of 1s indicates equality
+```
+Seeing as the scores constitute row elements in the decomposition, we will indeed include them in **ordr** as supplementary row elements. However, this decomposition also motivates us to consider the transposed pseudoinverse of the weights as supplementary column elements (transposed because $W^+=(W^TW)^{-1}W^T$ implies that the _rows_ of $W^+$ end up corresponding to vectors since, originally, the _columns_ of $W$ correspond to vectors).
+
+We can validate this choice for supplementary columns by observing that $(W^+_{k \times p})^T$ and $L_{p\times k}$, our active columns, share the same dimensions. Moreover, we can prove that both elements contain the same inertia. Let $d$ denote the inertia contained in $X$. Then $(\bar{X}_{n\times p})^T\bar{X}_{n\times p} = R_{p\times p}$ contains $d^2$. Recalling that $L_{p\times k}$ contains $d$, it follows that $W_{p\times{k}} = R^{-1}_{p\times{p}}L_{p\times{k}}$ contains $d^{-2}d=d^{-1}$. Consequently, $W^+_{k\times p}=((W_{p\times k})^TW_{p\times k})^{-1}(W_{p\times k})^T$ contains $(d^{-2})^{-1}d^{-1}=d^2d^{-1}=d$. Therefore, the inertia of $(W^+)^T$ and $L$ are equal.
+
+From here, we can define the row and column recoverers to return the following.
+
+```{r}
+recover_cols.fa <- function(x) {
+  unclass(x[["loadings"]])
+}
+
+recover_rows.fa <- function(x) {
+  matrix(nrow = 0, ncol = ncol(x[["scores"]]),
+         dimnames = list(NULL, colnames(x[["scores"]])))
+}
+
+recover_supp_cols.fa <- function(x) {
+  solve(t(x[["weights"]]) %*% x[["weights"]]) %*% t(x[["weights"]]) |>
+    t()
+}
+
+recover_supp_rows.fa <- function(x) {
+  x[["scores"]]
+}
+
+recover_cols(fa_psych)
+recover_rows(fa_psych)
+recover_supp_cols(fa_psych)
+head(recover_supp_rows(fa_psych))
+```
+
+Let us use our `factanal` object from earlier to benchmark these results against, as `stats::factanal()` is already integrated into **ordr**. While `stats::factanal()` does not have a weights element, and hence no supplementary columns, the remaining three elements are indeed approximately equal to those extracted from the `fa` object.
+
+```{r}
+recover_cols(fa_stats) / recover_cols(fa_psych)
+recover_rows(fa_stats) / recover_rows(fa_psych)
+head(recover_supp_rows(fa_stats) / recover_supp_rows(fa_psych))
+```
+
+
+### Conference of Inertia
+
+As previously noted, the decomposition for FA does not have a distinct inertia matrix. This is a result of FA allowing correlations between factors. Whereas in PCA the uncorrelated structure of principal components mean that no two components can explain a portion of the same variance, the same is not true in FA. Hence, we cannot take eigenvalues as portions of explained variance in FA as we do in PCA.
+
+With this in mind, we will consider an alternative interpretation of inertia that can generalize from PCA to FA. One meaning of the inertia in PCA is as the variances of the principal components. So, we can obtain the inertia by squaring each loadings entry, then taking the column sums, and lastly multiplying by $n-1$, demonstrated below.
+
+```{r}
+recover_inertia.principal(pca_psych)
+colSums(pca_psych$loadings^2) * (nrow(scaled_iris) - 1)
+```
+
+Based on this interpretation, we find the "inertias" in a FA from the loadings: each entry in the loadings matrix $L_{ij}$ indicates the strength of the relationship between the $i$-th observed variable and the $j$-th latent factor. When you square the loading value $L_{ij}$, the value $L_{ij}^2$ represents the portion of variance in the $i$-th observed variable that is explained by the $j$-th factor. Note that the sum of the inertias will exceed the total variance of the data due to the interfactor correlations.
+
+```{r}
+recover_inertia.fa <- function(x) {
+  colSums(x[["loadings"]] ^ 2)
+}
+
+recover_inertia.fa(fa_psych)
+```
+
+Now let us verify that these values returned by `recover_inertia.fa()` approximately equal those recovered from our `factanal` object.
+
+```{r}
+recover_inertia(fa_stats)
+```
+
+Because the loadings matrix constitutes either half of the decomposition of $X^TX$, and $X^T$ and $X$ _each_ contain full inertia, we conclude that the loadings (i.e. the active columns) contain full inertia.
+
+The scores (i.e. the supplementary rows) in FA also carry full inertia, which is evident when we consider the matrix algebra that produces them: the scores come from the weights, which in turn come from the loadings, which we know to have full inertia.
+
+We conclude that the conference of inertia is $(1,1)$.
+
+```{r}
+recover_conference.fa <- function(x) {
+  c(1, 1)
+}
+```
+
+### Augmentation
+
+Finally, we piece these recovered elements back into an augmented matrix for the user. As with PCA, we want to ascribe each element to a coordinate name, column/row attribute, and active/supplementary attribute. Additionally, we wish to present the user with the uniqueness of each variable as this element is directly accessible from the output of `psych::fa()` and indicates which variables account for the most variance. We write the following functions.
+
+```{r}
+recover_coord.fa <- function(x) {
+  colnames(x[["loadings"]])
+}
+
+recover_aug_coord.fa <- function(x) {
+  tibble(
+    name = factor_coord(recover_coord(x))
+  )
+}
+
+recover_aug_rows.fa <- function(x) {
+  res <- tibble(.rows = 0L)
+  
+  # scores as supplementary points
+  name <- rownames(x[["scores"]])
+  res_sup <- if (is.null(name)) {
+    tibble(.rows = nrow(x[["scores"]]))
+  } else {
+    tibble(name = name)
+  }
+  
+  # supplement flag
+  res$.element <- "active"
+  res_sup$.element <- "score"
+  as_tibble(dplyr::bind_rows(res, res_sup))
+}
+
+recover_aug_cols.fa <- function(x) {
+  name <- rownames(x[["loadings"]])
+  res <- if (is.null(name)) {
+    tibble(.rows = nrow(x[["loadings"]]))
+  } else {
+    tibble(name = name)
+  }
+  res$uniqueness <- x$uniquenesses
+  res$communality <- x$communality
+  res$complexity <- x$complexity
+  
+  # supplement flag
+  res$.element <- "active"
+  res <- res[c(".element", setdiff(names(res), ".element"))]  # reorder columns
+  
+  # transposed pseudoinverse of weights as supplementary points
+  name <- rownames(x[["weights"]])
+  res_sup <- if (is.null(name)) {
+    tibble(.rows = nrow(x[["weights"]]))
+  } else {
+    tibble(name = name)
+  }
+  
+  # supplement flag
+  res_sup$.element <- "weight"
+  res_sup <- res_sup[c(".element", setdiff(names(res_sup), ".element"))]  # reorder columns
+  as_tibble(dplyr::bind_rows(res, res_sup))
+}
+```
+We will verify that these augmentations have the expected number of rows.
+
+```{r}
+recover_aug_coord.fa(fa_psych) |> 
+  nrow() # should yield two rows for the two factors
+
+recover_aug_rows.fa(fa_psych) |>
+  nrow() # should yield 47 rows for the 47 rows in the data frame/scores
+
+recover_aug_cols.fa(fa_psych) |>
+  nrow() # should yield twelve rows for the six rows of weights and six rows of loadings
+```
+
+So, all augmentations indeed give the correct number of rows. And thus, we can generate the below `tbl_ord` object with ease.
+
+```{r}
+ordr:::as_tbl_ord(fa_psych) |>
+  augment_ord()
+```
+
+### Examples, Unit Tests, and Submission
+
+As with our recoverers for `psych::principal()`, we need to organize those for `psych::fa()` in a "methods" script. This time, we follow the format of `methods-stats-factanal.r`.
+
+For our examples, we replicate those of `ex-methods-factanal-swiss.r` as follows:
+
+```{r}
+# data frame of Swiss fertility and socioeconomic indicators
+class(swiss)
+head(swiss)
+# perform factor analysis
+swiss_fa <- psych::fa(r = swiss, nfactors = 2L, rotate = "varimax", scores = "regression", 
+               fm = "ml")
+
+# wrap as a 'tbl_ord' object
+(swiss_fa <- as_tbl_ord(swiss_fa))
+
+# recover loadings
+get_cols(swiss_fa, elements = "active")
+# recover scores
+head(get_rows(swiss_fa, elements = "score"))
+
+# augment column loadings with uniquenesses
+(swiss_fa <- augment_ord(swiss_fa))
+```
+
+Similarly, we apply the tests from `test-stats-factanal.r` to our `psych::fa()` recoverers for the unit test script. Note that, in **ordr.extra**, unit tests for GDA methods of the same package are included in a single script. In this case, we write the following unit tests for `psych::fa()` after the previous unit tests for `psych::principal()` in one file, `test-psych.R`.
+
+```{r}
+fit_fa <- psych::fa(r = swiss, nfactors = 2L, rotate = "varimax", scores = "regression", 
+                    fm = "ml")
+
+test_that("'fa' accessors have consistent dimensions", {
+  expect_equal(ncol(get_rows(fit_fa)), ncol(get_cols(fit_fa)))
+  expect_equal(ncol(get_rows(fit_fa)),
+               length(recover_inertia(fit_fa)))
+})
+
+test_that("'fa' has specified distribution of inertia", {
+  expect_type(recover_conference(fit_fa), "double")
+  expect_vector(recover_conference(fit_fa), size = 2L)
+})
+
+test_that("'fa' augmentations are consistent with '.element' column", {
+  expect_equal(".element" %in% names(recover_aug_rows(fit_fa)),
+               ".element" %in% names(recover_aug_cols(fit_fa)))
+})
+
+test_that("`as_tbl_ord()` coerces 'fa' objects", {
+  expect_true(valid_tbl_ord(as_tbl_ord(fit_fa)))
+})
+```
+
+As before, we should conclude by running `devtools::check()`, then submit a pull request following the guidelines of `CONTRIBUTING.md`.
+
+# Comparison of PCA and FA
+
+```{r, echo = TRUE}
+scaled_hcw <- scale(hcw[, tail(colnames(hcw), 14)])
+```
+
+Having demonstrated PCA and FA independently of each other, we now apply both to one data set for comparison. The data comes from a 2022 study on burnout in healthcare workers (HCW) during the Covid-19 pandemic (Guastello et al., 2022). In particular, we use data from a fourteen-item Likert scale questionnaire, the Healthcare System Communication Questionnaire, surveying HCW perceptions of hospital administration. The original study applied PCA followed by an oblimin rotation (a type of oblique rotation) to the data to examine whether it had psychometric properties. It was seen that with two principal components, the questions generally loaded strongly onto just one of the two components. Those that loaded strongly onto the first principal component generally pertained to consideration from leadership, and those that loaded strongly onto the second generally pertained to structure in the hospital. The principal components were named accordingly.
+
+We begin by recreating this PCA.
+
+```{r}
+# conduct PCA
+hcw_pca <- scaled_hcw |>
+  ordinate(~ principal(., nfactors = 2L, rotate = "oblimin"))
+sum(hcw_pca$values[1:2]) / sum(hcw_pca$values[1:14]) # agrees with % variance captured from the paper
+hcw_pca$loadings
+```
+
+These loadings approximately equal those in Guastello et al., 2022.
+
+Next, we perform FA on the same centered and scaled data, again followed by an oblimin rotation. We also produce biplots for both analyses.
+
+```{r}
+# conduct FA
+hcw_fa <- scaled_hcw |>
+  ordinate(~ fa(., nfactors = 2L, rotate = "oblimin"))
+
+biplot.psych(hcw_pca)
+biplot.psych(hcw_fa)
+```
+
+The biplots are noticeably similar in both the geometry of the variable vectors and the distribution of observations. Comparing the loadings and scores from both GDA techniques, we can see that most results do align quite closely between techniques.
+
+```{r}
+unclass(hcw_fa$loadings / hcw_pca$loadings) # values close to 1 indicate near equality
+head(hcw_fa$scores / hcw_pca$scores) # values close to 1 indicate near equality
+```
+
+This would suggest that most of the variance in the data is common and not unique to one variable. In both biplots, the variable vectors are mostly either close to horizontal or close to vertical, indicating strong correlations with those nearby variable vectors _and_ that most questions (i.e. variables) load strongly onto exactly one component. In the loadings matrix below, we see the latter is generally true.
+
+```{r}
+unclass(hcw_pca$loadings)
+```
+
+However, the previous biplots are not identical. There is an apparent elliptical shape to the data in our FA biplot (recall that the goal of FA is to unveil a "simple structure"). The PCA biplot appears to have slightly more spread due to PCA's focus on capturing total variance, not strictly shared variance as FA does. To see this effect at a slightly greater degree, we can consider the corresponding PCA with no rotation.
+
+```{r}
+# unrotated PCA
+hcw_unrotated_pca <- scaled_hcw |>
+  ordinate(~ principal(., nfactors = 2L, rotate = "none"))
+biplot.psych(hcw_unrotated_pca)
+```
+
+Not only are the observations spread slightly more, but the data appears more evenly distributed compared to the previous biplots. 
+
+Additionally, most variable vectors in the unrotated PCA biplot no longer load as clearly onto a single component. This makes it more challenging to determine the latent variables that explain the variance in our original variables. In this case, the study from which our data was obtained termed the two principal components _consideration_ and _structure_, respectively. That PCA as well as the FA we performed both allow us to easily make statements such as, "Question 4 on the questionnaire strongly assesses consideration, whilst question 12 strongly assesses structure." In a PCA without rotation, such interpretations are not as clear.
+
+Ultimately, we see that FA is useful for obtaining a simply structure with interpretable latent variables. If we want a similar result that captures more variance, we may opt for PCA followed by rotation. And if we want to capture more variance still, perhaps at the expense of interpretability, then unrotated PCA delivers that.
+
+# Sources
+
+1. Guastello, A. D., Brunson, J. C., Sambuco, N., Dale, L. P., Tracy, N. A., Allen, B. R., & Mathews, C. A. (2024). Predictors of professional burnout and fulfilment in a longitudinal analysis on nurses and healthcare workers in the COVID-19 pandemic. Journal of clinical nursing, 33(1), 288–303. https://doi.org/10.1111/jocn.16463
