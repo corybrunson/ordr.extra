@@ -60,7 +60,7 @@ recover_conference.principal <- function(x) {
 #' @export
 recover_supp_rows.principal <- function(x) {
   if (is.null(x[["scores"]])) {
-    matrix(numeric(0), nrow = 0, ncol = 0)
+    matrix(numeric(0), nrow = 0, ncol = ncol(x[["loadings"]]))
   }
   else
     x[["scores"]]
@@ -73,11 +73,13 @@ recover_aug_rows.principal <- function(x) {
   
   # scores as supplementary points
   name <- rownames(x[["scores"]])
-  res_sup <- if (is.null(name)) {
-    tibble(.rows = nrow(x[["scores"]]))
-  } else {
-    tibble(name = name)
-  }
+  if (!is.null(x[["scores"]])) {
+    res_sup <- if (is.null(name)) {
+      tibble(.rows = nrow(x[["scores"]]))
+    } else {
+      tibble(name = name)
+    }
+  } else res_sup <- matrix(nrow = 0, ncol = ncol(x[["loadings"]]))
   
   # supplement flag
   res$.element <- "active"
