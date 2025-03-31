@@ -72,8 +72,8 @@ recover_aug_rows.principal <- function(x) {
   res <- tibble(.rows = 0L)
   
   # scores as supplementary points
-  name <- rownames(x[["scores"]])
   if (!is.null(x[["scores"]])) {
+    name <- rownames(x[["scores"]])
     res_sup <- if (is.null(name)) {
       tibble(.rows = nrow(x[["scores"]]))
     } else {
