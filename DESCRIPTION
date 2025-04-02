@@ -26,10 +26,10 @@ Suggests:
     PMA,
     ade4,
     nipals,
+    psych,
     testthat (>= 3.0.0),
     cooccur,
-    knitr,
-    psych
+    knitr
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
