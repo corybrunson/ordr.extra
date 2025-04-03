@@ -115,7 +115,7 @@ If it is not converging, try \code{ss_factor = 1}.}
 \item{maxiter}{Maximum number of NIPALS iterations for each
 principal component.}
 
-\item{tol}{Default 1e-9 tolerance for testing convergence of the NIPALS
+\item{tol}{Default 1e-6 tolerance for testing convergence of the NIPALS
 iterations for each principal component.}
 
 \item{startcol}{Determine the starting column of x for the iterations

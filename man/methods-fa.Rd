@@ -63,12 +63,36 @@ them. When computed and returned by \code{\link[psych:fa]{psych::fa()}}, the cas
 accessible as supplementary elements. Redistribution of inertia commutes
 through both score calculations.
 }
+\examples{
+# data frame of Swiss fertility and socioeconomic indicators
+class(swiss)
+head(swiss)
+# perform factor analysis
+swiss_fa <- psych::fa(
+  r = swiss, nfactors = 2L, rotate = "varimax", scores = "regression", 
+  fm = "ml"
+)
+
+# wrap as a 'tbl_ord' object
+(swiss_fa <- as_tbl_ord(swiss_fa))
+
+# recover loadings
+get_cols(swiss_fa, elements = "active")
+# recover scores
+head(get_rows(swiss_fa, elements = "score"))
+
+# augment column loadings with uniquenesses
+(swiss_fa <- augment_ord(swiss_fa))
+}
 \seealso{
 Other methods for eigen-decomposition-based techniques: 
 \code{\link{methods-principal}}
 
 Other models from the psych package: 
 \code{\link{methods-principal}}
+}
+\author{
+John Gracey
 }
 \concept{methods for eigen-decomposition-based techniques}
 \concept{models from the psych package}
