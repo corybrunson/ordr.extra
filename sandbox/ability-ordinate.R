@@ -64,3 +64,31 @@ print(res_sup)
 res_sup <- head(as_tibble(unclass(x[["loadings"]])), n = 0L)
 res_sup$.element <- "score"
 print(res_sup)
+
+# implement test solution from above to augmented row recoverer
+recover_aug_rows.principal <- function(x) {
+  res <- tibble(.rows = 0L)
+  
+  # scores as supplementary points
+  if (!is.null(x[["scores"]])) {
+    name <- rownames(x[["scores"]])
+    res_sup <- if (is.null(name)) {
+      tibble(.rows = nrow(x[["scores"]]))
+    } else {
+      tibble(name = name)
+    }
+  } else res_sup <- head(as_tibble(unclass(x[["loadings"]])), n = 0L)
+  
+  # supplement flag
+  res$.element <- "active"
+  res_sup$.element <- "score"
+  as_tibble(dplyr::bind_rows(res, res_sup))
+}
+
+# apply recoverer to ability pca
+recover_aug_rows.principal(x)
+
+# check that augmented rows have data.frame class
+class(recover_aug_rows.principal(x))
+
+ggbiplot(x) # produces error because x is not a data frame
