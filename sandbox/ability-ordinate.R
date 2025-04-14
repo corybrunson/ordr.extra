@@ -13,7 +13,7 @@ ability_pca <- ability.cov$cov |>
 
 # start with 'principal' object with 1 factor
 # note: `scores = FALSE` should be unnecessary for a covariance matrix input
-ability_pca <- psych::principal(ability.cov$cov)
+ability_pca <- psych::principal(ability.cov$cov, nfactors = 2)
 is.null(ability_pca$scores)
 # can i create a 'tbl_ord' object without the warning?
 ability_pca_ord <- as_tbl_ord(ability_pca)
@@ -77,7 +77,7 @@ recover_aug_rows.principal <- function(x) {
     } else {
       tibble(name = name)
     }
-  } else res_sup <- head(as_tibble(unclass(x[["loadings"]])), n = 0L)
+  } else res_sup <- tibble(.rows = 0L)
   
   # supplement flag
   res$.element <- "active"
@@ -91,4 +91,4 @@ recover_aug_rows.principal(x)
 # check that augmented rows have data.frame class
 class(recover_aug_rows.principal(x))
 
-ggbiplot(x) # produces error because x is not a data frame
+ggbiplot(as_tbl_ord(x)) # produces error because x is not a data frame
