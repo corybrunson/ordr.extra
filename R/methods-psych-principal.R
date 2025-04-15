@@ -61,8 +61,7 @@ recover_conference.principal <- function(x) {
 recover_supp_rows.principal <- function(x) {
   if (is.null(x[["scores"]])) {
     tibble(numeric(0), nrow = 0, ncol = ncol(x[["loadings"]]))
-  }
-  else {
+  } else {
     x[["scores"]]
   }
 }

@@ -63,10 +63,10 @@ recover_conference.fa <- function(x) {
 #' @export
 recover_supp_rows.fa <- function(x) {
   if (is.null(x[["scores"]])) {
-    matrix(numeric(0), nrow = 0, ncol = 0)
-  }
-  else
+    tibble(numeric(0), nrow = 0, ncol = ncol(x[["loadings"]]))
+  } else {
     x[["scores"]]
+  }
 }
 
 #' @rdname methods-fa
@@ -139,4 +139,3 @@ recover_aug_coord.fa <- function(x) {
     name = factor_coord(recover_coord(x))
   )
 }
-
