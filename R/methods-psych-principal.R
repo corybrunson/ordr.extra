@@ -60,10 +60,11 @@ recover_conference.principal <- function(x) {
 #' @export
 recover_supp_rows.principal <- function(x) {
   if (is.null(x[["scores"]])) {
-    matrix(numeric(0), nrow = 0, ncol = ncol(x[["loadings"]]))
+    tibble(numeric(0), nrow = 0, ncol = ncol(x[["loadings"]]))
   }
-  else
+  else {
     x[["scores"]]
+  }
 }
 
 #' @rdname methods-principal
@@ -79,7 +80,9 @@ recover_aug_rows.principal <- function(x) {
     } else {
       tibble(name = name)
     }
-  } else res_sup <- matrix(nrow = 0, ncol = ncol(x[["loadings"]]))
+  } else {
+    res_sup <- tibble(.rows = 0L)
+  }
   
   # supplement flag
   res$.element <- "active"
