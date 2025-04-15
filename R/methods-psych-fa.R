@@ -27,18 +27,18 @@ NULL
 #' @export
 as_tbl_ord.fa <- as_tbl_ord_default
 
-recover_dims_fa <- function(x, .matrix) unclass(x[["loadings"]])
-
 #' @rdname methods-fa
 #' @export
 recover_rows.fa <- function(x) {
-  matrix(nrow = 0, ncol = ncol(x[["scores"]]),
-         dimnames = list(NULL, colnames(x[["scores"]])))
+  matrix(nrow = 0, ncol = ncol(x[["loadings"]]),
+         dimnames = list(NULL, colnames(x[["loadings"]])))
 }
 
 #' @rdname methods-fa
 #' @export
-recover_cols.fa <- function(x) recover_dims_fa(x, "cols")
+recover_cols.fa <- function(x) {
+  unclass(x[["loadings"]])
+}
 
 #' @rdname methods-fa
 #' @export
@@ -56,19 +56,24 @@ recover_coord.fa <- function(x) {
 #' @export
 recover_conference.fa <- function(x) {
   # loadings are assigned half the diagonal from the eigendecomposition
-  c(.5, .5)
+  c(1, 1)
 }
 
 #' @rdname methods-fa
 #' @export
 recover_supp_rows.fa <- function(x) {
-  x[["scores"]]
+  if (is.null(x[["scores"]])) {
+    matrix(numeric(0), nrow = 0, ncol = 0)
+  }
+  else
+    x[["scores"]]
 }
 
 #' @rdname methods-fa
 #' @export
 recover_supp_cols.fa <- function(x) {
-  x[["weights"]]
+  solve(t(x[["weights"]]) %*% x[["weights"]]) %*% t(x[["weights"]]) |>
+    t()
 }
 
 #' @rdname methods-fa
@@ -77,11 +82,15 @@ recover_aug_rows.fa <- function(x) {
   res <- tibble(.rows = 0L)
   
   # scores as supplementary points
-  name <- rownames(x[["scores"]])
-  res_sup <- if (is.null(name)) {
-    tibble(.rows = nrow(x[["scores"]]))
+  if (!is.null(x[["scores"]])) {
+    name <- rownames(x[["scores"]])
+    res_sup <- if (is.null(name)) {
+      tibble(.rows = nrow(x[["scores"]]))
+    } else {
+      tibble(name = name)
+    }
   } else {
-    tibble(name = name)
+    res_sup <- tibble(.rows = 0L)
   }
   
   # supplement flag
@@ -105,9 +114,10 @@ recover_aug_cols.fa <- function(x) {
   
   # supplement flag
   res$.element <- "active"
-  res <- res[c(".element", setdiff(names(res), ".element"))]  # reorder columns
+  # reorder columns
+  res <- res[c(".element", setdiff(names(res), ".element"))]
   
-  # weights as supplementary points
+  # transposed pseudoinverse of weights as supplementary points
   name <- rownames(x[["weights"]])
   res_sup <- if (is.null(name)) {
     tibble(.rows = nrow(x[["weights"]]))
@@ -116,8 +126,9 @@ recover_aug_cols.fa <- function(x) {
   }
   
   # supplement flag
-  res_sup$.element <- "weight"
-  res_sup <- res_sup[c(".element", setdiff(names(res_sup), ".element"))]  # reorder columns
+  res_sup$.element <- "inv_weight"
+  # reorder columns
+  res_sup <- res_sup[c(".element", setdiff(names(res_sup), ".element"))]
   as_tibble(dplyr::bind_rows(res, res_sup))
 }
 
@@ -128,3 +139,4 @@ recover_aug_coord.fa <- function(x) {
     name = factor_coord(recover_coord(x))
   )
 }
+
