@@ -176,11 +176,18 @@ recover_rows.principal <- function(x) {
 recover_rows.principal(pca_psych)
 
 recover_supp_rows.principal <- function(x) {
-  x[["scores"]]
+  if (is.null(x[["scores"]])) {
+    tibble(numeric(0), nrow = 0, ncol = ncol(x[["loadings"]]))
+  }
+  else {
+    x[["scores"]]
+  }
 }
 
 head(recover_supp_rows.principal(pca_psych))
 ```
+
+Notice that in defining `recover_supp_rows.principal()`, we must also account for cases in which the `scores` element is null to avoid errors. This is necessary because PCA is applicable to covariance matrices, so we may not have data to obtain scores from.
 
 ### PCA Followed by Rotation
 
@@ -243,18 +250,22 @@ recover_coord.principal(pca_psych)
 ```
 Now, the last step in writing `psych::principal()` into **ordr** is the augmentation functions that are essential to inspecting and understanding a `tbl_ord` object. Essentially, the purpose of these functions is to place a name to the various PCA elements that have been extracted and join these elements with information that is not part of the matrix decomposition. The augmented matrices are where the user should see whether PCA elements come from the rows or columns and whether they are active or supplementary. Moreover, they should offer the user measures such as the mean and standard deviation when available from the original function output. We write the following functions accordingly.
 
-Starting with `recover_aug_rows.principal()`, our function should be defined to indicate that no row elements are active, and that the supplementary elements are scores.
+Starting with `recover_aug_rows.principal()`, our function should be defined to indicate that no row elements are active, and that the supplementary elements are scores *if* a scores object exists.
 
 ```{r}
 recover_aug_rows.principal <- function(x) {
   res <- tibble(.rows = 0L)
   
   # scores as supplementary points
-  name <- rownames(x[["scores"]])
-  res_sup <- if (is.null(name)) {
-    tibble(.rows = nrow(x[["scores"]]))
+  if (!is.null(x[["scores"]])) {
+    name <- rownames(x[["scores"]])
+    res_sup <- if (is.null(name)) {
+      tibble(.rows = nrow(x[["scores"]]))
+    } else {
+      tibble(name = name)
+    }
   } else {
-    tibble(name = name)
+    res_sup <- tibble(.rows = 0L)
   }
   
   # supplement flag
@@ -272,7 +283,7 @@ ordr:::as_tbl_ord(pca_psych) |>
   nrow()
 ```
 
-The scores constitute a $150 \times 4$ matrix, consistent with the dimensions. We similarly define and validate `recover_aug_cols.principal()`. Here, we will augment the column vectors with attributes `center` and `scale` since these values correspond to the variables and are required for some biplot layers like calibrated axes.
+The scores constitute a $150 \times 4$ matrix, consistent with the dimensions here. We similarly define and validate `recover_aug_cols.principal()`. Here, we will augment the column vectors with attributes `center` and `scale` since these values correspond to the variables and are required for some biplot layers like calibrated axes.
 
 ```{r}
 recover_aug_cols.principal <- function(x) {
