@@ -21,11 +21,6 @@ library(ordr.extra)
 library(GPArotation)
 library(tibble)
 library(testthat)
-as_tbl_ord.fa <- ordr:::as_tbl_ord_default
-factor_coord <- function(x) {
-  if (any(duplicated(x))) stop("Duplicated coordinates detected.")
-  factor(x, levels = x)
-}
 ```
 
 # Introduction
@@ -75,10 +70,11 @@ Now that we have discussed the decompositions that serve as foundation for PCA (
 7. `ordr::recover_coord()`, which should return the coordinate names of our ordination object.
 8. `ordr::recover_aug_rows()` and (9) `ordr::recover_aug_cols()`, which do not recover raw elements of the PCA but rather reassemble previously recovered elements for the function `ordr::augment_ord()`.
 
-While these recovery methods will be defined based on the GDA technique and theory at hand, we define the function `as_tbl_ord()` uniformly as the below helper function from **ordr** defined to reduce redundancy and expedite debugging.
+While these recovery methods will be defined based on the GDA technique and theory at hand, we define the function `as_tbl_ord()` uniformly as the below helper function from **ordr** defined to reduce redundancy and expedite debugging. Similarly, we define `factor_coord()` to be used in our later recoverers.
 
 ```{r}
-as_tbl_ord.principal <- ordr:::as_tbl_ord_default
+as_tbl_ord.principal <- getFromNamespace("as_tbl_ord_default", "ordr")
+factor_coord <- getFromNamespace("factor_coord", "ordr")
 ```
 
 These recoverers are all necessary to produce a `tbl_ord`, illustrated below with the pre-loaded set of Anderson's Iris data.
@@ -615,9 +611,11 @@ recover_aug_cols.fa(fa_psych) |>
   nrow() # should yield twelve rows for the six rows of weights and six rows of loadings
 ```
 
-So, all augmentations indeed give the correct number of rows. And thus, we can generate the below `tbl_ord` object with ease.
+So, all augmentations indeed give the correct number of rows. And thus, we can generate the below `tbl_ord` object with ease after defining `as_tbl_ord.fa()` as we did `as_tbl_ord.principal()`.
 
 ```{r}
+as_tbl_ord.fa <- getFromNamespace("as_tbl_ord_default", "ordr")
+
 ordr:::as_tbl_ord(fa_psych) |>
   augment_ord()
 ```
