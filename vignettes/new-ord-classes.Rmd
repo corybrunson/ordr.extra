@@ -21,8 +21,6 @@ library(ordr.extra)
 library(GPArotation)
 library(tibble)
 library(testthat)
-scaled_iris <- scale(iris[1:4])
-as_tbl_ord.principal <- ordr:::as_tbl_ord_default
 as_tbl_ord.fa <- ordr:::as_tbl_ord_default
 factor_coord <- function(x) {
   if (any(duplicated(x))) stop("Duplicated coordinates detected.")
@@ -77,9 +75,16 @@ Now that we have discussed the decompositions that serve as foundation for PCA (
 7. `ordr::recover_coord()`, which should return the coordinate names of our ordination object.
 8. `ordr::recover_aug_rows()` and (9) `ordr::recover_aug_cols()`, which do not recover raw elements of the PCA but rather reassemble previously recovered elements for the function `ordr::augment_ord()`.
 
-These recoverers are all necessary to produce a "tbl_ord" like we have below.
+While these recovery methods will be defined based on the GDA technique and theory at hand, we define the function `as_tbl_ord()` uniformly as the below helper function from **ordr** defined to reduce redundancy and expedite debugging.
 
 ```{r}
+as_tbl_ord.principal <- ordr:::as_tbl_ord_default
+```
+
+These recoverers are all necessary to produce a `tbl_ord`, illustrated below with the pre-loaded set of Anderson's Iris data.
+
+```{r}
+scaled_iris <- scale(iris[1:4])
 pca_stats <- prcomp(scaled_iris, rank. = 4)
 (tbl_ord <- as_tbl_ord(pca_stats))
 ```
