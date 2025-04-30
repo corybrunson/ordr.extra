@@ -462,8 +462,8 @@ recover_cols.fa <- function(x) {
 }
 
 recover_rows.fa <- function(x) {
-  matrix(nrow = 0, ncol = ncol(x[["scores"]]),
-         dimnames = list(NULL, colnames(x[["scores"]])))
+  matrix(nrow = 0, ncol = ncol(x[["loadings"]]),
+         dimnames = list(NULL, colnames(x[["loadings"]])))
 }
 
 recover_supp_cols.fa <- function(x) {
@@ -472,7 +472,11 @@ recover_supp_cols.fa <- function(x) {
 }
 
 recover_supp_rows.fa <- function(x) {
-  x[["scores"]]
+  if (is.null(x[["scores"]])) {
+    matrix(numeric(0), nrow = 0, ncol = 0)
+  }
+  else
+    x[["scores"]]
 }
 
 recover_cols(fa_psych)
@@ -480,6 +484,8 @@ recover_rows(fa_psych)
 recover_supp_cols(fa_psych)
 head(recover_supp_rows(fa_psych))
 ```
+
+Again, we have accounted for when the `scores` object is null, since FA, like PCA, can be applied to a covariance or correlation matrix.
 
 Let us use our `factanal` object from earlier to benchmark these results against, as `stats::factanal()` is already integrated into **ordr**. While `stats::factanal()` does not have a weights element, and hence no supplementary columns, the remaining three elements are indeed approximately equal to those extracted from the `fa` object.
 
@@ -548,11 +554,15 @@ recover_aug_rows.fa <- function(x) {
   res <- tibble(.rows = 0L)
   
   # scores as supplementary points
-  name <- rownames(x[["scores"]])
-  res_sup <- if (is.null(name)) {
-    tibble(.rows = nrow(x[["scores"]]))
+  if (!is.null(x[["scores"]])) {
+    name <- rownames(x[["scores"]])
+    res_sup <- if (is.null(name)) {
+      tibble(.rows = nrow(x[["scores"]]))
+    } else {
+      tibble(name = name)
+    }
   } else {
-    tibble(name = name)
+    res_sup <- tibble(.rows = 0L)
   }
   
   # supplement flag
@@ -574,7 +584,8 @@ recover_aug_cols.fa <- function(x) {
   
   # supplement flag
   res$.element <- "active"
-  res <- res[c(".element", setdiff(names(res), ".element"))]  # reorder columns
+  # reorder columns
+  res <- res[c(".element", setdiff(names(res), ".element"))]
   
   # transposed pseudoinverse of weights as supplementary points
   name <- rownames(x[["weights"]])
@@ -585,8 +596,9 @@ recover_aug_cols.fa <- function(x) {
   }
   
   # supplement flag
-  res_sup$.element <- "weight"
-  res_sup <- res_sup[c(".element", setdiff(names(res_sup), ".element"))]  # reorder columns
+  res_sup$.element <- "inv_weight"
+  # reorder columns
+  res_sup <- res_sup[c(".element", setdiff(names(res_sup), ".element"))]
   as_tibble(dplyr::bind_rows(res, res_sup))
 }
 ```
