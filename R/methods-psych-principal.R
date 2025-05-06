@@ -97,8 +97,12 @@ recover_aug_cols.principal <- function(x) {
 #' @rdname methods-principal
 #' @export
 recover_aug_coord.principal <- function(x) {
+  names <- colnames(x[["loadings"]])
+  num <- order(as.numeric(sub("PC", "", names)))
+  ordered_names <- names[num]
+  
   data.frame(
-    name = recover_coord.principal(x),
-    sdev = sqrt(x[["values"]][seq(1, ncol(x[["loadings"]]))])
+    name = factor(ordered_names, levels = ordered_names),
+    sdev = sqrt(x[["values"]])[num]
   )
 }
