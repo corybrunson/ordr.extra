@@ -541,7 +541,7 @@ recover_coord.fa <- function(x) {
 
 recover_aug_coord.fa <- function(x) {
   tibble(
-    name = factor_coord(recover_coord(x))
+    name = ordr:::factor_coord(recover_coord(x))
   )
 }
 
