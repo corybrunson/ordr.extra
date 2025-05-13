@@ -22,9 +22,9 @@ In addition to showing how ordination elements are extracted and recompiled for 
 
 # Principal Component Analysis
 
-Principal component analysis (PCA) is a geometric statistical method by which multivariate data is reduced to have fewer dimensions, expending as little variance as possible in the process.
+Principal component analysis (PCA) is a geometric statistical method by which multivariate data is reduced to have fewer dimensions, expending as little variance as possible in the process. The goal is to more easily visualize and interpret patterns in a data set.
 
-PCA begins with a data set and works to take the (linear) combinations of variables that capture the most variance; the ratios of these combinations are called loadings. The resulting principal components correspond to new, *orthogonal* axes on which we can represent our data.
+PCA takes loadings of the variables that capture maximal variance. The resulting principal components correspond to new, *orthogonal* axes on which we can represent our data.
 
 ### Recovery for PCA Methods
 
@@ -52,7 +52,7 @@ In either decomposition, $V$ is the loadings matrix. The columns contain the lin
 
 ### Necessary Recovery Methods
 
-Now that we have discussed the decompositions that serve as foundation for PCA (and later in the vignette, FA), we can frame the recovery methods behind **ordr**.
+*Recovery methods* or *recoverers* refer to functions that retrieve isolated elements of an ordination object. Now that we have discussed the decompositions that serve as foundation for PCA (and later in the vignette, FA), we can frame the recovery methods behind **ordr**.
 
 1. `ordr::recover_inertia()`, which should return the eigenvalues of our EVD or the squared singular values of our SVD; that is, we should obtain the diagonal entries of $D^2$.
 2. `ordr::recover_conference()`, which should indicate whether the inertia we found is distributed to the observations or variables (or, potentially, both or neither).
