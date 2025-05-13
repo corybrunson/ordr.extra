@@ -14,18 +14,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r, echo = TRUE, warning = FALSE, message = FALSE}
-library(psych)
-library(ordr)
-library(ordr.extra)
-library(GPArotation)
-library(tibble)
-library(testthat)
-```
-
 # Introduction
 
-In this vignette, we outline the process of extending **ordr** to incorporate new ordination methods. To this end, we discuss two ordination techniques--principal component analysis and factor analysis--and demonstrate how to reflect each technique's underlying mathematical theory as we integrate their R implementations into **ordr**. In addition to showing how ordination elements are extracted and recompiled for the `tbl_ord` end product, we illustrate how unit tests and examples are written to complete a contribution. Finally, we apply both of our example contributions to the package on a single data set to illustrate the theoretical unity between ordination methods that **ordr** seeks to convey.
+In this vignette intended for R users with experience in geometric data analysis and knowledge of the intrinsic mathematical theory, we outline the process of extending **ordr** to incorporate new ordination methods. To this end, we discuss two ordination techniques--principal component analysis and factor analysis--and demonstrate how to reflect each technique's underlying mathematical theory as we integrate their R implementations into **ordr**.
+
+In addition to showing how ordination elements are extracted and recompiled for the `tbl_ord` end product, we illustrate how unit tests and examples are written to complete a contribution. Finally, we apply both of our example contributions to the package on a single data set to illustrate the theoretical unity between ordination methods that **ordr** seeks to convey.
 
 # Principal Component Analysis
 
@@ -79,6 +72,8 @@ as_tbl_ord.principal <- getFromNamespace("as_tbl_ord_default", "ordr")
 These recoverers are all necessary to produce a `tbl_ord`, illustrated below with the pre-loaded set of Anderson's Iris data.
 
 ```{r}
+library(ordr) # load {ordr} to create `tbl_ord` below
+
 scaled_iris <- scale(iris[1:4])
 pca_stats <- prcomp(scaled_iris, rank. = 4)
 (tbl_ord <- as_tbl_ord(pca_stats))
@@ -91,6 +86,8 @@ The conference of inertia determines how the variance of our data is distributed
 To this end, let us first recover the inertia itself, using the recovery method for `stats::prcomp()` as a benchmark against the `values` element of an analogous `principal` object (which is simply the eigenvalues of the input covariance matrix).
 
 ```{r}
+library(psych) # load {psych} for use of PCA function below
+
 pca_psych <- principal(scaled_iris, nfactors = 4, rotate = "none") # conduct PCA on the same X
 recover_inertia(pca_stats) / pca_psych$values
 ```
@@ -193,6 +190,8 @@ Before getting back into the details of extending **ordr**, we make a disclaimer
 We classify rotations as either orthogonal or oblique. The prior necessarily preserves orthogonality between the principal axes; the latter does not. And (mathematically speaking), oblique rotations are not rotations at all since they are not angle-preserving.
 
 ```{r, warning=FALSE}
+library(GPArotation) # load {GPArotation} to access oblique rotation below
+
 pca <- principal(scaled_iris, rotate = "none", nfactors = 4)
 pca_orth <- principal(scaled_iris, rotate = "varimax", nfactors = 4) # orthogonal example
 pca_ob <- principal(scaled_iris, rotate = "oblimin", nfactors = 4) # oblique example
@@ -273,6 +272,8 @@ recover_aug_rows.principal <- function(x) {
 We must also be sure that the number of rows in the augmented matrix agree with those of the extracted matrix.
 
 ```{r}
+library(tibble) # load {tibble} in order to use `ordr:::as_tbl_ord()` below
+
 ordr:::as_tbl_ord(pca_psych) |>
   recover_aug_rows.principal() |>
   nrow()
@@ -352,6 +353,8 @@ get_cols(iris_pca)
 The last file to complete our contribution is a unit test script. Again, we can follow the format of the analogous `test-stats-prcomp.r` and write the following:
 
 ```{r}
+library(testthat) # load {testthat} to be used for each unit test
+
 fit_principal <- psych::principal(iris[, -5], nfactors = 4, rotate = "none")
 
 test_that("'principal' accessors have consistent dimensions", {
@@ -677,6 +680,8 @@ As before, we should conclude by running `devtools::check()`, then submit a pull
 # Comparison of PCA and FA
 
 ```{r, echo = TRUE}
+library(ordr.extra) # load {ordr.extra} to access `hcw` data below
+
 scaled_hcw <- scale(hcw[, tail(colnames(hcw), 14)])
 ```
 
