@@ -22,7 +22,7 @@ In addition to showing how ordination elements are extracted and recompiled for 
 
 # Principal Component Analysis
 
-Principal component analysis (PCA) is a geometric statistical method by which multivariate data is reduced to have fewer dimensions, expending as little variance as possible in the process. The goal is to more easily visualize and interpret patterns in a data set.
+Principal component analysis (PCA) is a geometric statistical method by which multivariate data is reduced to have fewer dimensions, expending as little variance as possible in the process. The goal is to more easily visualize and interpret patterns in a data set. PCA is useful in various fields of research; as an example later in the vignette, we will demonstrate how a 14-variable psychometric data set can be accurately intrepreted on just two axes using PCA.
 
 PCA takes loadings of the variables that capture maximal variance. The resulting principal components correspond to new, *orthogonal* axes on which we can represent our data.
 
@@ -710,7 +710,7 @@ biplot.psych(hcw_pca)
 biplot.psych(hcw_fa)
 ```
 
-The biplots are noticeably similar in both the geometry of the variable vectors and the distribution of observations. Comparing the loadings and scores from both GDA techniques, we can see that most results do align quite closely between techniques.
+The biplots are noticeably similar in both the geometry of the variable vectors and the distribution of observations. Comparing the loadings and scores from both GDA techniques, we can see that most results do align quite closely between techniques (we divide the matrices entry-wise so that values closer to 1 below indicate near-identical entries).
 
 ```{r}
 unclass(hcw_fa$loadings / hcw_pca$loadings) # values close to 1 indicate near equality
@@ -736,7 +736,7 @@ Not only are the observations spread slightly more, but the data appears more ev
 
 Additionally, most variable vectors in the unrotated PCA biplot no longer load as clearly onto a single component. This makes it more challenging to determine the latent variables that explain the variance in our original variables. In this case, the study from which our data was obtained termed the two principal components _consideration_ and _structure_, respectively. That PCA as well as the FA we performed both allow us to easily make statements such as, "Question 4 on the questionnaire strongly assesses consideration, whilst question 12 strongly assesses structure." In a PCA without rotation, such interpretations are not as clear.
 
-Ultimately, we see that FA is useful for obtaining a simply structure with interpretable latent variables. If we want a similar result that captures more variance, we may opt for PCA followed by rotation. And if we want to capture more variance still, perhaps at the expense of interpretability, then unrotated PCA delivers that.
+Ultimately, we see that FA is useful for obtaining a simply structure with interpretable latent variables. If we want a similar result that captures more variance and thus retains more information from the original data, we may opt for PCA followed by rotation. And if we want to capture more variance still, perhaps at the expense of interpretability, then unrotated PCA delivers that.
 
 # Sources
 
