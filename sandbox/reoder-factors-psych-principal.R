@@ -18,3 +18,17 @@ recover_aug_coord(hcw_pca)
 # printing the output before my changes, too. The biplot axis is still wrong, 
 # though. I tried reading the documentation and some source code for ggplot, but
 # couldn't come up with anything there.
+
+# compare these results to the analogous results for `psych::fa()`, for which we
+# used `factor_coord()` in the augmented coordinate recoverer.
+
+# create FA object with healthcare worker data (use 12, not 14 factors b/c of 
+# nfactor constraint from the function)
+hcw_fa <- ordinate(hcw[36:49], ~fa(., nfactors = 12, rotate = "none"))
+
+# generate blank scree plot to see order of PCs on x-axis
+tidy(hcw_fa) |>
+  ggplot(aes(x = name,y = inertia))
+
+# the factors on the scree plot are ordered as desired, indicating 
+# `factor_coord()` resolves the issue from `recover_aug_coord()`.
