@@ -15,7 +15,7 @@ recover_aug_coord(hcw_pca)
 
 # The ordering of the "name" column in `recover_aug_coord(hcw_pca)` is what we
 # want -- ordered by the number following "PC". However, this was the case when
-# printing the output before my changes, too. The biplot axis is still wrong, 
+# printing the output before my changes, too. The scree plot axis is still wrong, 
 # though. I tried reading the documentation and some source code for ggplot, but
 # couldn't come up with anything there.
 
@@ -32,3 +32,19 @@ tidy(hcw_fa) |>
 
 # the factors on the scree plot are ordered as desired, indicating 
 # `factor_coord()` resolves the issue from `recover_aug_coord()`.
+
+# now, implement the fix into the `psych::principal()` methods and test.
+
+recover_aug_coord.principal <- function(x) {
+  tibble(
+    name = factor_coord(recover_coord(x))
+  )
+}
+
+hcw_pca <- ordinate(hcw[36:49], ~principal(., nfactors = 14, rotate = "none"))
+
+# generate blank scree plot to see order of PCs on x-axis
+tidy(hcw_pca) |>
+  ggplot(aes(x = name,y = inertia))
+
+# the scree plot axis still has the wrong order of PCs
