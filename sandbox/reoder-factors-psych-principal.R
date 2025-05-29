@@ -1,5 +1,5 @@
 library(ordr)
-library(ordr.extra)
+devtools::load_all()
 library(psych)
 library(tibble)
 
