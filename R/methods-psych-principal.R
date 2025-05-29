@@ -97,8 +97,7 @@ recover_aug_cols.principal <- function(x) {
 #' @rdname methods-principal
 #' @export
 recover_aug_coord.principal <- function(x) {
-  data.frame(
-    name = recover_coord.principal(x),
-    sdev = sqrt(x[["values"]][seq(1, ncol(x[["loadings"]]))])
+  tibble(
+    name = factor_coord(recover_coord(x))
   )
 }
