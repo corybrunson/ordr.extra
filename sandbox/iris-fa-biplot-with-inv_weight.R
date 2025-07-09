@@ -1,5 +1,7 @@
 # load psych package
 library(psych)
+devtools::install_local("C:/Users/jbgra/Desktop/GDA/ordr")
+library(ordr.extra)
 
 # fa on iris
 iris[1:4] |>
@@ -10,4 +12,5 @@ iris[1:4] |>
 
 ggbiplot(iris_fa, scale_cols = 3) +
   geom_cols_vector(color = "red") +
+  geom_cols_vector(color = "blue", elements = "inv_weight") +
   geom_rows_point(elements = "score")
