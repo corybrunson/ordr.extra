@@ -12,6 +12,8 @@ swiss_fa <- psych::fa(r = swiss, nfactors = 2L, rotate = "varimax", scores = "re
 get_cols(swiss_fa, elements = "active")
 # recover scores
 head(get_rows(swiss_fa, elements = "score"))
+# recover pseudoinverse weights
+get_cols(swiss_fa, elements = "pinv_weight")
 
 # augment column loadings with uniquenesses
 (swiss_fa <- augment_ord(swiss_fa))
