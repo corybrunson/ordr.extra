@@ -498,14 +498,54 @@ head(recover_supp_rows(fa_stats) / recover_supp_rows(fa_psych))
 
 As previously noted, the decomposition for FA does not have a distinct inertia matrix. This is a result of FA allowing correlations between factors. Whereas in PCA the uncorrelated structure of principal components mean that no two components can explain a portion of the same variance, the same is not true in FA. Hence, we cannot take eigenvalues as portions of explained variance in FA as we do in PCA.
 
-With this in mind, we will consider an alternative interpretation of inertia that can generalize from PCA to FA. One meaning of the inertia in PCA is as the variances of the principal components. So, we can obtain the inertia by squaring each loadings entry, then taking the column sums, and lastly multiplying by $n-1$, demonstrated below.
+To validate a conference of inertia for `psych::fa()`, we will use an alternative interpretation of inertia that can generalize from PCA to FA.
+
+One meaning of the inertia in PCA is as the variances of the principal components. So, we can obtain the inertia by squaring each loadings entry, then taking the column sums, and lastly multiplying by $n−1$. Equivalence between this and the previous eigenvalue method of extracting inertia is demonstrated below.
 
 ```{r}
 recover_inertia.principal(pca_psych)
 colSums(pca_psych$loadings^2) * (nrow(scaled_iris) - 1)
 ```
 
-Based on this interpretation, we find the "inertias" in a FA from the loadings: each entry in the loadings matrix $L_{ij}$ indicates the strength of the relationship between the $i$-th observed variable and the $j$-th latent factor. When you square the loading value $L_{ij}$, the value $L_{ij}^2$ represents the portion of variance in the $i$-th observed variable that is explained by the $j$-th factor. Note that the sum of the inertias will exceed the total variance of the data due to the interfactor correlations.
+Onto the proof for `psych::fa()`. We claim the function has an intertia conference of (0, 1).
+
+First, we show that the scores multiplied by the transposed loadings gives an approximation of the data matrix.
+
+```{r}
+# create "fa" object
+fa_psych <- psych::fa(swiss, nfactors = 6, rotate = "none")
+
+stdized_approx <- fa_psych$scores %*% t(as.matrix(fa_psych$loadings))
+means <- colMeans(swiss)
+sds <- apply(swiss, 2, sd)
+swiss_approx <- sweep(stdized_approx, 2, sds, "*") # de-scale
+swiss_approx <- sweep(swiss_approx, 2, means, "+") # de-center
+
+head(swiss_approx / swiss) # values close to 1 indicate near equality
+```
+
+Therefore, the data matrix is approximately the product of the scores and tranposed loadings matrices (after we undo centering and scaling). Then to prove that the scores contain zero inertia, it suffices to show that the loadings contain full inertia.
+
+By default, the `cor` argument in `psych::fa()` is set to "cor", meaning the function performs FA on the correlation matrix. Thus, the total variance is 1 for each variable, i.e. 6 in this case.
+
+Additionally, the total variance is equal to the sum of shared variance and uniquenesses. Observe below that the inertia from the loadings (calculated via column sums of squared entries) can be added to the uniquenesses to obtain the number of variables, as desired.
+
+```{r}
+common_var <- (colSums(fa_psych$loadings^2)) # inertia from loadings
+uniq <- fa_psych$uniquenesses # uniquenesses
+
+sum(common_var) + sum(uniq) # shared variance + uniquenesses
+```
+
+This implies that the loadings carry full inertia (minus uniquenesses). As previously shown, it follows that the scores carry zero inertia. So, we conclude that `psych::fa()` indeed has an inertia conference of (0, 1).
+
+```{r}
+recover_conference.fa <- function(x) {
+  c(0, 1)
+}
+```
+
+Seeing that the column sums of squares agree with the extracted uniquenesses in summing to total variance, we can also define our inertia recoverer as follows.
 
 ```{r}
 recover_inertia.fa <- function(x) {
@@ -515,22 +555,10 @@ recover_inertia.fa <- function(x) {
 recover_inertia.fa(fa_psych)
 ```
 
-Now let us verify that these values returned by `recover_inertia.fa()` approximately equal those recovered from our `factanal` object.
+Then let us verify that these values returned by `recover_inertia.fa()` approximately equal those recovered from our `factanal` object.
 
 ```{r}
 recover_inertia(fa_stats)
-```
-
-Because the loadings matrix constitutes either half of the decomposition of $X^TX$, and $X^T$ and $X$ _each_ contain full inertia, we conclude that the loadings (i.e. the active columns) contain full inertia.
-
-The scores (i.e. the supplementary rows) in FA also carry full inertia, which is evident when we consider the matrix algebra that produces them: the scores come from the weights, which in turn come from the loadings, which we know to have full inertia.
-
-We conclude that the conference of inertia is $(1,1)$.
-
-```{r}
-recover_conference.fa <- function(x) {
-  c(1, 1)
-}
 ```
 
 ### Augmentation
