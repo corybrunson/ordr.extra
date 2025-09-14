@@ -512,10 +512,10 @@ Onto the proof for `psych::fa()`. We claim the function has an intertia conferen
 First, we show that the scores multiplied by the transposed loadings gives an approximation of the data matrix.
 
 ```{r}
-# create "fa" object
-fa_psych <- psych::fa(swiss, nfactors = 6, rotate = "none")
+# create "fa" object, now with six factors
+fa_psych6 <- psych::fa(swiss, nfactors = 6, rotate = "none")
 
-stdized_approx <- fa_psych$scores %*% t(as.matrix(fa_psych$loadings))
+stdized_approx <- fa_psych6$scores %*% t(as.matrix(fa_psych6$loadings))
 means <- colMeans(swiss)
 sds <- apply(swiss, 2, sd)
 swiss_approx <- sweep(stdized_approx, 2, sds, "*") # de-scale
