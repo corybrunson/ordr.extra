@@ -220,7 +220,7 @@ The pattern matrix is useful when we want to consider the principal components a
 (pca_ob$loadings %*% pca_ob$Phi) / pca_ob$Structure
 ```
 
-This is why we have just one loadings matrix in the orthogonal case: $\Phi_{p\times p}$ is just the identity matrix.
+This is why we have just one loadings matrix in the orthogonal case: with an orthogonal rotation, $\Phi_{p\times p}$ is the identity matrix.
 
 When choosing between an orthogonal and oblique rotation following PCA, the right choice depends on what we wish to prioritize. An orthogonal rotation keeps more faithful to the data. But if we want to convey that there is significant correlation in the variables, or if we want a more interpretable biplot, then an oblique rotation may be more appropriate. Moreover, various different rotations suitable for different goals exist within either category.
 
@@ -411,7 +411,7 @@ fa(scaled_swiss, nfactors = 2)$loadings
 
 Clearly, neither factor in our two-factor FA is the same as that given by our one-factor FA. Because of this, you'll notice that the dimensions of elements in our decomposition reflect the number $k$ of factors being taken.
 
-The model for FA is $$R_{p\times{p}} \approx L_{p\times{k}}(L_{p\times{k}})^T + U_{p\times{p}}^2.$$ Importantly, FA uses the correlation matrix $R$ rather than the covariance. But by centering and scaling our data, the correlation matrix is made equal to the covariance, giving us $$(\bar{X}_{n\times{p}})^T\bar{X}_{n\times{p}} \approx L_{p\times{k}}(L_{p\times{k}})^T + U_{p\times{p}}^2.$$ Then, as with EVD methods of PCA, we decompose the covariance matrix into the product of a loadings matrix and its transpose. However, there is no diagonal matrix of inertia here, and we add to the decomposition a residuals matrix $U^2$.
+The model for FA is $$R_{p\times{p}} = L_{p\times{k}}(L_{p\times{k}})^T + U_{p\times{p}}^2.$$ Importantly, FA uses the correlation matrix $R$ rather than the covariance. But by centering and scaling our data, the correlation matrix is made equal to the covariance, giving us $$(\bar{X}_{n\times{p}})^T\bar{X}_{n\times{p}} = L_{p\times{k}}(L_{p\times{k}})^T + U_{p\times{p}}^2.$$ Then, as with EVD methods of PCA, we decompose the covariance matrix into the product of a loadings matrix and its transpose. However, there is no diagonal matrix of inertia here, and we add to the decomposition a residuals matrix $U^2$.
 
 Below, we illustrate this decomposition using `psych::fa()`.
 
