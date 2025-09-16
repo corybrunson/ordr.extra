@@ -55,8 +55,7 @@ recover_coord.fa <- function(x) {
 #' @rdname methods-fa
 #' @export
 recover_conference.fa <- function(x) {
-  # loadings are assigned half the diagonal from the eigendecomposition
-  c(.5, .5)
+  c(0, 1)
 }
 
 #' @rdname methods-fa
