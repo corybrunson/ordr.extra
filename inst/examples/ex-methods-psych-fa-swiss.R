@@ -1,29 +1,32 @@
-# data frame of Swiss fertility and socioeconomic indicators
-class(swiss)
-head(swiss)
-# perform factor analysis
-swiss_fa <- psych::fa(
-  r = swiss, nfactors = 2L, rotate = "varimax", scores = "regression", 
-  fm = "ml"
-)
+# data frame of Anderson iris species measurements
+class(iris)
+head(iris)
 
-# wrap as a 'tbl_ord' object
-(swiss_fa <- as_tbl_ord(swiss_fa))
+# perform factor analysis
+iris[, -5] |>
+  psych::fa(nfactors = 2L, rotate = "varimax", scores = "regression", 
+  fm = "ml") |>
+  as_tbl_ord() |>
+  print() -> iris_fa
 
 # recover loadings
-get_cols(swiss_fa, elements = "active")
+get_cols(iris_fa, elements = "active")
 # recover pseudoinverse of weights
-get_cols(swiss_fa, elements = "inv_weight")
+get_cols(iris_fa, elements = "pinv_weight")
 # recover scores
-head(get_rows(swiss_fa, elements = "score"))
+head(get_rows(iris_fa, elements = "score"))
 
 # augment column loadings with uniquenesses
-(swiss_fa <- augment_ord(swiss_fa))
+(iris_fa <- augment_ord(iris_fa))
 
-# symmetric biplot
-swiss_fa %>%
-  ggbiplot() +
-  theme_bw() +
-  geom_cols_vector() + 
-  geom_cols_vector(elements = "inv_weight")
-  expand_limits(x = c(-2, 2.5), y = c(-1.5, 2))
+# biplot
+ggbiplot(iris_fa, scale_cols = 3) +
+  xlim(-1, 4) +
+  ylim(-1, 4) +
+  geom_cols_vector(color = "red") +
+  geom_cols_text_radiate(label = names(iris[1:4]), elements = "active", 
+                         color = "red") +
+  geom_cols_vector(color = "blue", elements = "pinv_weight") +
+  geom_cols_text_repel(label = names(iris[1:4]), elements = "pinv_weight", 
+                       color = "blue") +
+  geom_rows_point(elements = "score")
