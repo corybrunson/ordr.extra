@@ -32,21 +32,21 @@ PCA takes loadings of the variables that capture maximal variance. The resulting
 
 We begin by distinguishing two methods of decomposition for PCA, both of which decompose the centered and scaled data matrix $\bar{X}_{n\times p}$.
 
-The first method of decomposition is singular value decomposition (SVD), used in such PCA functions as `stats::prcomp()` in R. In SVD, we denote the matrix of normalized eigenvectors of $\bar{X}\bar{X}^T$ as $U$ and refer to $U$ as the *left singular vectors*. On the other hand, $V$ is the matrix of normalized eigenvectors of $\bar{X}^T\bar{X}$, called the *right singular vectors*. In either matrix, the columns are the eigenvectors. We refer to the square roots of the positive eigenvalues corresponding to $U$ and $V$ as *singular values*. The diagonal matrix $D$ comprises the singular values in descending order. With these three matrices defined, the final decomposition becomes $$\bar{X}_{n\times{p}} = U_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^T.$$
+The first method of decomposition is singular value decomposition (SVD), used in such PCA functions as `stats::prcomp()` in R. In SVD, we denote the matrix of normalized eigenvectors of $\bar{X}\bar{X}^\top$ as $U$ and refer to $U$ as the *left singular vectors*. On the other hand, $V$ is the matrix of normalized eigenvectors of $\bar{X}^\top\bar{X}$, called the *right singular vectors*. In either matrix, the columns are the eigenvectors. We refer to the square roots of the positive eigenvalues corresponding to $U$ and $V$ as *singular values*. The diagonal matrix $D$ comprises the singular values in descending order. With these three matrices defined, the final decomposition becomes $$\bar{X}_{n\times{p}} = U_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^\top.$$
 
 Drawing upon this equation and the indices of $U$ and $V$ that multiply into the decomposition, we may refer to $U$ and $V$ as our "rows" and "columns," respectively, in our recovery code.
 
-The second method is eigenvalue decomposition (EVD) or eigendecomposition, used in `stats::princomp()` and `psych::principal()`. In EVD, we do not decompose $X$ itself but its covariance matrix $X^TX$. To understand EVD in terms of SVD, again take $X=UDV^T$. Then when we consider the covariance matrix, we have
+The second method is eigenvalue decomposition (EVD) or eigendecomposition, used in `stats::princomp()` and `psych::principal()`. In EVD, we do not decompose $X$ itself but its covariance matrix $X^\topX$. To understand EVD in terms of SVD, again take $X=UDV^\top$. Then when we consider the covariance matrix, we have
 $$
 \begin{align*}
-(\bar{X}_{n\times{p}})^T\bar{X}_{n\times{p}} &= (U_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^T)^TU_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^T \tag{1}\\
-&= ((V_{p\times{p}})^T)^TD_{p\times{p}}^T(U_{n\times{p}})^TU_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^T \tag{2}\\
-&= V_{p\times{p}}D_{p\times{p}}D_{p\times{p}}(V_{p\times{p}})^T \tag{3}\\
-&= V_{p\times{p}}(D_{p\times{p}})^2(V_{p\times{p}})^T \tag{4}.
+(\bar{X}_{n\times{p}})^\top\bar{X}_{n\times{p}} &= (U_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^\top)^\topU_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^\top \tag{1}\\
+&= ((V_{p\times{p}})^\top)^\topD_{p\times{p}}^\top(U_{n\times{p}})^\topU_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^\top \tag{2}\\
+&= V_{p\times{p}}D_{p\times{p}}D_{p\times{p}}(V_{p\times{p}})^\top \tag{3}\\
+&= V_{p\times{p}}(D_{p\times{p}})^2(V_{p\times{p}})^\top \tag{4}.
 \end{align*}
 $$
 
-Note: we use the orthogonality of $U$ to obtain (3) as $U^T=U^{-1}$.
+Note: we use the orthogonality of $U$ to obtain (3) as $U^\top=U^{-1}$.
 
 In either decomposition, $V$ is the loadings matrix. The columns contain the linear combinations of variables that load on each principal component. In SVD, $U$ is used to find the scores; in EVD, $\bar{X}$ must be multiplied into the decomposition to obtain scores, demonstrated later.
 
@@ -113,7 +113,7 @@ recover_conference(pca_stats)
 
 The conference recovery method is, so far, always a static vector, since the methods don't confer inertia differently based on the input. Here, we see that `stats::prcomp()` automatically confers all inertia onto the left singular vectors (a conference of $(0,1)$, alternatively, would indicate that a PCA has conferred its inertia onto the right singular vectors). This means that the scores of `pca_stats` are in principal coordinates and the loadings are in standard coordinates.
 
-When we recover the conference of inertia in `psych::principal()`, we would expect a $(0,1)$ conference given that `psych::principal()` is built around EVD (i.e. there are no rows $U$ to confer onto, only the columns $V^T$). We can check this expectation as follows:
+When we recover the conference of inertia in `psych::principal()`, we would expect a $(0,1)$ conference given that `psych::principal()` is built around EVD (i.e. there are no rows $U$ to confer onto, only the columns $V^\top$). We can check this expectation as follows:
 
 ```{r}
 cov <- cov(scaled_iris) # X*X from EVD
@@ -142,7 +142,7 @@ As indicated by the matrix of all $1$s, the covariance matrix and product of mat
 
 ### Row and Column Elements
 
-As mentioned in the context of SVD, we can classify elements of PCA by what they "contribute" to the decomposition. That is, we can refer to those elements whose rows [columns] are multiplied into the decomposition as "row elements" ["column elements"]. Then when we consider EVD-based PCA, recall that EVD acts on the covariance matrix $X^TX$, the column-wise inner product. Thus the loadings, $VD$, are active column elements.
+As mentioned in the context of SVD, we can classify elements of PCA by what they "contribute" to the decomposition. That is, we can refer to those elements whose rows [columns] are multiplied into the decomposition as "row elements" ["column elements"]. Then when we consider EVD-based PCA, recall that EVD acts on the covariance matrix $X^\topX$, the column-wise inner product. Thus the loadings, $VD$, are active column elements.
 
 ```{r}
 recover_cols.principal <- function(x) {
@@ -411,7 +411,7 @@ fa(scaled_swiss, nfactors = 2)$loadings
 
 Clearly, neither factor in our two-factor FA is the same as that given by our one-factor FA. Because of this, you'll notice that the dimensions of elements in our decomposition reflect the number $k$ of factors being taken.
 
-The model for FA is $$R_{p\times{p}} = L_{p\times{k}}(L_{p\times{k}})^T + U_{p\times{p}}^2.$$ Importantly, FA uses the correlation matrix $R$ rather than the covariance. But by centering and scaling our data, the correlation matrix is made equal to the covariance, giving us $$(\bar{X}_{n\times{p}})^T\bar{X}_{n\times{p}} = L_{p\times{k}}(L_{p\times{k}})^T + U_{p\times{p}}^2.$$ Then, as with EVD methods of PCA, we decompose the covariance matrix into the product of a loadings matrix and its transpose. However, there is no diagonal matrix of inertia here, and we add to the decomposition a residuals matrix $U^2$.
+The model for FA is $$R_{p\times{p}} = L_{p\times{k}}(L_{p\times{k}})^\top + U_{p\times{p}}^2.$$ Importantly, FA uses the correlation matrix $R$ rather than the covariance. But by centering and scaling our data, the correlation matrix is made equal to the covariance, giving us $$(\bar{X}_{n\times{p}})^\top\bar{X}_{n\times{p}} = L_{p\times{k}}(L_{p\times{k}})^\top + U_{p\times{p}}^2.$$ Then, as with EVD methods of PCA, we decompose the covariance matrix into the product of a loadings matrix and its transpose. However, there is no diagonal matrix of inertia here, and we add to the decomposition a residuals matrix $U^2$.
 
 Below, we illustrate this decomposition using `psych::fa()`.
 
@@ -442,15 +442,15 @@ The scores are obtained by multiplying the centered data matrix by the weights (
 head(fa_psych$scores / (scaled_swiss %*% w)) # the matrix of 1s indicates equality
 ```
 
-Then to validate the choice of scores as supplementary row elements, we seek out a decomposition in which the scores constitute row elements. To this end, we define the pseudoinverse of $W_{p\times k}$ as $W^+_{k\times p}=((W_{p\times k})^TW_{p\times k})^{-1}(W_{p\times k})^T.$ Then $\bar{X}_{n\times p}W_{p\times k}W^+_{k\times p}=S_{n\times k}W^+_{k\times p}$ (since $W^+$ is not a true inverse, $WW^+$ is not necessarily the identity matrix). We illustrate the equation below.
+Then to validate the choice of scores as supplementary row elements, we seek out a decomposition in which the scores constitute row elements. To this end, we define the pseudoinverse of $W_{p\times k}$ as $W^+_{k\times p}=((W_{p\times k})^\topW_{p\times k})^{-1}(W_{p\times k})^\top.$ Then $\bar{X}_{n\times p}W_{p\times k}W^+_{k\times p}=S_{n\times k}W^+_{k\times p}$ (since $W^+$ is not a true inverse, $WW^+$ is not necessarily the identity matrix). We illustrate the equation below.
 
 ```{r}
 w_inv <- solve(t(w) %*% w) %*% t(w) # define pseudoinverse W^+
 head((scaled_swiss %*% w %*% w_inv) / (fa_psych$scores %*% w_inv)) # matrix of 1s indicates equality
 ```
-Seeing as the scores constitute row elements in the decomposition, we will indeed include them in **ordr** as supplementary row elements. However, this decomposition also motivates us to consider the transposed pseudoinverse of the weights as supplementary column elements (transposed because $W^+=(W^TW)^{-1}W^T$ implies that the _rows_ of $W^+$ end up corresponding to vectors since, originally, the _columns_ of $W$ correspond to vectors).
+Seeing as the scores constitute row elements in the decomposition, we will indeed include them in **ordr** as supplementary row elements. However, this decomposition also motivates us to consider the transposed pseudoinverse of the weights as supplementary column elements (transposed because $W^+=(W^\topW)^{-1}W^\top$ implies that the _rows_ of $W^+$ end up corresponding to vectors since, originally, the _columns_ of $W$ correspond to vectors).
 
-We can validate this choice for supplementary columns by observing that $(W^+_{k \times p})^T$ and $L_{p\times k}$, our active columns, share the same dimensions. Moreover, we can prove that both elements contain the same inertia. Let $d$ denote the inertia contained in $X$. Then $(\bar{X}_{n\times p})^T\bar{X}_{n\times p} = R_{p\times p}$ contains $d^2$. Recalling that $L_{p\times k}$ contains $d$, it follows that $W_{p\times{k}} = R^{-1}_{p\times{p}}L_{p\times{k}}$ contains $d^{-2}d=d^{-1}$. Consequently, $W^+_{k\times p}=((W_{p\times k})^TW_{p\times k})^{-1}(W_{p\times k})^T$ contains $(d^{-2})^{-1}d^{-1}=d^2d^{-1}=d$. Therefore, the inertia of $(W^+)^T$ and $L$ are equal.
+We can validate this choice for supplementary columns by observing that $(W^+_{k \times p})^\top$ and $L_{p\times k}$, our active columns, share the same dimensions. Moreover, we can prove that both elements contain the same inertia. Let $d$ denote the inertia contained in $X$. Then $(\bar{X}_{n\times p})^\top\bar{X}_{n\times p} = R_{p\times p}$ contains $d^2$. Recalling that $L_{p\times k}$ contains $d$, it follows that $W_{p\times{k}} = R^{-1}_{p\times{p}}L_{p\times{k}}$ contains $d^{-2}d=d^{-1}$. Consequently, $W^+_{k\times p}=((W_{p\times k})^\topW_{p\times k})^{-1}(W_{p\times k})^\top$ contains $(d^{-2})^{-1}d^{-1}=d^2d^{-1}=d$. Therefore, the inertia of $(W^+)^\top$ and $L$ are equal.
 
 From here, we can define the row and column recoverers to return the following.
 
