@@ -23,11 +23,10 @@ head(get_rows(iris_fa, elements = "score"))
 ggbiplot(iris_fa, scale_cols = 3) +
   xlim(-1, 4) +
   ylim(-1, 4) +
-  geom_rows_point(color = Species) +
   geom_cols_vector(color = "red") +
   geom_cols_text_radiate(label = names(iris[1:4]), elements = "active", 
                          color = "red") +
   geom_cols_vector(color = "blue", elements = "pinv_weight") +
   geom_cols_text_repel(label = names(iris[1:4]), elements = "pinv_weight", 
                        color = "blue") +
-  geom_rows_point(elements = "score")
+  geom_rows_point(elements = "score", aes(color = Species))
