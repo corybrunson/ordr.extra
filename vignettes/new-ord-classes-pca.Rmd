@@ -54,14 +54,14 @@ In either decomposition, $V$ is the loadings matrix. The columns contain the lin
 
 *Recovery methods* or *recoverers* refer to functions that retrieve isolated elements of an ordination object. Now that we have discussed the decompositions that serve as foundation for PCA (and later in the vignette, FA), we can frame the recovery methods behind **ordr**.
 
-1. `ordr::recover_inertia()`, which should return the eigenvalues of our EVD or the squared singular values of our SVD; that is, we should obtain the diagonal entries of $D^2$.
-2. `ordr::recover_conference()`, which should indicate whether the inertia we found is distributed to the observations or variables (or, potentially, both or neither).
-3. `ordr::recover_cols()`, which should return the matrix whose columns multiply into the corresponding decomposition.
-4. `ordr::recover_supp_cols()`, which, if appropriate or necessary, should return a column element that is obtained by multiplying some matrix through the decomposition.
-5. `ordr::recover_rows()`, which should return the matrix whose rows multiply into the corresponding decomposition.
-6. `ordr::recover_supp_rows()`, which, if appropriate or necessary, should return a row element that is obtained by multiplying some matrix through the decomposition.
-7. `ordr::recover_coord()`, which should return the coordinate names of our ordination object.
-8. `ordr::recover_aug_rows()` and (9) `ordr::recover_aug_cols()`, which do not recover raw elements of the PCA but rather reassemble previously recovered elements for the function `ordr::augment_ord()`.
+* [ ] `ordr::recover_inertia()`, which should return the eigenvalues of our EVD or the squared singular values of our SVD; that is, we should obtain the diagonal entries of $D^2$.
+* [ ] `ordr::recover_conference()`, which should indicate whether the inertia we found is distributed to the observations or variables (or, potentially, both or neither).
+* [ ] `ordr::recover_cols()`, which should return the matrix whose columns multiply into the corresponding decomposition.
+* [ ] `ordr::recover_supp_cols()`, which, if appropriate or necessary, should return a column element that is obtained by multiplying some matrix through the decomposition.
+* [ ] `ordr::recover_rows()`, which should return the matrix whose rows multiply into the corresponding decomposition.
+* [ ] `ordr::recover_supp_rows()`, which, if appropriate or necessary, should return a row element that is obtained by multiplying some matrix through the decomposition.
+* [ ] `ordr::recover_coord()`, which should return the coordinate names of our ordination object.
+* [ ] `ordr::recover_aug_rows()` and (9) `ordr::recover_aug_cols()`, which do not recover raw elements of the PCA but rather reassemble previously recovered elements for the function `ordr::augment_ord()`.
 
 While these recovery methods will be defined based on the GDA technique and theory at hand, we define the function `as_tbl_ord()` uniformly as the below helper function from **ordr** defined to reduce redundancy and expedite debugging.
 
