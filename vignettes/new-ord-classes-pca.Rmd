@@ -127,12 +127,16 @@ The conference recovery method is, so far, always a static vector, since the met
 
 When we recover the conference of inertia in `psych::principal()`, we would expect a $(0,1)$ conference given that `psych::principal()` is built around EVD (i.e. there are no rows $U$ to confer onto, only the columns $V^\top$). We can check this expectation as follows:
 
+<details>
+<summary>Show matrix algebra validation</summary>
 ```{r}
 cov <- cov(scaled_iris) # X*X from EVD
 evd <- eigen(cov)
 (evd$vectors %*% diag(sqrt(evd$values))) / unclass(pca_psych$loadings) # observe loadings are equal to VD up to sign
 ```
-Note that we use elementwise division to show equality rather than `all.equal()` or `identical()` because rounding errors may result in small differences in computation despite mathematical equivalence.
+</details>
+
+Note that we use element-wise division to show equality rather than `all.equal()` or `identical()` because rounding errors may result in small differences in computation despite mathematical equivalence.
 
 Hence, we have $L_{p\times{p}} = V_{p\times{p}}D_{p\times{p}}$, where $L$ denotes the loadings matrix. Since $L$ will be the matrix we recover for the right factor, this implies a $(0,1)$ conference. As such, we define the following recovery method.
 
@@ -146,10 +150,12 @@ recover_conference.principal(pca_psych)
 
 To illustrate the entire decomposition, we have the following code.
 
+<details>
+<summary>Show matrix algebra validation</summary>
 ```{r}
 cov / (evd$vectors %*% diag(evd$values) %*% t(evd$vectors))
 ```
-
+</details>
 As indicated by the matrix of all $1$s, the covariance matrix and product of matrices are equal.
 
 ### Row and Column Elements
@@ -165,10 +171,13 @@ recover_cols.principal(pca_psych)
 ```
 But since we are drawing upon a column-wise inner product, we do not have an active row element in our PCA. Instead, we treat the scores as _supplementary_ elements. In EVD-based methods like `psych::principal()`, we can still obtain $X$ by multiplying the rows of scores by transposed loadings with full inertia. 
 
+<details>
+<summary>Show matrix algebra validation</summary>
 ```{r}
 head((pca_psych$scores %*% t(pca_psych$loadings)) / scaled_iris) # matrix of all 1s indicates equality
 ```
 
+</details>
 Hence, the scores constitute our supplementary rows. And that $\bar{X}_{n \times p}$ is obtained by multiplying the scores by the loadings with full intertia shows the scores are in standard coordinates (i.e. no inertia has been conferred onto them).
 
 ```{r}
@@ -216,21 +225,29 @@ Here, we see analogous biplots for the same PCA followed by no rotation, followe
 
 Now let us compare the categories of rotation by examining the linear algebra at play. In PCA followed by an orthogonal rotation, our loadings are the original loadings matrix $L_{p\times{p}}$ multiplied by the orthogonal rotation matrix $T_{p\times{p}}$.
 
+<details>
+<summary>Show matrix equality validation</summary>
 ```{r}
 pca_orth$loadings[,c("RC1", "RC2", "RC3", "RC4")] / (pca$loadings %*% pca_orth$rot.mat) # matrices are equal up to sign
 ```
+</details>
 
 But in the oblique case, we have two loadings matrices. The first is the *pattern matrix* $L_{p\times{p}}$, which represents the loadings as we first defined them (i.e. the coefficients in our linear combination of variables that forms each principal component, prior to any rotation). The second is the *structure matrix* $S_{p\times{p}} = L_{p\times{p}}T_{p\times{p}}$. Below, we demonstrate that the extractable loadings element from an oblique-transformed `principal` object is the structure matrix.
 
+<details>
+<summary>Show matrix equality validation</summary>
 ```{r}
 pca_ob$loadings[,c("TC1", "TC2", "TC3", "TC4")] / (pca$loadings %*% pca_ob$rot.mat) # LT equals the extracted loadings matrix up to sign
 ```
 
 The pattern matrix is useful when we want to consider the principal components apart from their correlations with one another. It directly explains how much each principal component loads into each variable. On the other hand, the structure matrix contains correlations between factors and variables, and it tends to be more stable between samples. Notably, the structure matrix can be obtained from the pattern matrix by multiplying the latter by $\Phi_{p\times p}$, the interfactor correlation matrix.
 
+<details>
+<summary>Show matrix equality validation</summary>
 ```{r}
-(pca_ob$loadings %*% pca_ob$Phi) / pca_ob$Structure
+(pca_ob$loadings %*% pca_ob$Phi) / pca_ob$Structure # matrix of all 1s indicates equality
 ```
+</details>
 
 This is why we have just one loadings matrix in the orthogonal case: with an orthogonal rotation, $\Phi_{p\times p}$ is the identity matrix.
 
