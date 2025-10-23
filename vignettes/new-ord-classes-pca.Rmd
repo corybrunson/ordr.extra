@@ -48,7 +48,8 @@ The first method of decomposition is singular value decomposition (SVD), used in
 
 Drawing upon this equation and the indices of $U$ and $V$ that multiply into the decomposition, we may refer to $U$ and $V$ as our "rows" and "columns," respectively, in our recovery code.
 
-The second method is eigenvalue decomposition (EVD) or eigendecomposition, used in `stats::princomp()` and `psych::principal()`. In EVD, we do not decompose $X$ itself but its covariance matrix $X^\topX$. To understand EVD in terms of SVD, again take $X=UDV^\top$. Then when we consider the covariance matrix, we have
+The second method is eigenvalue decomposition (EVD) or eigendecomposition, used in `stats::princomp()` and `psych::principal()`. In EVD, we do not decompose $X$ itself but its covariance matrix $X^\top X$. To understand EVD in terms of SVD, again take $X=UDV^\top$. Then when we consider the covariance matrix, we have
+
 $$
 \begin{align*}
 (\bar{X}_{n\times{p}})^\top\bar{X}_{n\times{p}} &= (U_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^\top)^\topU_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^\top \tag{1}\\
@@ -160,7 +161,7 @@ As indicated by the matrix of all $1$s, the covariance matrix and product of mat
 
 ### Row and Column Elements
 
-As mentioned in the context of SVD, we can classify elements of PCA by what they "contribute" to the decomposition. That is, we can refer to those elements whose rows [columns] are multiplied into the decomposition as "row elements" ["column elements"]. Then when we consider EVD-based PCA, recall that EVD acts on the covariance matrix $X^\topX$, the column-wise inner product. Thus the loadings, $VD$, are active column elements.
+As mentioned in the context of SVD, we can classify elements of PCA by what they "contribute" to the decomposition. That is, we can refer to those elements whose rows [columns] are multiplied into the decomposition as "row elements" ["column elements"]. Then when we consider EVD-based PCA, recall that EVD acts on the covariance matrix $X^\top X$, the column-wise inner product. Thus the loadings, $VD$, are active column elements.
 
 ```{r}
 recover_cols.principal <- function(x) {
