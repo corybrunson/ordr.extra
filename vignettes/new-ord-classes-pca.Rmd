@@ -30,15 +30,15 @@ PCA takes loadings of the variables that capture maximal variance. The resulting
 
 We can use the following checklist as a framework for dissecting and recompiling a geometric method to fit into **ordr**.
 
-[ ] Inspect underlying decomposition for the model.
-[ ] Verify the conference of inertia (i.e. distribution of variance) based on decomposition.
-[ ] Write recovery functions of decomposition elements.
-[ ] Validate recovery with comparison to existing methods in **ordr** or matrix algebra corresponding to decomposition.
-[ ] Write augmentation functions to generate `tbl_ord` objects.
-[ ] Write a "methods" script containing all recovery and augmentation functions.
-[ ] Write an "examples" script using the new methods.
-[ ] Write a unit test script using the new methods.
-[ ] Submit the files and documentation in a pull request to **ordr.extra**.
+* [ ] Inspect underlying decomposition for the model.
+* [ ] Verify the conference of inertia (i.e. distribution of variance) based on decomposition.
+* [ ] Write recovery functions of decomposition elements.
+* [ ] Validate recovery with comparison to existing methods in **ordr** or matrix algebra corresponding to decomposition.
+* [ ] Write augmentation functions to generate `tbl_ord` objects.
+* [ ] Write a "methods" script containing all recovery and augmentation functions.
+* [ ] Write an "examples" script using the new methods.
+* [ ] Write a unit test script using the new methods.
+* [ ] Submit the files and documentation in a pull request to **ordr.extra**.
 
 ### EVD and SVD
 
