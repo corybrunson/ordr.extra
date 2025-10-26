@@ -20,7 +20,7 @@
 #' @template return-methods
 #' @family methods for eigen-decomposition-based techniques
 #' @family models from the psych package
-#' @example inst/examples/ex-methods-psych-fa-swiss.R
+#' @example inst/examples/ex-methods-psych-fa-iris.R
 NULL
 
 #' @rdname methods-fa
