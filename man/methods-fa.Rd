@@ -85,17 +85,18 @@ head(get_rows(iris_fa, elements = "score"))
 # augment column loadings with uniquenesses
 (iris_fa <- augment_ord(iris_fa))
 
-# biplot
+# biplot with both loadings and pseudoinverse weights
 ggbiplot(iris_fa, scale_cols = 3) +
-  xlim(-1, 4) +
-  ylim(-1, 4) +
-  geom_cols_vector(color = "red") +
+  geom_rows_point(elements = "score", aes(color = Species)) +
+  geom_cols_vector(linetype = "solid") +
   geom_cols_text_radiate(label = names(iris[1:4]), elements = "active", 
-                         color = "red") +
-  geom_cols_vector(color = "blue", elements = "pinv_weight") +
+                         linetype = "solid") +
+  geom_cols_vector(linetype = "dotted", elements = "pinv_weight") +
   geom_cols_text_repel(label = names(iris[1:4]), elements = "pinv_weight", 
-                       color = "blue") +
-  geom_rows_point(elements = "score", aes(color = Species))
+                       linetype = "dotted", size = 3.5) +
+  # include vector labels in plot window (specific to graphics device)
+  scale_x_continuous(limits = ~ range(.x, c(-2, 5))) +
+  scale_y_continuous(limits = ~ range(.x, c(-4, 3)))
 }
 \seealso{
 Other methods for eigen-decomposition-based techniques: 
