@@ -20,25 +20,13 @@ In this series of vignettes intended for R users with experience in geometric da
 
 In addition to showing how ordination elements are extracted and recompiled for the `tbl_ord` end product, we illustrate how unit tests and examples are written to complete a contribution. Finally, we apply both of our example contributions to the package on a single data set to illustrate the theoretical unity between ordination methods that **ordr** seeks to convey.
 
+The process demonstrated in this vignette follows this [sketch of the extension process](../doc/new-ord-classes-support-checklist.html).
+
 # Principal Component Analysis
 
 Principal component analysis (PCA) is a geometric statistical method by which multivariate data is reduced to have fewer dimensions, expending as little variance as possible in the process. The goal is to more easily visualize and interpret patterns in a data set. PCA is useful in various fields of research; as an example later in the vignette, we will demonstrate how a 14-variable psychometric data set can be accurately intrepreted on just two axes using PCA.
 
 PCA takes loadings of the variables that capture maximal variance. The resulting principal components correspond to new, *orthogonal* axes on which we can represent our data.
-
-### Recovery for PCA Methods
-
-We can use the following checklist as a framework for dissecting and recompiling a geometric method to fit into **ordr**.
-
-* [ ] Inspect underlying decomposition for the model.
-* [ ] Verify the conference of inertia (i.e. distribution of variance) based on decomposition.
-* [ ] Write recovery functions of decomposition elements.
-* [ ] Validate recovery with comparison to existing methods in **ordr** or matrix algebra corresponding to decomposition.
-* [ ] Write augmentation functions to generate `tbl_ord` objects.
-* [ ] Write a "methods" script containing all recovery and augmentation functions.
-* [ ] Write an "examples" script using the new methods.
-* [ ] Write a unit test script using the new methods.
-* [ ] Submit the files and documentation in a pull request to **ordr.extra**.
 
 ### EVD and SVD
 
