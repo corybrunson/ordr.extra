@@ -48,18 +48,23 @@ The first method of decomposition is singular value decomposition (SVD), used in
 
 Drawing upon this equation and the indices of $U$ and $V$ that multiply into the decomposition, we may refer to $U$ and $V$ as our "rows" and "columns," respectively, in our recovery code.
 
-The second method is eigenvalue decomposition (EVD) or eigendecomposition, used in `stats::princomp()` and `psych::principal()`. In EVD, we do not decompose $X$ itself but its covariance matrix $X^\top X$. To understand EVD in terms of SVD, again take $X=UDV^\top$. Then when we consider the covariance matrix, we have
+The second method is eigenvalue decomposition (EVD) or eigendecomposition, used in `stats::princomp()` and `psych::principal()`. In EVD, we do not decompose $X$ itself but its covariance matrix as $X^\top X = V D^2 V^\top$.
+
+<details>
+<summary> Derivation of EVD from SVD </summary>
+To understand EVD in terms of SVD, again take $X=UDV^\top$. Then when we consider the covariance matrix, we have
 
 $$
 \begin{align*}
-(\bar{X}_{n\times{p}})^\top\bar{X}_{n\times{p}} &= (U_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^\top)^\topU_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^\top \tag{1}\\
-&= ((V_{p\times{p}})^\top)^\topD_{p\times{p}}^\top(U_{n\times{p}})^\topU_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^\top \tag{2}\\
+(\bar{X}_{n\times{p}})^\top \bar{X}_{n\times{p}} &= (U_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^\top )^\top  U_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^\top \tag{1}\\
+&= ((V_{p\times{p}})^\top )^\top D_{p\times{p}}^\top (U_{n\times{p}})^\top U_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^\top \tag{2}\\
 &= V_{p\times{p}}D_{p\times{p}}D_{p\times{p}}(V_{p\times{p}})^\top \tag{3}\\
 &= V_{p\times{p}}(D_{p\times{p}})^2(V_{p\times{p}})^\top \tag{4}.
 \end{align*}
 $$
 
-Note: we use the orthogonality of $U$ to obtain (3) as $U^\top=U^{-1}$.
+Note: we use the orthogonality of $U$ to obtain (3) as $U^\top = U^{-1}$.
+</details>
 
 In either decomposition, $V$ is the loadings matrix. The columns contain the linear combinations of variables that load on each principal component. In SVD, $U$ is used to find the scores; in EVD, $\bar{X}$ must be multiplied into the decomposition to obtain scores, demonstrated later.
 
@@ -116,9 +121,14 @@ recover_inertia.principal(pca_psych)
 ```
 Now, our inertia is consistent with that recovered from the `prcomp` object.
 
-With the inertia established, next we consider how it is conferred. Not distributing the inertia (i.e. not multiplying out the matrix $D$ in SVD or EVD) maintains $U$ and $V$ as matrices of unit vectors. Thus, we say that the cases and variables are in standard coordinates. But when we *do* distribute the inertia to one or both other matrices in the decomposition, we obtain the cases and/or variables in principal coordinates.
+With the inertia established, next we consider how it is conferred. 
+
+<details>
+<summary> Implications of different conferences of inertia </summary>
+Not distributing the inertia (i.e. not multiplying out the matrix $D$ in SVD or EVD) maintains $U$ and $V$ as matrices of unit vectors. Thus, we say that the cases and variables are in standard coordinates. But when we *do* distribute the inertia to one or both other matrices in the decomposition, we obtain the cases and/or variables in principal coordinates.
 
 Assuming we do wish to have principal coordinates, EVD-based techniques leave only the option of conferring inertia onto one matrix of singular vectors. This depends on the implementation (and how we interpret it), and in the case of `psych::principal()` it would be the right singular vectors. However, the conference of inertia in SVD-based techniques depends on the user's motivation. In short, if the user wishes to maintain the approximate Euclidean distances between data cases, then conference onto the left singular vectors is ideal. If instead the user wishes to maintain the approximate correlations between variables, then conference onto the right singular vectors is ideal.
+</details>
 
 ```{r}
 recover_conference(pca_stats)
@@ -135,11 +145,13 @@ cov <- cov(scaled_iris) # X*X from EVD
 evd <- eigen(cov)
 (evd$vectors %*% diag(sqrt(evd$values))) / unclass(pca_psych$loadings) # observe loadings are equal to VD up to sign
 ```
-</details>
 
 Note that we use element-wise division to show equality rather than `all.equal()` or `identical()` because rounding errors may result in small differences in computation despite mathematical equivalence.
 
-Hence, we have $L_{p\times{p}} = V_{p\times{p}}D_{p\times{p}}$, where $L$ denotes the loadings matrix. Since $L$ will be the matrix we recover for the right factor, this implies a $(0,1)$ conference. As such, we define the following recovery method.
+Hence, we have $L_{p\times{p}} = V_{p\times{p}}D_{p\times{p}}$, where $L$ denotes the loadings matrix. Since $L$ will be the matrix we recover for the right factor, this implies a $(0,1)$ conference. 
+</details>
+
+As such, we define the following recovery method.
 
 ```{r}
 recover_conference.principal <- function(x) {
@@ -156,8 +168,8 @@ To illustrate the entire decomposition, we have the following code.
 ```{r}
 cov / (evd$vectors %*% diag(evd$values) %*% t(evd$vectors))
 ```
-</details>
 As indicated by the matrix of all $1$s, the covariance matrix and product of matrices are equal.
+</details>
 
 ### Row and Column Elements
 
@@ -170,6 +182,7 @@ recover_cols.principal <- function(x) {
 
 recover_cols.principal(pca_psych)
 ```
+
 But since we are drawing upon a column-wise inner product, we do not have an active row element in our PCA. Instead, we treat the scores as _supplementary_ elements. In EVD-based methods like `psych::principal()`, we can still obtain $X$ by multiplying the rows of scores by transposed loadings with full inertia. 
 
 <details>
@@ -179,7 +192,8 @@ head((pca_psych$scores %*% t(pca_psych$loadings)) / scaled_iris) # matrix of all
 ```
 
 </details>
-Hence, the scores constitute our supplementary rows. And that $\bar{X}_{n \times p}$ is obtained by multiplying the scores by the loadings with full intertia shows the scores are in standard coordinates (i.e. no inertia has been conferred onto them).
+
+Hence, the scores constitute our supplementary rows. And that $\bar{X}_{n \times p}$ is obtained by multiplying the scores by the loadings with full inertia shows the scores are in standard coordinates (i.e. no inertia has been conferred onto them).
 
 ```{r}
 recover_rows.principal <- function(x) {
@@ -205,9 +219,12 @@ Notice that in defining `recover_supp_rows.principal()`, we must also account fo
 
 ### PCA Followed by Rotation
 
-Next, we discuss the topic of rotations in PCA. Rotation is an optional step in PCA wherein our loadings matrix is multiplied by a rotation matrix. The motivation for doing so is to achieve a "simple structure" (i.e. a structure in which the latent variables behind our principal components provide an interpretable, explainable solution). We seek to extend **ordr** to work with these PCAs followed by rotation because, as we will demonstrate, rotations are changes of basis. Thus, the analysis of such a model can be completely different than that of the corresponding unrotated model. So, it makes sense to recover elements from the rotated model in its own right rather than simply recover the rotation separately, then extract all the same elements as we would from the unrotated PCA.
+Next, we discuss the topic of rotations in PCA. Rotation is an optional step in PCA wherein our loadings matrix is multiplied by a rotation matrix. The motivation for doing so is to achieve a "simple structure" (i.e. a structure in which the latent variables behind our principal components provide an interpretable, explainable solution). We seek to extend **ordr** to work with these PCAs followed by rotation because, as we will demonstrate, rotations are changes of basis. Thus, the analysis of such a model can be completely different than that of the corresponding unrotated model. So, it makes sense to recover elements from the rotated model in its own right rather than to simply recover the rotation separately, then extract all the same elements as we would from the unrotated PCA.
 
+<details>
+<summary> Remark about precision of language </summary>
 Before getting back into the details of extending **ordr**, we make a disclaimer about precision of language in regards to rotations. Because rotations can compromise the orthogonality of our principal components and because that orthogonality is a fundamental aspect of PCA, it is contested that PCA with rotation is still PCA. Thus, we will refer to these solutions as "PCA *followed by* a rotation."
+</details>
 
 We classify rotations as either orthogonal or oblique. The prior necessarily preserves orthogonality between the principal axes; the latter does not. And (mathematically speaking), oblique rotations are not rotations at all since they are not angle-preserving.
 
@@ -240,7 +257,10 @@ But in the oblique case, we have two loadings matrices. The first is the *patter
 ```{r}
 pca_ob$loadings[,c("TC1", "TC2", "TC3", "TC4")] / (pca$loadings %*% pca_ob$rot.mat) # LT equals the extracted loadings matrix up to sign
 ```
+</details>
 
+<details>
+<summary> Interpretation of pattern versus structure matrices </summary>
 The pattern matrix is useful when we want to consider the principal components apart from their correlations with one another. It directly explains how much each principal component loads into each variable. On the other hand, the structure matrix contains correlations between factors and variables, and it tends to be more stable between samples. Notably, the structure matrix can be obtained from the pattern matrix by multiplying the latter by $\Phi_{p\times p}$, the interfactor correlation matrix.
 
 <details>
@@ -251,8 +271,12 @@ The pattern matrix is useful when we want to consider the principal components a
 </details>
 
 This is why we have just one loadings matrix in the orthogonal case: with an orthogonal rotation, $\Phi_{p\times p}$ is the identity matrix.
+</details>
 
+<details>
+<summary> How to decide between orthogonal and oblique rotation </summary>
 When choosing between an orthogonal and oblique rotation following PCA, the right choice depends on what we wish to prioritize. An orthogonal rotation keeps more faithful to the data. But if we want to convey that there is significant correlation in the variables, or if we want a more interpretable biplot, then an oblique rotation may be more appropriate. Moreover, various different rotations suitable for different goals exist within either category.
+</details>
 
 For **ordr**, we use the same recovery method for rotated PCAs as for unrotated. Furthermore, we opt against adding recovery methods for the rotation matrices, the motivation being that rotations do not necessarily uphold key characteristics of PCA (namely orthogonality and maximal captured variance). Because of this, it is debated whether PCA followed by rotation/transformation is PCA at all; thus, it may be misguided to take the rotation matrix as an element of PCA for **ordr**.
 
@@ -272,7 +296,7 @@ recover_coord.principal <- function(x) {
 
 recover_coord.principal(pca_psych)
 ```
-Now, the last step in writing `psych::principal()` into **ordr** is the augmentation functions that are essential to inspecting and understanding a `tbl_ord` object. Essentially, the purpose of these functions is to place a name to the various PCA elements that have been extracted and join these elements with information that is not part of the matrix decomposition. The augmented matrices are where the user should see whether PCA elements come from the rows or columns and whether they are active or supplementary. Moreover, they should offer the user measures such as the mean and standard deviation when available from the original function output. We write the following functions accordingly.
+Now, the last step in writing `psych::principal()` methods into **ordr** is the augmentation functions that are essential to inspecting and understanding a `tbl_ord` object. Essentially, the purpose of these functions is to place a name to the various PCA elements that have been extracted and join these elements with information that is not part of the matrix decomposition. The augmented matrices are where the user should see whether PCA elements come from the rows or columns and whether they are active or supplementary. Moreover, they should offer the user measures such as the mean and standard deviation when available from the original function output. We write the following functions accordingly.
 
 Starting with `recover_aug_rows.principal()`, our function should be defined to indicate that no row elements are active, and that the supplementary elements are scores *if* a scores object exists.
 
@@ -301,6 +325,8 @@ recover_aug_rows.principal <- function(x) {
 
 We must also be sure that the number of rows in the augmented matrix agree with those of the extracted matrix.
 
+<details>
+<summary> Verification of number of rows </summary>
 ```{r}
 library(tibble) # load {tibble} in order to use `ordr:::as_tbl_ord()` below
 
@@ -308,6 +334,7 @@ ordr:::as_tbl_ord(pca_psych) |>
   recover_aug_rows.principal() |>
   nrow()
 ```
+</details>
 
 The scores constitute a $150 \times 4$ matrix, consistent with the dimensions here. We similarly define and validate `recover_aug_cols.principal()`. Here, we will augment the column vectors with attributes `center` and `scale` since these values correspond to the variables and are required for some biplot layers like calibrated axes.
 
@@ -322,11 +349,17 @@ recover_aug_cols.principal <- function(x) {
   res$.element <- "active"
   res
 }
+```
 
+<details>
+<summary> Verification of number of rows </summary>
+```{r}
 ordr:::as_tbl_ord(pca_psych) |>
   recover_aug_cols.principal() |>
   nrow()
 ```
+</details>
+
 Last, we write `recover_aug_coord.principal()` to add coordinate names and a column of standard deviations (which are directly provided in the output of `psych::principal()`, so users may expect them) to the loadings element we recovered. Again, we will verify that the number of rows is what we would expect.
 
 ```{r}
@@ -336,11 +369,16 @@ recover_aug_coord.principal <- function(x) {
     sdev = sqrt(x[["values"]][seq(1, ncol(x[["loadings"]]))])
   )
 }
+```
 
+<details>
+<summary> Verification of number of rows </summary>
+```{r}
 ordr:::as_tbl_ord(pca_psych) |>
   recover_aug_coord.principal() |>
   nrow()
 ```
+</details>
 
 With these functions defined, we can obtain the `tbl_ord` object below in two concise ways, either by making our existing "principal" object a `tbl_ord` or by generating the `tbl_ord` from scratch.
 
