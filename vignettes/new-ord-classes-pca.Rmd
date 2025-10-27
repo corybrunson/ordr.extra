@@ -1,7 +1,8 @@
 ---
 title: "new-ord-classes-pca"
-output: rmarkdown::html_vignette:
-  toc: TRUE
+output: 
+  rmarkdown::html_vignette:
+    toc: TRUE
 vignette: >
   %\VignetteIndexEntry{new-ord-classes-pca}
   %\VignetteEngine{knitr::rmarkdown}

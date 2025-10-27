@@ -1,7 +1,8 @@
 ---
 title: "new-ord-classes-fa"
-output: rmarkdown::html_vignette:
-  toc: TRUE
+output: 
+  rmarkdown::html_vignette:
+    toc: TRUE
 vignette: >
   %\VignetteIndexEntry{new-ord-classes-fa}
   %\VignetteEngine{knitr::rmarkdown}
@@ -14,14 +15,13 @@ knitr::opts_chunk$set(
 ```
 
 ```{r, message = FALSE}
-library(ordr.extra) # load {ordr.extra}
+library(ordr) # load {ordr}
+library(tibble) # load {tibble} for recoverer definitions
 ```
 
-# Introduction
+# Introduction to Factor Analysis
 
 In this vignette, we demonstrate how to integrate a new ordination method into **ordr** in accordance with the method's underlying mathematical theory. Specifically, we use the incorporation of `psych::fa()` as an example. We will at times refer to the preceding vignette, "Writing Recovery Methods for New Ordination Classes--PCA" to summarize some steps of the process and to compare geometric methods, so it is recommended to begin with reading that vignette.
-
-# Factor Analysis
 
 Factor analysis (FA) is a family of dimension-reducing methods of geometric data analysis. Unlike PCA, FA assumes the existence of latent variables (factors) behind a set of data, the number of which is less than the number of variables originally taken to be in the set. And just like principal components, the factors in FA are linear combinations of the variables, and the variables are said to load onto the factors.
 
@@ -143,9 +143,9 @@ As previously noted, the decomposition for FA does not have a distinct inertia m
 
 To validate a conference of inertia for `psych::fa()`, we will use an alternative interpretation of inertia that can generalize from PCA to FA.
 
-One meaning of the inertia in PCA is as the variances of the principal components. So, we can obtain the inertia by squaring each loadings entry, then taking the column sums, and lastly multiplying by $n−1$. Equivalence between this and the previous eigenvalue method of extracting inertia is demonstrated below.
+One meaning of the inertia in PCA is as the variances of the principal components. So, we can obtain the inertia by squaring each loadings entry, then taking the column sums, and lastly multiplying by $n−1$. Equivalence between this and the previous eigenvalue method of extracting inertia can be demonstrated using the code below.
 
-```{r}
+```{r, eval = FALSE}
 recover_inertia.principal(pca_psych)
 colSums(pca_psych$loadings^2) * (nrow(scaled_iris) - 1)
 ```
@@ -289,7 +289,7 @@ So, all augmentations indeed give the correct number of rows. And thus, we can g
 ```{r}
 as_tbl_ord.fa <- getFromNamespace("as_tbl_ord_default", "ordr")
 
-ordr:::as_tbl_ord(fa_psych) |>
+as_tbl_ord(fa_psych) |>
   augment_ord()
 ```
 
@@ -324,6 +324,8 @@ head(get_rows(swiss_fa, elements = "score"))
 Similarly, we apply the tests from `test-stats-factanal.r` to our `psych::fa()` recoverers for the unit test script. Note that, in **ordr.extra**, unit tests for GDA methods of the same package are included in a single script. In this case, we write the following unit tests for `psych::fa()` after the previous unit tests for `psych::principal()` in one file, `test-psych.R`.
 
 ```{r}
+library(testthat)
+
 fit_fa <- psych::fa(r = swiss, nfactors = 2L, rotate = "varimax", scores = "regression", 
                     fm = "ml")
 
