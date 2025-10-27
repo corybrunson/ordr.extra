@@ -220,9 +220,14 @@ library(GPArotation) # load {GPArotation} to access oblique rotation below
 pca <- principal(scaled_iris, rotate = "none", nfactors = 4)
 pca_orth <- principal(scaled_iris, rotate = "varimax", nfactors = 4) # orthogonal example
 pca_ob <- principal(scaled_iris, rotate = "oblimin", nfactors = 4) # oblique example
+
+op <- par(mfrow = c(1, 3)) # place biplots side by side
+
 biplot.psych(pca, choose = c(1,2))
 biplot.psych(pca_orth, choose = c("RC1","RC2"))
 biplot.psych(pca_ob, choose = c("TC1","TC2"))
+
+par(op)
 ```
 
 Here, we see analogous biplots for the same PCA followed by no rotation, followed by an orthogonal rotation, and followed by an oblique rotation, respectively. As illustrated by the biplots, both orthogonal and oblique rotations shift the variable vectors' endpoints among the rotated principal axes (since these endpoints are the rotated loadings). However, both categories of rotation preserve the correlation between variable vectors among the rotated principal axes (the angles between vectors appear to change in the oblique rotation biplot, but recall that the rotated PC1 and rotated PC2 are non-orthogonal, and the biplot does not communicate this).

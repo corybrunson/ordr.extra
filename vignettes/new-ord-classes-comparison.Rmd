@@ -18,7 +18,7 @@ This vignette proceeds the two "Writing Recovery Methods for New Ordination Clas
 
 # Comparison of PCA and FA
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, message = FALSE}
 library(ordr.extra) # load {ordr.extra} to access `hcw` data below
 
 scaled_hcw <- scale(hcw[, tail(colnames(hcw), 14)])
@@ -47,8 +47,12 @@ Next, we perform FA on the same centered and scaled data, again followed by an o
 hcw_fa <- scaled_hcw |>
   ordinate(~ fa(., nfactors = 2L, rotate = "oblimin"))
 
+op <- par(mfrow = c(1, 2))
+
 biplot.psych(hcw_pca)
 biplot.psych(hcw_fa)
+
+par(op)
 ```
 
 The biplots are noticeably similar in both the geometry of the variable vectors and the distribution of observations. Comparing the loadings and scores from both GDA techniques, we can see that most results do align quite closely between techniques (we divide the matrices entry-wise so that values closer to 1 below indicate near-identical entries).
