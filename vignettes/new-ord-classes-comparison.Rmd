@@ -1,6 +1,7 @@
 ---
 title: "new-ord-classes-comparison"
-output: rmarkdown::html_vignette
+output: rmarkdown::html_vignette:
+  toc: TRUE
 vignette: >
   %\VignetteIndexEntry{new-ord-classes-comparison}
   %\VignetteEngine{knitr::rmarkdown}
@@ -47,7 +48,7 @@ Next, we perform FA on the same centered and scaled data, again followed by an o
 hcw_fa <- scaled_hcw |>
   ordinate(~ fa(., nfactors = 2L, rotate = "oblimin"))
 
-op <- par(mfrow = c(1, 2))
+op <- par(mfrow = c(1, 2)) # place biplots side by side
 
 biplot.psych(hcw_pca)
 biplot.psych(hcw_fa)
@@ -82,7 +83,3 @@ Not only are the observations spread slightly more, but the data appears more ev
 Additionally, most variable vectors in the unrotated PCA biplot no longer load as clearly onto a single component. This makes it more challenging to determine the latent variables that explain the variance in our original variables. In this case, the study from which our data was obtained termed the two principal components _consideration_ and _structure_, respectively. That PCA as well as the FA we performed both allow us to easily make statements such as, "Question 4 on the questionnaire strongly assesses consideration, whilst question 12 strongly assesses structure." In a PCA without rotation, such interpretations are not as clear.
 
 Ultimately, we see that FA is useful for obtaining a simply structure with interpretable latent variables. If we want a similar result that captures more variance and thus retains more information from the original data, we may opt for PCA followed by rotation. And if we want to capture more variance still, perhaps at the expense of interpretability, then unrotated PCA delivers that.
-
-# Sources
-
-1. Guastello, A. D., Brunson, J. C., Sambuco, N., Dale, L. P., Tracy, N. A., Allen, B. R., & Mathews, C. A. (2024). Predictors of professional burnout and fulfilment in a longitudinal analysis on nurses and healthcare workers in the COVID-19 pandemic. Journal of clinical nursing, 33(1), 288–303. https://doi.org/10.1111/jocn.16463

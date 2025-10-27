@@ -1,6 +1,7 @@
 ---
 title: "new-ord-classes-pca"
-output: rmarkdown::html_vignette
+output: rmarkdown::html_vignette:
+  toc: TRUE
 vignette: >
   %\VignetteIndexEntry{new-ord-classes-pca}
   %\VignetteEngine{knitr::rmarkdown}
@@ -384,7 +385,7 @@ as_tbl_ord(pca_psych) |>
 ordinate(scaled_iris, ~ principal(., nfactors = 4, rotate = "none"))
 ```
 
-### Examples, Unit Tests, and Submission
+### Examples
 
 With all of our recoverers written and validated, we finalize the contribution to **ordr.extra** by defining and documenting the recoverers in a "methods" file following the same pattern as `methods-stats-prcomp.r`.
 
@@ -412,6 +413,8 @@ get_cols(iris_pca)
 
 }# {psych}
 ```
+
+### Methods
 
 The last file to complete our contribution is a unit test script. Again, we can follow the format of the analogous `test-stats-prcomp.r` and write the following:
 
@@ -441,8 +444,6 @@ test_that("`as_tbl_ord()` coerces 'principal' objects", {
 })
 ```
 
-The function `devtools::check()` is useful for verifying that the contribution will not generate errors or warnings. Once the extension has been formatted and checked, the last step is to submit a pull request following the guidelines of `CONTRIBUTING.md`. 
+### Submission
 
-# Sources
-
-1. Guastello, A. D., Brunson, J. C., Sambuco, N., Dale, L. P., Tracy, N. A., Allen, B. R., & Mathews, C. A. (2024). Predictors of professional burnout and fulfilment in a longitudinal analysis on nurses and healthcare workers in the COVID-19 pandemic. Journal of clinical nursing, 33(1), 288–303. https://doi.org/10.1111/jocn.16463
+The function `devtools::check()` is useful for verifying that the contribution will not generate errors or warnings. Once the extension has been formatted and checked, the last step is to submit a pull request following the guidelines of `CONTRIBUTING.md`.

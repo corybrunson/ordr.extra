@@ -1,6 +1,7 @@
 ---
 title: "new-ord-classes-fa"
-output: rmarkdown::html_vignette
+output: rmarkdown::html_vignette:
+  toc: TRUE
 vignette: >
   %\VignetteIndexEntry{new-ord-classes-fa}
   %\VignetteEngine{knitr::rmarkdown}
@@ -292,7 +293,7 @@ ordr:::as_tbl_ord(fa_psych) |>
   augment_ord()
 ```
 
-### Examples, Unit Tests, and Submission
+### Examples
 
 As with our recoverers for `psych::principal()`, we need to organize those for `psych::fa()` in a "methods" script. This time, we follow the format of `methods-stats-factanal.r`.
 
@@ -317,6 +318,8 @@ head(get_rows(swiss_fa, elements = "score"))
 # augment column loadings with uniquenesses
 (swiss_fa <- augment_ord(swiss_fa))
 ```
+
+### Unit Tests
 
 Similarly, we apply the tests from `test-stats-factanal.r` to our `psych::fa()` recoverers for the unit test script. Note that, in **ordr.extra**, unit tests for GDA methods of the same package are included in a single script. In this case, we write the following unit tests for `psych::fa()` after the previous unit tests for `psych::principal()` in one file, `test-psych.R`.
 
@@ -344,5 +347,7 @@ test_that("`as_tbl_ord()` coerces 'fa' objects", {
   expect_true(valid_tbl_ord(as_tbl_ord(fit_fa)))
 })
 ```
+
+### Submission
 
 As in our integration of `psych::principal()` , we should conclude by running `devtools::check()`, then submit a pull request following the guidelines of `CONTRIBUTING.md`.
