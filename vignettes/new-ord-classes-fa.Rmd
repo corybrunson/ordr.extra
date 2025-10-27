@@ -10,8 +10,10 @@ vignette: >
 knitr::opts_chunk$set(
   comment = '', fig.width = 6, fig.height = 6
 )
+```
 
-library(ordr.extra)
+```{r, message = FALSE}
+library(ordr.extra) # load {ordr.extra}
 ```
 
 # Introduction

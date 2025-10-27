@@ -12,6 +12,10 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r, message = FALSE}
+library(ordr) # load {ordr}
+```
+
 # Introduction
 
 In this series of vignettes intended for R users with experience in geometric data analysis and knowledge of the intrinsic mathematical theory, we outline the process of extending **ordr** to incorporate new ordination methods. To this end, we discuss two ordination techniques--principal component analysis and factor analysis--and demonstrate how to reflect each technique's underlying mathematical theory as we integrate their R implementations into **ordr**. We begin with the method of principal component analysis in this vignette.
@@ -319,9 +323,9 @@ We must also be sure that the number of rows in the augmented matrix agree with 
 <details>
 <summary> Verification of number of rows </summary>
 ```{r}
-library(tibble) # load {tibble} in order to use `ordr:::as_tbl_ord()` below
+library(tibble) # load {tibble} in order to use `ordr::as_tbl_ord()` below
 
-ordr:::as_tbl_ord(pca_psych) |>
+as_tbl_ord(pca_psych) |>
   recover_aug_rows.principal() |>
   nrow()
 ```
@@ -365,7 +369,7 @@ recover_aug_coord.principal <- function(x) {
 <details>
 <summary> Verification of number of rows </summary>
 ```{r}
-ordr:::as_tbl_ord(pca_psych) |>
+as_tbl_ord(pca_psych) |>
   recover_aug_coord.principal() |>
   nrow()
 ```
@@ -374,10 +378,10 @@ ordr:::as_tbl_ord(pca_psych) |>
 With these functions defined, we can obtain the `tbl_ord` object below in two concise ways, either by making our existing "principal" object a `tbl_ord` or by generating the `tbl_ord` from scratch.
 
 ```{r}
-ordr:::as_tbl_ord(pca_psych) |>
+as_tbl_ord(pca_psych) |>
   augment_ord()
 
-ordr:::ordinate(scaled_iris, ~ principal(., nfactors = 4, rotate = "none"))
+ordinate(scaled_iris, ~ principal(., nfactors = 4, rotate = "none"))
 ```
 
 ### Examples, Unit Tests, and Submission
