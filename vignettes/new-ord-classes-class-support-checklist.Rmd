@@ -1,0 +1,24 @@
+---
+title: "new-ord-classes-class-support-checklist"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{new-ord-classes-class-support-checklist}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(
+  comment = '', fig.width = 6, fig.height = 6
+)
+```
+We can use the following checklist as a framework for dissecting and recompiling a geometric method to fit into **ordr**.
+
+* [ ] Verify the conference of inertia (i.e. distribution of variance) based on decomposition.
+* [ ] Write recovery functions of decomposition elements.
+* [ ] Validate recovery with comparison to existing methods in **ordr** or matrix algebra corresponding to decomposition.
+* [ ] Write augmentation functions to generate `tbl_ord` objects.
+* [ ] Write a "methods" script containing all recovery and augmentation functions.
+* [ ] Write an "examples" script using the new methods.
+* [ ] Write a unit test script using the new methods.
+* [ ] Generate documentation using `devtools::document()`.
+* [ ] Submit the files and documentation in a pull request to **ordr.extra**.

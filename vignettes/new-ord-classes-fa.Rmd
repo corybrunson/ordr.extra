@@ -1,0 +1,346 @@
+---
+title: "new-ord-classes-fa"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{new-ord-classes-fa}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(
+  comment = '', fig.width = 6, fig.height = 6
+)
+
+library(ordr.extra)
+```
+
+# Introduction
+
+In this vignette, we demonstrate how to integrate a new ordination method into **ordr** in accordance with the method's underlying mathematical theory. Specifically, we use the incorporation of `psych::fa()` as an example. We will at times refer to the preceding vignette, "Writing Recovery Methods for New Ordination Classes--PCA" to summarize some steps of the process and to compare geometric methods, so it is recommended to begin with reading that vignette.
+
+# Factor Analysis
+
+Factor analysis (FA) is a family of dimension-reducing methods of geometric data analysis. Unlike PCA, FA assumes the existence of latent variables (factors) behind a set of data, the number of which is less than the number of variables originally taken to be in the set. And just like principal components, the factors in FA are linear combinations of the variables, and the variables are said to load onto the factors.
+
+However, FA differs greatly from PCA in that factors are chosen to explain correlations between the variables, not to capture maximal variance. Thus, it is not assumed that factors are uncorrelated and orthogonal.
+
+Base R contains the FA function `stats::factanal()`, but additional FA functions exist across the package ecosystem (e.g. `psych::fa()`). As with PCA, **ordr** aims to integrate methods of FA into the **tidyverse** package. We will demonstrate that integrating FA methods into Tidyverse workflows via **ordr** is much like integrating PCA methods. This is due in large part to the similar linear algebra behind the two methods and the similar ways they are interpreted.
+
+```{r, echo = TRUE, warning = FALSE, message = FALSE}
+scaled_swiss <- scale(swiss)
+fa_stats <- factanal(scaled_swiss, factors = 2, rotation = "none", scores = "regression")
+(fa_tbl_ord <- as_tbl_ord(fa_stats))
+```
+
+Since **ordr** has already been extended to handle objects from `stats::factanal()`, we can use a "factanal" object as reference in writing methods for "fa" objects.
+
+### Recovery for FA Methods
+
+### Decomposition
+
+Recall that PCA takes either the EVD or SVD from a data set $X_{n\times{p}}$, and in either case, the loadings are the matrix of eigenvectors $V_{p\times{p}}$ which is ordered such that each eigenvector captures more variance than the next. So, whether we generate, say, $k$ or $k+1$ principal components, the $k$ leading principal components are the same. This is not generally the case in FA.
+
+Since FA assumes correlation between the factors, the number of factors we take affects the loadings of those factors. Observe the comparison below.
+
+```{r, echo = TRUE, warning = FALSE, message = FALSE}
+library(psych)
+
+fa(scaled_swiss, nfactors = 1)$loadings
+fa(scaled_swiss, nfactors = 2)$loadings
+```
+
+Clearly, neither factor in our two-factor FA is the same as that given by our one-factor FA. Because of this, you'll notice that the dimensions of elements in our decomposition reflect the number $k$ of factors being taken.
+
+The model for FA is $$R_{p\times{p}} = L_{p\times{k}}(L_{p\times{k}})^\top + U_{p\times{p}}^2.$$ Importantly, FA uses the correlation matrix $R$ rather than the covariance. But by centering and scaling our data, the correlation matrix is made equal to the covariance, giving us $$(\bar{X}_{n\times{p}})^\top\bar{X}_{n\times{p}} = L_{p\times{k}}(L_{p\times{k}})^\top + U_{p\times{p}}^2.$$ Then, as with EVD methods of PCA, we decompose the covariance matrix into the product of a loadings matrix and its transpose. However, there is no diagonal matrix of inertia here, and we add to the decomposition a residuals matrix $U^2$.
+
+Below, we illustrate this decomposition using `psych::fa()`.
+
+```{r}
+fa_psych <- psych::fa(r = swiss, nfactors = 2L, rotate = "none", scores = "regression", fm = "ml")
+
+cor_swiss <- cov(scaled_swiss)
+L <- fa_psych$loadings
+Usquared <- fa_psych$residual
+
+cor_swiss / (L %*% t(L) + Usquared)
+```
+One last characteristic of the FA decomposition that we need to bear in mind when incorporating ``psych::fa()` into **ordr** is that the loadings matrix varies by the method of FA performed, unlike in PCA where EVD and SVD yield the same loadings. Compared to PCA, the methods for FA are more manifold (`psych::fa()` is capable of twelve different FA methods). As such, we will hold the factoring method of `psych::fa()` fixed as we expand **ordr** around it, and then verify that the expansion holds when the factoring method is changed.
+
+### Row and Column Elements
+
+Based on the decomposition and that the factor vectors are the *columns* of the loadings matrix, we take the factor loadings to be our active column elements in FA. 
+
+As for row elements, the decomposition does not yield a matrix of row vectors because $L$, which corresponds to the columns, is multiplied by its own transpose (as in the EVD implementation of PCA). But, we will treat the scores as supplementary row elements. To explain this decision, let us first introduce the weights matrix, $W_{p\times{k}} = R^{-1}_{p\times{p}}L_{p\times{k}}$. 
+
+```{r}
+(w <- fa_psych$weights) / (solve(cor_swiss) %*% fa_psych$loadings) # the matrix of 1s indicates equality
+```
+
+The scores are obtained by multiplying the centered data matrix by the weights (i.e. $S_{n\times{k}} = \bar{X}_{n\times{p}}W_{p\times{k}}$).
+
+```{r}
+head(fa_psych$scores / (scaled_swiss %*% w)) # the matrix of 1s indicates equality
+```
+
+Then to validate the choice of scores as supplementary row elements, we seek out a decomposition in which the scores constitute row elements. To this end, we define the pseudoinverse of $W_{p\times k}$ as $W^+_{k\times p}=((W_{p\times k})^\topW_{p\times k})^{-1}(W_{p\times k})^\top.$ Then $\bar{X}_{n\times p}W_{p\times k}W^+_{k\times p}=S_{n\times k}W^+_{k\times p}$ (since $W^+$ is not a true inverse, $WW^+$ is not necessarily the identity matrix). We illustrate the equation below.
+
+```{r}
+w_inv <- solve(t(w) %*% w) %*% t(w) # define pseudoinverse W^+
+head((scaled_swiss %*% w %*% w_inv) / (fa_psych$scores %*% w_inv)) # matrix of 1s indicates equality
+```
+Seeing as the scores constitute row elements in the decomposition, we will indeed include them in **ordr** as supplementary row elements. However, this decomposition also motivates us to consider the transposed pseudoinverse of the weights as supplementary column elements (transposed because $W^+=(W^\topW)^{-1}W^\top$ implies that the _rows_ of $W^+$ end up corresponding to vectors since, originally, the _columns_ of $W$ correspond to vectors).
+
+We can validate this choice for supplementary columns by observing that $(W^+_{k \times p})^\top$ and $L_{p\times k}$, our active columns, share the same dimensions. Moreover, we can prove that both elements contain the same inertia. Let $d$ denote the inertia contained in $X$. Then $(\bar{X}_{n\times p})^\top\bar{X}_{n\times p} = R_{p\times p}$ contains $d^2$. Recalling that $L_{p\times k}$ contains $d$, it follows that $W_{p\times{k}} = R^{-1}_{p\times{p}}L_{p\times{k}}$ contains $d^{-2}d=d^{-1}$. Consequently, $W^+_{k\times p}=((W_{p\times k})^\topW_{p\times k})^{-1}(W_{p\times k})^\top$ contains $(d^{-2})^{-1}d^{-1}=d^2d^{-1}=d$. Therefore, the inertia of $(W^+)^\top$ and $L$ are equal.
+
+From here, we can define the row and column recoverers to return the following.
+
+```{r}
+recover_cols.fa <- function(x) {
+  unclass(x[["loadings"]])
+}
+
+recover_rows.fa <- function(x) {
+  matrix(nrow = 0, ncol = ncol(x[["loadings"]]),
+         dimnames = list(NULL, colnames(x[["loadings"]])))
+}
+
+recover_supp_cols.fa <- function(x) {
+  solve(t(x[["weights"]]) %*% x[["weights"]]) %*% t(x[["weights"]]) |>
+    t()
+}
+
+recover_supp_rows.fa <- function(x) {
+  if (is.null(x[["scores"]])) {
+    matrix(numeric(0), nrow = 0, ncol = 0)
+  }
+  else
+    x[["scores"]]
+}
+
+recover_cols(fa_psych)
+recover_rows(fa_psych)
+recover_supp_cols(fa_psych)
+head(recover_supp_rows(fa_psych))
+```
+
+Again, we have accounted for when the `scores` object is null, since FA, like PCA, can be applied to a covariance or correlation matrix.
+
+Let us use our `factanal` object from earlier to benchmark these results against, as `stats::factanal()` is already integrated into **ordr**. While `stats::factanal()` does not have a weights element, and hence no supplementary columns, the remaining three elements are indeed approximately equal to those extracted from the `fa` object.
+
+```{r}
+recover_cols(fa_stats) / recover_cols(fa_psych)
+recover_rows(fa_stats) / recover_rows(fa_psych)
+head(recover_supp_rows(fa_stats) / recover_supp_rows(fa_psych))
+```
+
+
+### Conference of Inertia
+
+As previously noted, the decomposition for FA does not have a distinct inertia matrix. This is a result of FA allowing correlations between factors. Whereas in PCA the uncorrelated structure of principal components mean that no two components can explain a portion of the same variance, the same is not true in FA. Hence, we cannot take eigenvalues as portions of explained variance in FA as we do in PCA.
+
+To validate a conference of inertia for `psych::fa()`, we will use an alternative interpretation of inertia that can generalize from PCA to FA.
+
+One meaning of the inertia in PCA is as the variances of the principal components. So, we can obtain the inertia by squaring each loadings entry, then taking the column sums, and lastly multiplying by $n−1$. Equivalence between this and the previous eigenvalue method of extracting inertia is demonstrated below.
+
+```{r}
+recover_inertia.principal(pca_psych)
+colSums(pca_psych$loadings^2) * (nrow(scaled_iris) - 1)
+```
+
+Onto the proof for `psych::fa()`. We claim the function has an intertia conference of (0, 1).
+
+First, we show that the scores multiplied by the transposed loadings gives an approximation of the data matrix.
+
+```{r}
+# create "fa" object, now with six factors
+fa_psych6 <- psych::fa(swiss, nfactors = 6, rotate = "none")
+
+stdized_approx <- fa_psych6$scores %*% t(as.matrix(fa_psych6$loadings))
+means <- colMeans(swiss)
+sds <- apply(swiss, 2, sd)
+swiss_approx <- sweep(stdized_approx, 2, sds, "*") # de-scale
+swiss_approx <- sweep(swiss_approx, 2, means, "+") # de-center
+
+head(swiss_approx / swiss) # values close to 1 indicate near equality
+```
+
+Therefore, the data matrix is approximately the product of the scores and tranposed loadings matrices (after we undo centering and scaling). Then to prove that the scores contain zero inertia, it suffices to show that the loadings contain full inertia.
+
+By default, the `cor` argument in `psych::fa()` is set to "cor", meaning the function performs FA on the correlation matrix. Thus, the total variance is 1 for each variable, i.e. 6 in this case.
+
+Additionally, the total variance is equal to the sum of shared variance and uniquenesses. Observe below that the inertia from the loadings (calculated via column sums of squared entries) can be added to the uniquenesses to obtain the number of variables, as desired.
+
+```{r}
+common_var <- (colSums(fa_psych$loadings^2)) # inertia from loadings
+uniq <- fa_psych$uniquenesses # uniquenesses
+
+sum(common_var) + sum(uniq) # shared variance + uniquenesses
+```
+
+This implies that the loadings carry full inertia (minus uniquenesses). As previously shown, it follows that the scores carry zero inertia. So, we conclude that `psych::fa()` indeed has an inertia conference of (0, 1).
+
+```{r}
+recover_conference.fa <- function(x) {
+  c(0, 1)
+}
+```
+
+Seeing that the column sums of squares agree with the extracted uniquenesses in summing to total variance, we can also define our inertia recoverer as follows.
+
+```{r}
+recover_inertia.fa <- function(x) {
+  colSums(x[["loadings"]] ^ 2)
+}
+
+recover_inertia.fa(fa_psych)
+```
+
+Then let us verify that these values returned by `recover_inertia.fa()` approximately equal those recovered from our `factanal` object.
+
+```{r}
+recover_inertia(fa_stats)
+```
+
+### Augmentation
+
+Finally, we piece these recovered elements back into an augmented matrix for the user. As with PCA, we want to ascribe each element to a coordinate name, column/row attribute, and active/supplementary attribute. Additionally, we wish to present the user with the uniqueness of each variable as this element is directly accessible from the output of `psych::fa()` and indicates which variables account for the most variance. We write the following functions.
+
+```{r}
+recover_coord.fa <- function(x) {
+  colnames(x[["loadings"]])
+}
+
+recover_aug_coord.fa <- function(x) {
+  tibble(
+    name = ordr:::factor_coord(recover_coord(x))
+  )
+}
+
+recover_aug_rows.fa <- function(x) {
+  res <- tibble(.rows = 0L)
+  
+  # scores as supplementary points
+  if (!is.null(x[["scores"]])) {
+    name <- rownames(x[["scores"]])
+    res_sup <- if (is.null(name)) {
+      tibble(.rows = nrow(x[["scores"]]))
+    } else {
+      tibble(name = name)
+    }
+  } else {
+    res_sup <- tibble(.rows = 0L)
+  }
+  
+  # supplement flag
+  res$.element <- "active"
+  res_sup$.element <- "score"
+  as_tibble(dplyr::bind_rows(res, res_sup))
+}
+
+recover_aug_cols.fa <- function(x) {
+  name <- rownames(x[["loadings"]])
+  res <- if (is.null(name)) {
+    tibble(.rows = nrow(x[["loadings"]]))
+  } else {
+    tibble(name = name)
+  }
+  res$uniqueness <- x$uniquenesses
+  res$communality <- x$communality
+  res$complexity <- x$complexity
+  
+  # supplement flag
+  res$.element <- "active"
+  # reorder columns
+  res <- res[c(".element", setdiff(names(res), ".element"))]
+  
+  # transposed pseudoinverse of weights as supplementary points
+  name <- rownames(x[["weights"]])
+  res_sup <- if (is.null(name)) {
+    tibble(.rows = nrow(x[["weights"]]))
+  } else {
+    tibble(name = name)
+  }
+  
+  # supplement flag
+  res_sup$.element <- "inv_weight"
+  # reorder columns
+  res_sup <- res_sup[c(".element", setdiff(names(res_sup), ".element"))]
+  as_tibble(dplyr::bind_rows(res, res_sup))
+}
+```
+We will verify that these augmentations have the expected number of rows.
+
+```{r}
+recover_aug_coord.fa(fa_psych) |> 
+  nrow() # should yield two rows for the two factors
+
+recover_aug_rows.fa(fa_psych) |>
+  nrow() # should yield 47 rows for the 47 rows in the data frame/scores
+
+recover_aug_cols.fa(fa_psych) |>
+  nrow() # should yield twelve rows for the six rows of weights and six rows of loadings
+```
+
+So, all augmentations indeed give the correct number of rows. And thus, we can generate the below `tbl_ord` object with ease after defining `as_tbl_ord.fa()` as we did `as_tbl_ord.principal()`.
+
+```{r}
+as_tbl_ord.fa <- getFromNamespace("as_tbl_ord_default", "ordr")
+
+ordr:::as_tbl_ord(fa_psych) |>
+  augment_ord()
+```
+
+### Examples, Unit Tests, and Submission
+
+As with our recoverers for `psych::principal()`, we need to organize those for `psych::fa()` in a "methods" script. This time, we follow the format of `methods-stats-factanal.r`.
+
+For our examples, we replicate those of `ex-methods-factanal-swiss.r` as follows:
+
+```{r}
+# data frame of Swiss fertility and socioeconomic indicators
+class(swiss)
+head(swiss)
+# perform factor analysis
+swiss_fa <- psych::fa(r = swiss, nfactors = 2L, rotate = "varimax", scores = "regression", 
+               fm = "ml")
+
+# wrap as a 'tbl_ord' object
+(swiss_fa <- as_tbl_ord(swiss_fa))
+
+# recover loadings
+get_cols(swiss_fa, elements = "active")
+# recover scores
+head(get_rows(swiss_fa, elements = "score"))
+
+# augment column loadings with uniquenesses
+(swiss_fa <- augment_ord(swiss_fa))
+```
+
+Similarly, we apply the tests from `test-stats-factanal.r` to our `psych::fa()` recoverers for the unit test script. Note that, in **ordr.extra**, unit tests for GDA methods of the same package are included in a single script. In this case, we write the following unit tests for `psych::fa()` after the previous unit tests for `psych::principal()` in one file, `test-psych.R`.
+
+```{r}
+fit_fa <- psych::fa(r = swiss, nfactors = 2L, rotate = "varimax", scores = "regression", 
+                    fm = "ml")
+
+test_that("'fa' accessors have consistent dimensions", {
+  expect_equal(ncol(get_rows(fit_fa)), ncol(get_cols(fit_fa)))
+  expect_equal(ncol(get_rows(fit_fa)),
+               length(recover_inertia(fit_fa)))
+})
+
+test_that("'fa' has specified distribution of inertia", {
+  expect_type(recover_conference(fit_fa), "double")
+  expect_vector(recover_conference(fit_fa), size = 2L)
+})
+
+test_that("'fa' augmentations are consistent with '.element' column", {
+  expect_equal(".element" %in% names(recover_aug_rows(fit_fa)),
+               ".element" %in% names(recover_aug_cols(fit_fa)))
+})
+
+test_that("`as_tbl_ord()` coerces 'fa' objects", {
+  expect_true(valid_tbl_ord(as_tbl_ord(fit_fa)))
+})
+```
+
+As in our integration of `psych::principal()` , we should conclude by running `devtools::check()`, then submit a pull request following the guidelines of `CONTRIBUTING.md`.
