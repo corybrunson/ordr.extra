@@ -18,7 +18,7 @@ In this series of vignettes intended for R users with experience in geometric da
 
 In addition to showing how ordination elements are extracted and recompiled for the `tbl_ord` end product, we illustrate how unit tests and examples are written to complete a contribution. Finally, we apply both of our example contributions to the package on a single data set to illustrate the theoretical unity between ordination methods that **ordr** seeks to convey.
 
-The process demonstrated in this vignette follows this [sketch of the extension process](../doc/new-ord-classes-support-checklist.html).
+The process demonstrated in this vignette follows `vignette("new-ord-classes-class-support-checklist")`.
 
 # Principal Component Analysis
 
