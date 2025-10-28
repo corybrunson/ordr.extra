@@ -1,21 +1,18 @@
 ---
-title: "new-ord-classes-pca"
+title: "Extending ordr: PCA"
 output: 
   rmarkdown::html_vignette:
     toc: TRUE
 vignette: >
-  %\VignetteIndexEntry{new-ord-classes-pca}
+  %\VignetteIndexEntry{extending-ordr-pca}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
 ```{r, setup, include=FALSE}
 knitr::opts_chunk$set(
   comment = '', fig.width = 6, fig.height = 6
 )
-```
-
-```{r, message = FALSE}
-library(ordr) # load {ordr}
 ```
 
 # Introduction
@@ -24,7 +21,11 @@ In this series of vignettes intended for R users with experience in geometric da
 
 In addition to showing how ordination elements are extracted and recompiled for the `tbl_ord` end product, we illustrate how unit tests and examples are written to complete a contribution. Finally, we apply both of our example contributions to the package on a single data set to illustrate the theoretical unity between ordination methods that **ordr** seeks to convey.
 
-The process demonstrated in this vignette follows `vignette("new-ord-classes-class-support-checklist")`.
+The process demonstrated in this vignette follows `vignette("extension-checklist")`.
+
+```{r, message = FALSE}
+library(ordr)
+```
 
 # Principal Component Analysis
 
