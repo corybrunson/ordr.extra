@@ -17,11 +17,9 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-In this series of vignettes intended for R users with experience in geometric data analysis and knowledge of the intrinsic mathematical theory, we outline the process of extending **ordr** to incorporate new ordination methods. To this end, we discuss two ordination techniques--principal component analysis and factor analysis--and demonstrate how to reflect each technique's underlying mathematical theory as we integrate their R implementations into **ordr**. We begin with the method of principal component analysis in this vignette.
+This is the first of 3 vignettes that detail the process of extending **ordr** to incorporate new ordination methods. This vignette focuses on principal component analysis, a straightforward SVD-based technique, while the sequel focuses on factor analysis, a much more complicated case. We demonstrate how to extract key elements from each class based on a shared underlying mathematical theory and to make these available to **ordr** using a set of methods based on this theory. We also illustrate how unit tests and examples are written to complete the contribution. The final vignette applies both contributions to a common data set to showcase their commonalities and differences. The vignettes are intended for R users with experience in geometric data analysis and with the tidyverse.
 
-In addition to showing how ordination elements are extracted and recompiled for the `tbl_ord` end product, we illustrate how unit tests and examples are written to complete a contribution. Finally, we apply both of our example contributions to the package on a single data set to illustrate the theoretical unity between ordination methods that **ordr** seeks to convey.
-
-The process demonstrated in this vignette follows `vignette("extension-checklist")`.
+If an extension of **ordr** to a new ordination class is agreed upon, the first step will be to open an issue that includes the checklist from this developer vignette: `vignette("extension-checklist")`.
 
 ```{r, message = FALSE}
 library(ordr)
@@ -29,23 +27,27 @@ library(ordr)
 
 # Principal Component Analysis
 
-Principal component analysis (PCA) is a geometric statistical method by which multivariate data is reduced to have fewer dimensions, expending as little variance as possible in the process. The goal is to more easily visualize and interpret patterns in a data set. PCA is useful in various fields of research; as an example later in the vignette, we will demonstrate how a 14-variable psychometric data set can be accurately intrepreted on just two axes using PCA.
+Principal component analysis (PCA) is a geometric statistical method by which multivariate data is reduced to fewer dimensions, expending as little variance as possible in the process---that is, the resulting dimensions, called _principal axes_, contain as much of the variance as possible. The goal is to more easily visualize and interpret patterns in the data. PCA is useful in various fields; this vignette will conclude with an example using psychometric data.
 
-PCA takes loadings of the variables that capture maximal variance. The resulting principal components correspond to new, *orthogonal* axes on which we can represent our data.
+## EVD and SVD
 
-### EVD and SVD
+PCA can be done by applying either of two matrix decomposition methods to a centered and (often) scaled data matrix $\bar{X}_{n\times p}$.
 
-We begin by distinguishing two methods of decomposition for PCA, both of which decompose the centered and scaled data matrix $\bar{X}_{n\times p}$.
+One method, used by `stats::prcomp()`, is singular value decomposition (SVD).
+Assuming $n > p$, SVD obtains the decomposition
+$$\bar{X}_{n\times{p}} = U_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^\top\text{,}$$
+where the column vectors of $U$ and of $V$ have length $1$ and are pairwise perpendicular and $D$ is diagonal.
+The columns of $U$ are called the _left singular vectors_ of $\bar{X}$ and those of $V$ the _right singular vectors_; the diagonal elements of $D$ are the _singular values_.
+Based on the equation, elements from $U$ and from $V$, respectively, are referred to as "row" and "column" elements.
 
-The first method of decomposition is singular value decomposition (SVD), used in such PCA functions as `stats::prcomp()` in R. In SVD, we denote the matrix of normalized eigenvectors of $\bar{X}\bar{X}^\top$ as $U$ and refer to $U$ as the *left singular vectors*. On the other hand, $V$ is the matrix of normalized eigenvectors of $\bar{X}^\top\bar{X}$, called the *right singular vectors*. In either matrix, the columns are the eigenvectors. We refer to the square roots of the positive eigenvalues corresponding to $U$ and $V$ as *singular values*. The diagonal matrix $D$ comprises the singular values in descending order. With these three matrices defined, the final decomposition becomes $$\bar{X}_{n\times{p}} = U_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^\top.$$
-
-Drawing upon this equation and the indices of $U$ and $V$ that multiply into the decomposition, we may refer to $U$ and $V$ as our "rows" and "columns," respectively, in our recovery code.
-
-The second method is eigenvalue decomposition (EVD) or eigendecomposition, used in `stats::princomp()` and `psych::principal()`. In EVD, we do not decompose $X$ itself but its covariance matrix as $X^\top X = V D^2 V^\top$.
+The other method uses eigenvalue decomposition (EVD), or just eigendecomposition, as in `stats::princomp()` and in `psych::principal()`. The EVD of a full-rank square matrix $M$ is the unique decomposition
+$$M = V \Lambda V^\top$$
+with $\Lambda$ diagonal; the entries of $\Lambda$ are called the eigenvalues, and the columns of $V$ are called the eigenvectors, of $M$.
+For PCA, we obtain $U$ as the matrix of eigenvectors of $\bar{X}\bar{X}^\top$ and $V$ as the that of $\bar{X}^\top\bar{X}$. The positive eigenvalues from these two decompositions agree, and their square roots are the singular values of $\bar{X}$. The fold demonstrates these connections between SVD and EVD.
 
 <details>
 <summary> Derivation of EVD from SVD </summary>
-To understand EVD in terms of SVD, again take $X=UDV^\top$. Then when we consider the covariance matrix, we have
+To understand EVD in terms of SVD, again take $X=UDV^\top$. Then when we consider the covariance matrix $\bar{X}^\top \bar{X}$, we have
 
 $$
 \begin{align*}
@@ -59,38 +61,41 @@ $$
 Note: we use the orthogonality of $U$ to obtain (3) as $U^\top = U^{-1}$.
 </details>
 
-In either decomposition, $V$ is the loadings matrix. The columns contain the linear combinations of variables that load on each principal component. In SVD, $U$ is used to find the scores; in EVD, $\bar{X}$ must be multiplied into the decomposition to obtain scores, demonstrated later.
+In reference to factor analysis, $V$ is often called the loadings matrix---the columns contain the linear coefficients of the measured variables as they load onto each principal component---while $U$ contains the scores.
+<!--In EVD, $\bar{X}$ must be multiplied into the decomposition to obtain scores, demonstrated later.-->
+Depending on whether the investigator's focus is on the variables or the cases, they may want to study and visualize the loadings or the scores, respectively. When focusing on the scores, the row data (the cases) may be studied using _principal coordinates_, the rows of $UD$, while the column data (the variables) are left in _standard coordinates_, the rows of $V$. Here, the inertia of $D$ has been _conferred_ onto the left singular vectors, changing the space in which they are being coordinatized.
+When focusing instead on the variables, the inertia will often be conferred onto the right singular vectors, putting the variables in principal coordinates (the rows of $VD$) and the cases in standard coordinates (the rows of $U$).
 
-### Necessary Recovery Methods
+## Necessary Recovery Methods
 
-*Recovery methods* or *recoverers* refer to functions that retrieve isolated elements of an ordination object. Now that we have discussed the decompositions that serve as foundation for PCA (and later in the vignette, FA), we can frame the recovery methods behind **ordr**.
+**TODO: I'm not sure these need to be introduced here; they could instead be introduced one or two at a time in the coming sections. --JCB**
 
-1. `ordr::recover_inertia()`, which should return the eigenvalues of our EVD or the squared singular values of our SVD; that is, we should obtain the diagonal entries of $D^2$.
-2. `ordr::recover_conference()`, which should indicate whether the inertia we found is distributed to the observations or variables (or, potentially, both or neither).
-3. `ordr::recover_cols()`, which should return the matrix whose columns multiply into the corresponding decomposition.
-4. `ordr::recover_supp_cols()`, which, if appropriate or necessary, should return a column element that is obtained by multiplying some matrix through the decomposition.
-5. `ordr::recover_rows()`, which should return the matrix whose rows multiply into the corresponding decomposition.
-6. `ordr::recover_supp_rows()`, which, if appropriate or necessary, should return a row element that is obtained by multiplying some matrix through the decomposition.
-7. `ordr::recover_coord()`, which should return the coordinate names of our ordination object.
-8. `ordr::recover_aug_rows()` and (9) `ordr::recover_aug_cols()`, which do not recover raw elements of the PCA but rather reassemble previously recovered elements for the function `ordr::augment_ord()`.
+By *recovery methods* or *recoverers* we mean the functions that retrieve key elements from an ordination object. The essential recoverers extract the components of the decomposition just discussed, while others extract supplementary elements and annotations specific to the technique and its implementation:
 
-While these recovery methods will be defined based on the GDA technique and theory at hand, we define the function `as_tbl_ord()` uniformly as the below helper function from **ordr** defined to reduce redundancy and expedite debugging.
+1. `ordr::recover_inertia()` returns the eigenvalues of our EVD, or equivalently the squared singular values of our SVD---the diagonal entries of $D^2$.
+2. `ordr::recover_coord()` returns the names of the coordinate axes of our ordination object.
+3. `ordr::recover_conference()` indicates how the inertia is distributed to the rows or columns ($U$ or $V$) in the object. (**stats** and **psych** make different choices here.)
+4. `ordr::recover_rows()` returns $U$, or more generally $UD^a$ for some $a$, which factors into the SVD from the left.
+5. `ordr::recover_cols()` returns $V$ or some $VD^b$, whith factors in from the right.
+6. `ordr::recover_supp_rows()` returns any row elements associated with the left factor of the SVD, in a sense to be defined later.
+7. `ordr::recover_supp_cols()` returns any column elements associated with the right factor.
+8. `ordr::recover_aug_rows()` and (9) `ordr::recover_aug_cols()` do not recover raw elements of the PCA but rather reassemble additional, often non-numeric elements that augment the row and column coordinates.
+
+While these recovery methods will depend on the GDA technique, the helper function `ordr::as_tbl_ord()` reduces redundancy and expedites debugging, so we give it a method for the `principal` class:
 
 ```{r}
 as_tbl_ord.principal <- getFromNamespace("as_tbl_ord_default", "ordr")
 ```
 
-These recoverers are all necessary to produce a `tbl_ord`, illustrated below with the pre-loaded set of Anderson's Iris data.
+This method draws from the recoverers to produce a `tbl_ord`, illustrated below with the pre-loaded set of Anderson's iris data:
 
 ```{r}
-library(ordr) # load {ordr} to create `tbl_ord` below
-
 scaled_iris <- scale(iris[1:4])
 pca_stats <- prcomp(scaled_iris, rank. = 4)
-(tbl_ord <- as_tbl_ord(pca_stats))
+( tbl_ord <- as_tbl_ord(pca_stats) )
 ```
 
-### Conference of Inertia
+## Conference of Inertia
 
 The conference of inertia determines how the variance of our data is distributed. This will take effect in the geometry of PCA biplots. And because this conference directly impacts the row and column elements that we will need to recover, we ought to recover conference of inertia early on.
 
@@ -164,7 +169,7 @@ cov / (evd$vectors %*% diag(evd$values) %*% t(evd$vectors))
 As indicated by the matrix of all $1$s, the covariance matrix and product of matrices are equal.
 </details>
 
-### Row and Column Elements
+## Row and Column Elements
 
 As mentioned in the context of SVD, we can classify elements of PCA by what they "contribute" to the decomposition. That is, we can refer to those elements whose rows [columns] are multiplied into the decomposition as "row elements" ["column elements"]. Then when we consider EVD-based PCA, recall that EVD acts on the covariance matrix $X^\top X$, the column-wise inner product. Thus the loadings, $VD$, are active column elements.
 
@@ -210,7 +215,7 @@ head(recover_supp_rows.principal(pca_psych))
 
 Notice that in defining `recover_supp_rows.principal()`, we must also account for cases in which the `scores` element is null to avoid errors. This is necessary because PCA is applicable to covariance matrices, so we may not have data to obtain scores from.
 
-### PCA Followed by Rotation
+## PCA Followed by Rotation
 
 Next, we discuss the topic of rotations in PCA. Rotation is an optional step in PCA wherein our loadings matrix is multiplied by a rotation matrix. The motivation for doing so is to achieve a "simple structure" (i.e. a structure in which the latent variables behind our principal components provide an interpretable, explainable solution). We seek to extend **ordr** to work with these PCAs followed by rotation because, as we will demonstrate, rotations are changes of basis. Thus, the analysis of such a model can be completely different than that of the corresponding unrotated model. So, it makes sense to recover elements from the rotated model in its own right rather than to simply recover the rotation separately, then extract all the same elements as we would from the unrotated PCA.
 
@@ -283,7 +288,7 @@ recover_cols.principal(pca_ob)
 recover_cols.principal(pca_orth)
 ```
 
-### Augmentation
+## Augmentation
 
 At this point, we have recovered almost all of the elements from our PCA. The last elements to recover will be annotations to the matrix factors, including the inertia. First, we recover the names of the coordinates.
 
@@ -387,7 +392,7 @@ as_tbl_ord(pca_psych) |>
 ordinate(scaled_iris, ~ principal(., nfactors = 4, rotate = "none"))
 ```
 
-### Examples
+## Examples
 
 With all of our recoverers written and validated, we finalize the contribution to **ordr.extra** by defining and documenting the recoverers in a "methods" file following the same pattern as `methods-stats-prcomp.r`.
 
@@ -416,7 +421,7 @@ get_cols(iris_pca)
 }# {psych}
 ```
 
-### Methods
+## Methods
 
 The last file to complete our contribution is a unit test script. Again, we can follow the format of the analogous `test-stats-prcomp.r` and write the following:
 
@@ -446,6 +451,6 @@ test_that("`as_tbl_ord()` coerces 'principal' objects", {
 })
 ```
 
-### Submission
+## Submission
 
 The function `devtools::check()` is useful for verifying that the contribution will not generate errors or warnings. Once the extension has been formatted and checked, the last step is to submit a pull request following the guidelines of `CONTRIBUTING.md`.
