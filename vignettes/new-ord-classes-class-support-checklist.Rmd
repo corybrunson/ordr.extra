@@ -2,7 +2,7 @@
 title: "Extension checklist"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{extension-checklist}
+  %\VignetteIndexEntry{Extension checklist}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
