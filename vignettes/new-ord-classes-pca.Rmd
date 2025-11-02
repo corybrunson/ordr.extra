@@ -26,7 +26,7 @@ library(ordr)
 library(psych)
 ```
 
-# Principal Component Analysis
+## Principal Component Analysis
 
 Principal component analysis (PCA) is a geometric statistical method by which multivariate data is reduced to fewer dimensions, expending as little variance as possible in the process---that is, the resulting dimensions, called _principal axes_, contain as much of the variance as possible. The goal is to more easily visualize and interpret patterns in the data. PCA is useful in various fields; this vignette will conclude with an example using psychometric data.
 
@@ -77,6 +77,8 @@ In reference to factor analysis, $V$ is often called the loadings matrix---the c
 <!--In EVD, $\bar{X}$ must be multiplied into the decomposition to obtain scores, demonstrated later.-->
 Depending on whether the investigator's focus is on the variables or the cases, they may want to study and visualize the loadings or the scores, respectively. When focusing on the scores, the row data (the cases) may be studied using _principal coordinates_, the rows of $UD$, while the column data (the variables) are left in _standard coordinates_, the rows of $V$. Here, the inertia of $D$ has been _conferred_ onto the left singular vectors, changing the space in which they are being coordinatized.
 When focusing instead on the variables, the inertia will often be conferred onto the right singular vectors, putting the variables in principal coordinates (the rows of $VD$) and the cases in standard coordinates (the rows of $U$).
+
+# Recovery Methods
 
 ## Necessary Recovery Methods
 
@@ -430,41 +432,22 @@ This can also now be done "under the hood" by `ordinate()`:
 ordinate(scaled_iris, ~ principal(., nfactors = 4, rotate = "none"))
 ```
 
-## Examples
+# Package Infrastructure
 
-With all of our recoverers written and validated, we finalize the contribution to **ordr.extra** by defining and documenting the recoverers in a "methods" file following the same pattern as `methods-stats-prcomp.r`.
+With the recovery methods written and checked, we round out our contribution with unit tests, examples, and written documentation.
 
-Then, we need to write an "examples" script following the same pattern as `ex-methods-prcomp-iris.r`. The example looks as follows:
+## Unit Tests
+
+First, we draw from our lessons above to write a script of unit tests for these recoverers. We locate the script in `tests/testthat/` and name it following the pattern `test-<package>-<class>.r`. To demonstrate that our methods pass the tests, we attach the **testthat** package:
 
 ```{r}
-# data frame of Anderson iris species measurements
-class(iris)
-head(iris)
-
-if (require(psych)) {# {psych}
-
-# compute unscaled row-principal components of scaled measurements
-iris[, -5] |>
-  psych::principal(nfactors = 4, rotate = "none") |>
-  as_tbl_ord() |>
-  print() -> iris_pca
-
-# recover observation principal coordinates and measurement standard coordinates
-head(get_rows(iris_pca))
-get_cols(iris_pca)
-
-# augment measurement coordinates with names and scaling parameters
-(iris_pca <- augment_ord(iris_pca))
-
-}# {psych}
+library(testthat)
 ```
 
-## Methods
-
-The last file to complete our contribution is a unit test script. Again, we can follow the format of the analogous `test-stats-prcomp.r` and write the following:
+We write the following tests, which will only be run if **psych** is installed:
 
 ```{r}
-library(testthat) # load {testthat} to be used for each unit test
+skip_if_not_installed("psych")
 
 fit_principal <- psych::principal(iris[, -5], nfactors = 4, rotate = "none")
 
@@ -489,6 +472,61 @@ test_that("`as_tbl_ord()` coerces 'principal' objects", {
 })
 ```
 
+## Examples
+
+We next adapt an examples script from those for other methods, but reflecting some of the special cases we encountered above. The file name  `ex-methods-psych-principal-iris.r` follows a similar convention but with the illustrative data set specified (allowing for more than one script if helpful), and the script also begins by conditioning itself on **psych** being installed:
+
+**Given the additional options provided by `psych::principal()`, this example script could be lengthed (slightly) to illustrate how they are accommodated. It doesn't need to be duplicative; for example, `get_rows()` could be illustrated using the `rotate = "none"` option and `get_cols()` using a different option. --JCB**
+
+```{r, eval=FALSE}
+if (require(psych)) {# {psych}
+
+# data frame of Anderson iris species measurements
+class(iris)
+head(iris)
+
+# compute unscaled row-principal components of scaled measurements
+iris[, -5] |>
+  psych::principal(nfactors = 4, rotate = "none") |>
+  as_tbl_ord() |>
+  print() -> iris_pca
+
+# recover observation principal coordinates and measurement standard coordinates
+head(get_rows(iris_pca))
+get_cols(iris_pca)
+
+# augment measurement coordinates with names and scaling parameters
+( iris_pca <- augment_ord(iris_pca) )
+
+}# {psych}
+```
+
+## Documentation
+
+Finally, we collect and document the recoverers in a script named `methods-psych-principal.r`, following the pattern `methods-<package>-<class>.r`:
+
+```{r, eval=FALSE}
+#' @title Functionality for principal components analysis ('principal') objects
+#'
+#' @description These methods extract data from, and attribute new data to,
+#'   objects of class `"principal"` as returned by [psych::principal()].
+#'
+#'@details
+#' 
+#' <truncated>
+#'
+#' @name methods-principal
+#' @author John Gracey
+#' @template param-methods
+#' @template return-methods
+#' @family methods for eigen-decomposition-based techniques
+#' @family models from the psych package
+#' @example inst/examples/ex-methods-psych-principal-iris.R
+NULL
+```
+
+The remainder of the script defines each recovery method, in each case preceded by tags that anchor it to the manual entry `methods-principal` and export it to the user. Note that the **roxygen2** tag `@family` cross-links this entry with related entries (EVD-powered and from the same package), while the tag `@example` calls the installed example script to include its code in the "Examples" section of the entry.
+
 ## Submission
 
-The function `devtools::check()` is useful for verifying that the contribution will not generate errors or warnings. Once the extension has been formatted and checked, the last step is to submit a pull request following the guidelines of `CONTRIBUTING.md`.
+The function `devtools::check()` is useful for verifying that the contribution will not generate errors or warnings, many of which won't show up when experimenting with code on the command line or an IDE like RStudio. It also first runs `devtools::document()` to "roxygenize" the documentation into an entry stored in the `man/` folder and incorporated into the package manual. Once the extension has been formatted and checked, the last steps are to edit `DESCRIPTION` accordingly, to write an entry in `NEWS.md` and to submit a pull request following the guidelines of `CONTRIBUTING.md`.
