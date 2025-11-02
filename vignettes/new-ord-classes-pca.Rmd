@@ -267,8 +267,6 @@ As indicated by the matrix of all $1$s, the covariance matrix and product of mat
 
 In factor analysis, the loadings---a transformation of the measured or "manifest" variables into a smaller set of latent variables---will often be composed with a rotation---a change of basis to a new but same-sized set of latent variables---to achieve "simple structure" in which the latent variables are easier to interpret. We'll discuss this in more detail in the FA vignette. Because PCA has long been appropriated for FA, such rotations may also be applied to the results of PCA, and this functionality is provided by **psych**.
 
-One way **ordr** might organize this information would be to separately recover the unrotated loadings and the rotation matrix. This would require some transformation, since the `principal` class stores the already-rotated loadings, but it might be worth the trouble to disentangle other aspects of the class and to generalize the recovery process to more methods. For now, however, **ordr** recovers elements for the rotated model, and this requires additional caution and checks when writing the methods.
-
 Rotations may be either orthogonal or oblique. We compute and illustrate both in the next two code chunks, using an oblique rotation provided by **GPArotation**.
 
 <details>
@@ -294,67 +292,67 @@ biplot.psych(pca_obliq, choose = c("TC1","TC2"), main = "oblique rotation")
 par(op)
 ```
 
-The biplots suggest that the rotations twist the manifest variables (vectors) to better align with the latent variables (axes); in fact, they twist the latent variables to better align with the manifest variables. Because all 4 factors (principal components) were obtained, the rotations are not constrained to two dimensions, and the geometry of the vectors in the 2-dimensional projection warps. However, both rotations preserve the correlations between the manifest variables in the transformed space. (The angles between vectors appear to change dramatically under the oblique rotation, but recall that the rotated principal axes are no longer orthogonal; biplot does not communicate this.)
-
-**RESUME.**
-
-Now let us compare the categories of rotation by examining the linear algebra at play. In PCA followed by an orthogonal rotation, our loadings are the original loadings matrix $L_{p\times{p}}$ multiplied by the orthogonal rotation matrix $T_{p\times{p}}$.
+The biplots suggest that the rotations twist the manifest variables (vectors) to better align with the latent variables (axes); in fact, they twist the latent variables to better align with the manifest variables. Because all 4 factors (principal components) were obtained, the rotations are not constrained to two dimensions, and the geometry of the vectors in the 2-dimensional projection warps. However, both rotations preserve the correlations between the manifest variables in the transformed space. (The angles between vectors appear to change dramatically under the oblique rotation, but recall that the rotated principal axes are no longer orthogonal; the biplots do not communicate this and even obscure it.)
 
 <details>
-<summary>Show matrix equality validation</summary>
+<summary> Check and interpret rotated loadings </summary>
+
+**How is the output different between the two rotation types? It seems like they both return both the original loadings `$loadings` and the "rotation" matrix `$rot.mat` (which might be orthogonal or oblique). Do they both return `$Structure` and `$Phi`? --JCB**
+
+This extended fold examines the linear algebra at play in each rotation. In PCA followed by an orthogonal rotation, the rotated loadings are the original loadings matrix $L_{p\times{p}}$ multiplied by the orthogonal rotation matrix $T_{p\times{p}}$:
+
 ```{r}
-pca_ortho$loadings[,c("RC1", "RC2", "RC3", "RC4")] / (pca_psych$loadings %*% pca_ortho$rot.mat) # matrices are equal up to sign
+pca_ortho$loadings[,c("RC1", "RC2", "RC3", "RC4")] /
+  (pca_psych$loadings %*% pca_ortho$rot.mat)
 ```
-</details>
 
-But in the oblique case, we have two loadings matrices. The first is the *pattern matrix* $L_{p\times{p}}$, which represents the loadings as we first defined them (i.e. the coefficients in our linear combination of variables that forms each principal component, prior to any rotation). The second is the *structure matrix* $S_{p\times{p}} = L_{p\times{p}}T_{p\times{p}}$. Below, we demonstrate that the extractable loadings element from an oblique-transformed `principal` object is the structure matrix.
+In the oblique case, we obtain two loading matrices. The first is the _pattern matrix_ $L_{p\times{p}}$, which represents the loadings prior to any rotation. The second is the _structure matrix_ $S_{p\times{p}} = L_{p\times{p}}T_{p\times{p}}$. The extractable loadings element from an oblique-transformed `principal` object is the structure matrix:
 
-<details>
-<summary>Show matrix equality validation</summary>
 ```{r}
-pca_obliq$loadings[,c("TC1", "TC2", "TC3", "TC4")] / (pca_psych$loadings %*% pca_obliq$rot.mat) # LT equals the extracted loadings matrix up to sign
+pca_obliq$loadings[,c("TC1", "TC2", "TC3", "TC4")] /
+  (pca_psych$loadings %*% pca_obliq$rot.mat)
 ```
-</details>
 
-<details>
-<summary> Interpretation of pattern versus structure matrices </summary>
-The pattern matrix is useful when we want to consider the principal components apart from their correlations with one another. It directly explains how much each principal component loads into each variable. On the other hand, the structure matrix contains correlations between factors and variables, and it tends to be more stable between samples. Notably, the structure matrix can be obtained from the pattern matrix by multiplying the latter by $\Phi_{p\times p}$, the interfactor correlation matrix.
+The pattern matrix quantifies how much each principal component loads into each variable. The structure matrix contains correlations between factors and variables, and it tends to be more stable between samples. The structure matrix is obtained from the pattern matrix via multiplying by the interfactor correlation matrix $\Phi_{p\times p}$:
 
-<details>
-<summary>Show matrix equality validation</summary>
 ```{r}
-(pca_obliq$loadings %*% pca_obliq$Phi) / pca_obliq$Structure # matrix of all 1s indicates equality
+(pca_obliq$loadings %*% pca_obliq$Phi) /
+  pca_obliq$Structure
 ```
-</details>
 
 This is why we have just one loadings matrix in the orthogonal case: with an orthogonal rotation, $\Phi_{p\times p}$ is the identity matrix.
+
+The choice between an orthogonal and oblique rotation depends on our priorities. An orthogonal rotation keeps the model more faithful to the data. But if we want to convey significant correlation in the variables or to more easily interpret a biplot, then an oblique rotation may be more appropriate. Various different rotations suitable for different goals exist within either category.
+
 </details>
 
-<details>
-<summary> How to decide between orthogonal and oblique rotation </summary>
-When choosing between an orthogonal and oblique rotation following PCA, the right choice depends on what we wish to prioritize. An orthogonal rotation keeps more faithful to the data. But if we want to convey that there is significant correlation in the variables, or if we want a more interpretable biplot, then an oblique rotation may be more appropriate. Moreover, various different rotations suitable for different goals exist within either category.
-</details>
-
-For **ordr**, we use the same recovery method for rotated PCAs as for unrotated. Furthermore, we opt against adding recovery methods for the rotation matrices, the motivation being that rotations do not necessarily uphold key characteristics of PCA (namely orthogonality and maximal captured variance). Because of this, it is debated whether PCA followed by rotation/transformation is PCA at all; thus, it may be misguided to take the rotation matrix as an element of PCA for **ordr**.
+One way **ordr** might organize this information would be to separately recover the unrotated loadings and the rotation matrix. This would require some transformation, since the `principal` class stores the already-rotated loadings, but it might be worth the trouble to disentangle other aspects of the class and to generalize the recovery process to more methods. On the other hand, it might be misguided to recover the rotation matrix as an element, as it would enable questionable practices like overlaying un-rotated loadings with scores based on the rotated loadings. For now, **ordr** recovers elements for the rotated model:
 
 ```{r}
 recover_cols.principal(pca_obliq)
 recover_cols.principal(pca_ortho)
 ```
 
+Either way, the methods must be informed by the additional caution and checks above.
+
 ## Augmentation
 
-At this point, we have recovered almost all of the elements from our PCA. The last elements to recover will be annotations to the matrix factors, including the inertia.
+We have recovered all of the **ordr**-relevant geometric data from the `principal` object. What remains are any pieces of information in the class that annotate the matrix factors. This information is organized in each case as a tibble, not a matrix. For convenience, we attach the **tibble** package:
 
-Now, the last step in writing `psych::principal()` methods into **ordr** is the augmentation functions that are essential to inspecting and understanding a `tbl_ord` object. Essentially, the purpose of these functions is to place a name to the various PCA elements that have been extracted and join these elements with information that is not part of the matrix decomposition. The augmented matrices are where the user should see whether PCA elements come from the rows or columns and whether they are active or supplementary. Moreover, they should offer the user measures such as the mean and standard deviation when available from the original function output. We write the following functions accordingly.
+```{r}
+library(tibble)
+```
 
-Starting with `recover_aug_rows.principal()`, our function should be defined to indicate that no row elements are active, and that the supplementary elements are scores *if* a scores object exists.
+The most important annotations are the names, which will usually have been taken from the row and column names of the data set $\bar{X}$. But they may also include information specific to these units (cases and variables for PCA) that was carried over from the data object, e.g. the `Species` column from the `iris` data, or that governed pre-processing, e.g. the variable means and standard deviations when variables are scaled before PCA.
+
+The row and column augmentation recoverers must also comport with the active and any supplementary elements recovered by those methods. For example, our row augmentation function must recognize that no active row elements are recovered and that the supplementary elements, if available for recovery, correspond to the cases:
 
 ```{r}
 recover_aug_rows.principal <- function(x) {
+  # no active elements
   res <- tibble(.rows = 0L)
   
-  # scores as supplementary points
+  # scores as supplementary elements
   if (!is.null(x[["scores"]])) {
     name <- rownames(x[["scores"]])
     res_sup <- if (is.null(name)) {
@@ -373,20 +371,7 @@ recover_aug_rows.principal <- function(x) {
 }
 ```
 
-We must also be sure that the number of rows in the augmented matrix agree with those of the extracted matrix.
-
-<details>
-<summary> Verification of number of rows </summary>
-```{r}
-library(tibble) # load {tibble} in order to use `ordr::as_tbl_ord()` below
-
-as_tbl_ord(pca_psych) |>
-  recover_aug_rows.principal() |>
-  nrow()
-```
-</details>
-
-The scores constitute a $150 \times 4$ matrix, consistent with the dimensions here. We similarly define and validate `recover_aug_cols.principal()`. Here, we will augment the column vectors with attributes `center` and `scale` since these values correspond to the variables and are required for some biplot layers like calibrated axes.
+Our column augmentation function concerns only active elements. In addition to the variable names, we augment the column elements with the means and standard deviations obtained during pre-processing and included in the `principal` object:
 
 ```{r}
 recover_aug_cols.principal <- function(x) {
@@ -401,16 +386,9 @@ recover_aug_cols.principal <- function(x) {
 }
 ```
 
-<details>
-<summary> Verification of number of rows </summary>
-```{r}
-ordr:::as_tbl_ord(pca_psych) |>
-  recover_aug_cols.principal() |>
-  nrow()
-```
-</details>
+These values are required for some biplot layers like calibrated axes.
 
-Last, we write `recover_aug_coord.principal()` to add coordinate names and a column of standard deviations (which are directly provided in the output of `psych::principal()`, so users may expect them) to the loadings element we recovered. Again, we will verify that the number of rows is what we would expect.
+Finally, the coordinate augmentation function provides the coordinate names and their standard deviations, which are provided in the `principal` object:
 
 ```{r}
 recover_aug_coord.principal <- function(x) {
@@ -422,20 +400,33 @@ recover_aug_coord.principal <- function(x) {
 ```
 
 <details>
-<summary> Verification of number of rows </summary>
+<summary> Check numbers of rows </summary>
+
+To preempt bugs, we should ensure that the number of rows in each augmented data frame agree with those of the corresponding extracted matrix.
+
 ```{r}
-as_tbl_ord(pca_psych) |>
-  recover_aug_coord.principal() |>
-  nrow()
+nrow(recover_aug_rows.principal(pca_psych)) ==
+  nrow(recover_rows.principal(pca_psych)) +
+  nrow(recover_supp_rows.principal(pca_psych))
+nrow(recover_aug_cols.principal(pca_psych)) ==
+  nrow(recover_cols.principal(pca_psych))
+nrow(recover_aug_coord.principal(pca_psych)) ==
+  length(recover_inertia(pca_psych))
 ```
+
 </details>
 
-With these functions defined, we can obtain the `tbl_ord` object below in two concise ways, either by making our existing "principal" object a `tbl_ord` or by generating the `tbl_ord` from scratch.
+We have now defined the methods required to obtain the `tbl_ord` wrapper for a `principal` object:
 
 ```{r}
-as_tbl_ord(pca_psych) |>
+pca_psych |> 
+  as_tbl_ord() |>
   augment_ord()
+```
 
+This can also now be done "under the hood" by `ordinate()`:
+
+```{r}
 ordinate(scaled_iris, ~ principal(., nfactors = 4, rotate = "none"))
 ```
 
