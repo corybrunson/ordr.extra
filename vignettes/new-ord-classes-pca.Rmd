@@ -503,7 +503,7 @@ get_cols(iris_pca)
 
 ## Documentation
 
-Finally, we collect and document the recoverers in a script named `methods-psych-principal.r`, following the pattern `methods-<package>-<class>.r`:
+Finally, we collect and document the recoverers in a file named `methods-psych-principal.r`, following the pattern `methods-<package>-<class>.r`:
 
 ```{r, eval=FALSE}
 #' @title Functionality for principal components analysis ('principal') objects
@@ -525,7 +525,7 @@ Finally, we collect and document the recoverers in a script named `methods-psych
 NULL
 ```
 
-The remainder of the script defines each recovery method, in each case preceded by tags that anchor it to the manual entry `methods-principal` and export it to the user. Note that the **roxygen2** tag `@family` cross-links this entry with related entries (EVD-powered and from the same package), while the tag `@example` calls the installed example script to include its code in the "Examples" section of the entry.
+The remainder of the file defines each recovery method, in each case preceded by tags that anchor it to the manual entry `methods-principal` and export it to the user. Note that the **roxygen2** tag `@family` cross-links this entry with related entries (EVD-powered and from the same package), while the tag `@example` calls the installed example script to include its code in the "Examples" section of the entry.
 
 ## Submission
 
