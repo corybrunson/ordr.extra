@@ -71,6 +71,8 @@ $$
 
 Note: we use the orthogonality of $U$ to obtain (3) as $U^\top = U^{-1}$.
 
+Indeed, the singular values of $\bar{X}$ are the square roots of the eigenvalues of $\bar{X}^\top\bar{X}$, meaning $D^2 = \Lambda$.
+
 </details>
 
 In reference to factor analysis, $V$ is often called the loadings matrix---the columns contain the linear coefficients of the measured variables as they load onto each principal component---while $U$ contains the scores.
@@ -181,7 +183,7 @@ We can validate these values against those returned using the recovery method fo
 recover_inertia(pca_stats) / pca_psych$values
 ```
 
-Notice that $149=n-1$, these eigenvalues have been scaled by the degrees of freedom. To obtain the inertia, we need then to multiply them by $n-1$:
+Notice that $149=n-1$, indicating that these eigenvalues have been scaled by the degrees of freedom. To obtain the inertia, we need then to multiply them by $n-1$:
 
 ```{r}
 recover_inertia.principal <- function(x) {
@@ -201,12 +203,12 @@ recover_coord.principal <- function(x) {
 recover_coord.principal(pca_psych)
 ```
 
-The inertia is established, but the methods must also account for how it is conferred on the matrix factors. This "conference" governs the geometry of biplots and matters crucially to their interpretation, but the matrix factors returned by different techniques may confer it differently. To avoid having to manipulate the matrix factors during recovery, we use the `recover_conference()` method to inform **ordr** how this conference is done.
+The inertia is established, but the methods must also account for how it is conferred on the matrix factors.
 
 <details>
 <summary> Implications of different conferences of inertia </summary>
 
-**Should this be trimmed or cut given the additional text above, or should the additional text be folded in here? (That is to ask whether the un-folded text about the meaning and importance of conference of inertia is too technical.) --JCB**
+The "conference" governs the geometry of biplots and matters crucially to their interpretation, but the matrix factors returned by different techniques may confer it differently. To avoid having to manipulate the matrix factors during recovery, we use the `recover_conference()` method to inform **ordr** how this conference is done.
 
 Not distributing the inertia (i.e. not multiplying out the matrix $D$ in SVD or EVD) maintains $U$ and $V$ as matrices of unit vectors. Thus, we say that the cases and variables are in standard coordinates. But when we _do_ distribute the inertia to one or both other matrices in the decomposition, we obtain the cases and/or variables in principal coordinates.
 
@@ -249,21 +251,6 @@ recover_conference.principal <- function(x) {
 }
 recover_conference.principal(pca_psych)
 ```
-
-To illustrate the entire decomposition, we have the following code.
-
-<details>
-<summary>Show matrix algebra validation</summary>
-
-**Was this supposed to be a different check? It seems to check only that the `evd()` function does what it should. --JCB**
-
-```{r}
-cov / (evd$vectors %*% diag(evd$values) %*% t(evd$vectors))
-```
-
-As indicated by the matrix of all $1$s, the covariance matrix and product of matrices are equal.
-
-</details>
 
 ## PCA Followed by Rotation
 
