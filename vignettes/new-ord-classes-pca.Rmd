@@ -286,30 +286,31 @@ The biplots suggest that the rotations twist the manifest variables (vectors) to
 <details>
 <summary> Check and interpret rotated loadings </summary>
 
-**How is the output different between the two rotation types? It seems like they both return both the original loadings `$loadings` and the "rotation" matrix `$rot.mat` (which might be orthogonal or oblique). Do they both return `$Structure` and `$Phi`? --JCB**
-
 This extended fold examines the linear algebra at play in each rotation. In PCA followed by an orthogonal rotation, the rotated loadings are the original loadings matrix $L_{p\times{p}}$ multiplied by the orthogonal rotation matrix $T_{p\times{p}}$:
 
 ```{r}
-pca_ortho$loadings[,c("RC1", "RC2", "RC3", "RC4")] /
+pca_ortho$loadings[, c("RC1", "RC2", "RC3", "RC4")] /
   (pca_psych$loadings %*% pca_ortho$rot.mat)
 ```
 
-In the oblique case, we obtain two loading matrices. The first is the _pattern matrix_ $L_{p\times{p}}$, which represents the loadings prior to any rotation. The second is the _structure matrix_ $S_{p\times{p}} = L_{p\times{p}}T_{p\times{p}}$. The extractable loadings element from an oblique-transformed `principal` object is the structure matrix:
+In the oblique case, we obtain two loading matrices. The first is the _pattern matrix_ $L_{p\times{p}} T_{p\times{p}}$. The `$loadings` element extractable from an oblique-transformed `principal` object is the pattern matrix:
 
 ```{r}
-pca_obliq$loadings[,c("TC1", "TC2", "TC3", "TC4")] /
+pca_obliq$loadings[, c("TC1", "TC2", "TC3", "TC4")] /
   (pca_psych$loadings %*% pca_obliq$rot.mat)
 ```
 
-The pattern matrix quantifies how much each principal component loads into each variable. The structure matrix contains correlations between factors and variables, and it tends to be more stable between samples. The structure matrix is obtained from the pattern matrix via multiplying by the interfactor correlation matrix $\Phi_{p\times p}$:
+The pattern matrix quantifies how much each principal component loads into each variable. 
+
+The second loadings object is the _structure matrix_ $S_{p\times{p}} = L_{p\times{p}}T_{p\times{p}}\Phi_{p\times p}$. The structure matrix is obtained from the pattern matrix via multiplying by the interfactor correlation matrix $\Phi_{p\times p}$.
 
 ```{r}
 (pca_obliq$loadings %*% pca_obliq$Phi) /
   pca_obliq$Structure
 ```
+The structure matrix contains correlations between factors and variables, and it tends to be more stable between samples.
 
-This is why we have just one loadings matrix in the orthogonal case: with an orthogonal rotation, $\Phi_{p\times p}$ is the identity matrix.
+In the orthogonal case, $\Phi_{p\times p}$ is the identity matrix, which is why we have just one loadings matrix. Accordingly, a `principal` object only contains `$Structure` and `$Phi` elements if it contains an oblique rotation.
 
 The choice between an orthogonal and oblique rotation depends on our priorities. An orthogonal rotation keeps the model more faithful to the data. But if we want to convey significant correlation in the variables or to more easily interpret a biplot, then an oblique rotation may be more appropriate. Various different rotations suitable for different goals exist within either category.
 
