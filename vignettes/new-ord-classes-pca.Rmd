@@ -463,8 +463,6 @@ test_that("`as_tbl_ord()` coerces 'principal' objects", {
 
 We next adapt an examples script from those for other methods, but reflecting some of the special cases we encountered above. The file name  `ex-methods-psych-principal-iris.r` follows a similar convention but with the illustrative data set specified (allowing for more than one script if helpful), and the script also begins by conditioning itself on **psych** being installed:
 
-**Given the additional options provided by `psych::principal()`, this example script could be lengthed (slightly) to illustrate how they are accommodated. It doesn't need to be duplicative; for example, `get_rows()` could be illustrated using the `rotate = "none"` option and `get_cols()` using a different option. --JCB**
-
 ```{r, eval=FALSE}
 if (require(psych)) {# {psych}
 
