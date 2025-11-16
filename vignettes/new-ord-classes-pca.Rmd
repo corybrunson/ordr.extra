@@ -478,12 +478,21 @@ iris[, -5] |>
   as_tbl_ord() |>
   print() -> iris_pca
 
-# recover observation principal coordinates and measurement standard coordinates
+# compute varimax-rotated row-principal components of scaled measurements
+iris[, -5] |>
+  psych::principal(nfactors = 4, rotate = "varimax") |>
+  as_tbl_ord() |>
+  print() -> iris_pca_varimax
+
+# recover observation principal coordinates
 head(get_rows(iris_pca))
-get_cols(iris_pca)
+
+# recover rotated loadings
+get_cols(iris_pca_varimax)
 
 # augment measurement coordinates with names and scaling parameters
 ( iris_pca <- augment_ord(iris_pca) )
+( iris_pca_varimax <- augment_ord(iris_pca_varimax) )
 
 }# {psych}
 ```
