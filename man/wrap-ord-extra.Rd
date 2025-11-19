@@ -145,7 +145,7 @@ with new '*-ord' classes.
 }
 \description{
 These \verb{*_ord} functions wrap functions imported from other
-packages with modifications for use with '\link{tbl_ord}' methods. They
+packages with modifications for use with '\link[ordr:tbl_ord]{ordr::tbl_ord}' methods. They
 complement those provided by \strong{ordr} for some common functions. Some
 parameters are hidden from the user and set to settings required for these
 methods, some matrix outputs are given row or column names to be used by

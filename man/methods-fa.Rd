@@ -41,8 +41,8 @@
 \item{x}{An ordination object.}
 }
 \value{
-The recovery generics \verb{recover_*()} return \link[=recoverers]{core model components}, \link[=conference]{distribution of inertia},
-\link[=supplementation]{supplementary elements}, and \link[=augmentation]{intrinsic metadata}; but they require methods for each model class to
+The recovery generics \verb{recover_*()} return \link[ordr:recoverers]{core model components}, \link[ordr:conference]{distribution of inertia},
+\link[ordr:supplementation]{supplementary elements}, and \link[ordr:augmentation]{intrinsic metadata}; but they require methods for each model class to
 tell them what these components are.
 
 The generic \code{\link[=as_tbl_ord]{as_tbl_ord()}} returns its input wrapped in the 'tbl_ord'
@@ -64,23 +64,39 @@ accessible as supplementary elements. Redistribution of inertia commutes
 through both score calculations.
 }
 \examples{
-# data frame of Swiss fertility and socioeconomic indicators
-class(swiss)
-head(swiss)
-# perform factor analysis
-swiss_fa <- psych::fa(r = swiss, nfactors = 2L, rotate = "varimax", scores = "regression", 
-               fm = "ml")
+# data frame of Anderson iris species measurements
+class(iris)
+head(iris)
 
-# wrap as a 'tbl_ord' object
-(swiss_fa <- as_tbl_ord(swiss_fa))
+# fa on iris
+iris |>
+  ordinate(~psych::fa(., nfactors = 2L, rotate = "varimax", scores = 
+                        "regression", fm = "ml"),
+           cols = 1:4, augment = c(Sepal.Width, Species)) |>
+  print() -> iris_fa
 
 # recover loadings
-get_cols(swiss_fa, elements = "active")
+get_cols(iris_fa, elements = "active")
+# recover pseudoinverse of weights
+get_cols(iris_fa, elements = "pinv_weight")
 # recover scores
-head(get_rows(swiss_fa, elements = "score"))
+head(get_rows(iris_fa, elements = "score"))
 
 # augment column loadings with uniquenesses
-(swiss_fa <- augment_ord(swiss_fa))
+(iris_fa <- augment_ord(iris_fa))
+
+# biplot with both loadings and pseudoinverse weights
+ggbiplot(iris_fa, scale_cols = 3) +
+  geom_rows_point(elements = "score", aes(color = Species)) +
+  geom_cols_vector(linetype = "solid") +
+  geom_cols_text_radiate(label = names(iris[1:4]), elements = "active", 
+                         linetype = "solid") +
+  geom_cols_vector(linetype = "dotted", elements = "pinv_weight") +
+  geom_cols_text_repel(label = names(iris[1:4]), elements = "pinv_weight", 
+                       linetype = "dotted", size = 3.5) +
+  # include vector labels in plot window (specific to graphics device)
+  scale_x_continuous(limits = ~ range(.x, c(-2, 5))) +
+  scale_y_continuous(limits = ~ range(.x, c(-4, 3)))
 }
 \seealso{
 Other methods for eigen-decomposition-based techniques: 
