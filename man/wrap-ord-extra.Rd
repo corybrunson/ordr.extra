@@ -115,7 +115,7 @@ If it is not converging, try \code{ss_factor = 1}.}
 \item{maxiter}{Maximum number of NIPALS iterations for each
 principal component.}
 
-\item{tol}{Default 1e-9 tolerance for testing convergence of the NIPALS
+\item{tol}{Default 1e-6 tolerance for testing convergence of the NIPALS
 iterations for each principal component.}
 
 \item{startcol}{Determine the starting column of x for the iterations
@@ -145,7 +145,7 @@ with new '*-ord' classes.
 }
 \description{
 These \verb{*_ord} functions wrap functions imported from other
-packages with modifications for use with '\link{tbl_ord}' methods. They
+packages with modifications for use with '\link[ordr:tbl_ord]{ordr::tbl_ord}' methods. They
 complement those provided by \strong{ordr} for some common functions. Some
 parameters are hidden from the user and set to settings required for these
 methods, some matrix outputs are given row or column names to be used by
