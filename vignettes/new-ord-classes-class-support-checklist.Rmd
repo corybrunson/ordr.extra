@@ -22,7 +22,7 @@ Use the following checklist (copied into a GitHub issue) to implement recovery m
 * [ ] Write recover functions `recover_inertia.<class>()` for the inertia as a vector and `recover_coord.<class>()` for the names of the new "artificial" or "scaffolding" coordinates.
 * [ ] Validate recovery functions by comparison to existing methods in **ordr** for similar classes or by matrix algebra.
 * [ ] Determine whether any supplementary elements can be extracted from the class and, if so, write functions `recover_supp_rows.<class>()` and/or `recover_supp_cols.<class>()` to recover them as matrices.
-* [ ] Write augmentation functions `recover_aug_rows.<class>()`, `recover_aug_cols.<class>()`, and `recover_aug_coord.<class>()` that return `tbl_ord`s.
+* [ ] Write augmentation functions `recover_aug_rows.<class>()`, `recover_aug_cols.<class>()`, and `recover_aug_coord.<class>()` that return `tbl_df`s.
 * [ ] Write all recovery and augmentation functions into a new script following the naming convention 'R/methods-<package>-<class>.r'.
 * [ ] Use **roxygen2** comments and tags to document these methods (see existing scripts for illustrations).
 * [ ] Write examples using the new methods on a data set into a new script 'inst/examples/ex-methods-<package>-<class>-<data>.r' and tag these in the methods script.
