@@ -80,47 +80,69 @@ Then we'll write and test the `as_tbl_ord()` method for the payoff.
 
 ## Row and Column Elements
 
-Based on the decomposition and that the factor vectors are the *columns* of the loadings matrix, we take the factor loadings to be our active column elements in FA. 
+As with `psych::principal()` we take the factor loadings as the active column elements and the scores as supplementary row elements.
+An additional complication in FA, from a PCA perspective, is that several methods are available to compute case scores, based on different choices of weights. The default, regression scores, uses the weight matrix $W_{p\times{k}} = R^{-1}_{p\times{p}}L_{p\times{k}}$.
+The scores are obtained from the centered data matrix by multiplication on the right, $S_{n\times{k}} = \bar{X}_{n\times{p}}W_{p\times{k}}$.
 
-As for row elements, the decomposition does not yield a matrix of row vectors because $L$, which corresponds to the columns, is multiplied by its own transpose (as in the EVD implementation of PCA). But, we will treat the scores as supplementary row elements. To explain this decision, let us first introduce the weights matrix, $W_{p\times{k}} = R^{-1}_{p\times{p}}L_{p\times{k}}$. 
+<details>
+<summary> Check how scores are computed </summary>
 
 ```{r}
-(w <- fa_psych$weights) / (solve(cor_swiss) %*% fa_psych$loadings) # the matrix of 1s indicates equality
+# the matrix of 1s indicates equality
+(w <- fa_psych$weights) / (solve(cor_swiss) %*% fa_psych$loadings)
+# the matrix of 1s indicates equality
+head(fa_psych$scores / (scaled_swiss %*% w))
 ```
 
-The scores are obtained by multiplying the centered data matrix by the weights (i.e. $S_{n\times{k}} = \bar{X}_{n\times{p}}W_{p\times{k}}$).
+</details>
+
+The scores do not necessarily multiply with the loadings to recover the data, but we may obtain a matrix decomposition that justifies their inclusion as row elements.
+The weight matrix $W_{p\times k}$ is not invertible, but the _pseudoinverse_ $W^+_{k\times p} = ((W_{p\times k})^\top W_{p\times k})^{-1}(W_{p\times k})^\top$ is a left inverse in the sense that $W^+W=I_{k\times k}$ when $W$ is full-rank and has the nice property that $WW^+W = W$.
+We then have $S_{n\times k}W^+_{k\times p} = \bar{X}_{n\times p}W_{p\times k}W^+_{k\times p}$---that is, the scores multiply with the pseudoinverse weights to recover an idempotent transformation of the scaled data matrix.
+
+<details>
+<summary> Check how the pseudoinverse multiplies with the weights </summary>
 
 ```{r}
-head(fa_psych$scores / (scaled_swiss %*% w)) # the matrix of 1s indicates equality
+# define pseudoinverse W^+
+w_inv <- solve(t(w) %*% w) %*% t(w)
+# left and right products with W
+w_inv %*% w
+w %*% w_inv
+# idempotency of right product
+( w %*% w_inv %*% w ) / w
 ```
 
-Then to validate the choice of scores as supplementary row elements, we seek out a decomposition in which the scores constitute row elements. To this end, we define the pseudoinverse of $W_{p\times k}$ as $W^+_{k\times p}=((W_{p\times k})^\topW_{p\times k})^{-1}(W_{p\times k})^\top.$ Then $\bar{X}_{n\times p}W_{p\times k}W^+_{k\times p}=S_{n\times k}W^+_{k\times p}$ (since $W^+$ is not a true inverse, $WW^+$ is not necessarily the identity matrix). We illustrate the equation below.
+</details>
+
+This decomposition situates the scores as row elements and also prompts us to include (the transpose of) the pseudoinverse weight matrix as a set of supplementary column elements.
+Indeed, $(W^+_{k \times p})^\top$ and $L_{p\times k}$ share the same dimensions, and we can reason that both contain full inertia.
+
+<details>
+<summary> Reason that the same inertia is conferred on $(W^+)^\top$ as on $L$ </summary>
+
+Let $d$ denote the inertia contained in $X$.
+Then $(\bar{X}_{n\times p})^\top\bar{X}_{n\times p} = R_{p\times p}$ contains $d^2$. Recalling that $L_{p\times k}$ contains $d$, it follows that $W_{p\times{k}} = R^{-1}_{p\times{p}}L_{p\times{k}}$ contains $d^{-2}d = d^{-1}$.
+Consequently, $W^+_{k\times p} = ((W_{p\times k})^\top W_{p\times k})^{-1}(W_{p\times k})^\top$ contains $(d^{-2})^{-1}d^{-1} = d^2d^{-1} = d$.
+This is also consistent with the scores being in standard coordinates, as determined for `psych::principal()`.
+
+</details>
+
+We can now define the row and column recoverers, largely mimicking those of the `principal` class:
 
 ```{r}
-w_inv <- solve(t(w) %*% w) %*% t(w) # define pseudoinverse W^+
-head((scaled_swiss %*% w %*% w_inv) / (fa_psych$scores %*% w_inv)) # matrix of 1s indicates equality
-```
-Seeing as the scores constitute row elements in the decomposition, we will indeed include them in **ordr** as supplementary row elements. However, this decomposition also motivates us to consider the transposed pseudoinverse of the weights as supplementary column elements (transposed because $W^+=(W^\topW)^{-1}W^\top$ implies that the _rows_ of $W^+$ end up corresponding to vectors since, originally, the _columns_ of $W$ correspond to vectors).
-
-We can validate this choice for supplementary columns by observing that $(W^+_{k \times p})^\top$ and $L_{p\times k}$, our active columns, share the same dimensions. Moreover, we can prove that both elements contain the same inertia. Let $d$ denote the inertia contained in $X$. Then $(\bar{X}_{n\times p})^\top\bar{X}_{n\times p} = R_{p\times p}$ contains $d^2$. Recalling that $L_{p\times k}$ contains $d$, it follows that $W_{p\times{k}} = R^{-1}_{p\times{p}}L_{p\times{k}}$ contains $d^{-2}d=d^{-1}$. Consequently, $W^+_{k\times p}=((W_{p\times k})^\topW_{p\times k})^{-1}(W_{p\times k})^\top$ contains $(d^{-2})^{-1}d^{-1}=d^2d^{-1}=d$. Therefore, the inertia of $(W^+)^\top$ and $L$ are equal.
-
-From here, we can define the row and column recoverers to return the following.
-
-```{r}
+# no active row elements
+recover_rows.fa <- function(x) {
+  matrix(
+    nrow = 0, ncol = ncol(x[["loadings"]]),
+    dimnames = list(NULL, colnames(x[["loadings"]]))
+  )
+}
+# loadings as active column elements
 recover_cols.fa <- function(x) {
   unclass(x[["loadings"]])
 }
-
-recover_rows.fa <- function(x) {
-  matrix(nrow = 0, ncol = ncol(x[["loadings"]]),
-         dimnames = list(NULL, colnames(x[["loadings"]])))
-}
-
-recover_supp_cols.fa <- function(x) {
-  solve(t(x[["weights"]]) %*% x[["weights"]]) %*% t(x[["weights"]]) |>
-    t()
-}
-
+# scores as supplementary row elements
 recover_supp_rows.fa <- function(x) {
   if (is.null(x[["scores"]])) {
     matrix(numeric(0), nrow = 0, ncol = 0)
@@ -128,16 +150,22 @@ recover_supp_rows.fa <- function(x) {
   else
     x[["scores"]]
 }
-
+# transpose pseudoinverse weight matrix as supplementary column elements
+recover_supp_cols.fa <- function(x) {
+  t( solve(t(x[["weights"]]) %*% x[["weights"]]) %*% t(x[["weights"]]) )
+}
+# illustrations
 recover_cols(fa_psych)
 recover_rows(fa_psych)
 recover_supp_cols(fa_psych)
 head(recover_supp_rows(fa_psych))
 ```
 
-Again, we have accounted for when the `scores` object is null, since FA, like PCA, can be applied to a covariance or correlation matrix.
+<details>
+<summary> Check that elements agree with those from `factanal` </summary>
 
-Let us use our `factanal` object from earlier to benchmark these results against, as `stats::factanal()` is already integrated into **ordr**. While `stats::factanal()` does not have a weights element, and hence no supplementary columns, the remaining three elements are indeed approximately equal to those extracted from the `fa` object.
+Let us benchmark these choices against our `factanal` object from earlier.
+While `stats::factanal()` returns no supplementary columns, the remaining three sets of elements are approximately equal:
 
 ```{r}
 recover_cols(fa_stats) / recover_cols(fa_psych)
@@ -145,6 +173,7 @@ recover_rows(fa_stats) / recover_rows(fa_psych)
 head(recover_supp_rows(fa_stats) / recover_supp_rows(fa_psych))
 ```
 
+</details>
 
 ### Conference of Inertia
 
