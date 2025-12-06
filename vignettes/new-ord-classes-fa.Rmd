@@ -181,14 +181,24 @@ As previously noted, the decomposition for FA does not have a distinct inertia m
 
 To validate a conference of inertia for `psych::fa()`, we will use an alternative interpretation of inertia that can generalize from PCA to FA.
 
-One meaning of the inertia in PCA is as the variances of the principal components. So, we can obtain the inertia by squaring each loadings entry, then taking the column sums, and lastly multiplying by $n−1$. Equivalence between this and the previous eigenvalue method of extracting inertia can be demonstrated using the code below.
+One meaning of the inertia in PCA is as the variances of the principal components. So, we can obtain the inertia by squaring each loadings entry, then taking the column sums, and lastly multiplying by $n−1$. 
+
+<details>
+<summary> Verify how inertia is computed using PCA example
+</summary>
+Equivalence between this and the previous eigenvalue method of extracting inertia can be demonstrated using the code below.
 
 ```{r, eval = FALSE}
 recover_inertia.principal(pca_psych)
 colSums(pca_psych$loadings^2) * (nrow(scaled_iris) - 1)
 ```
+</details>
 
-Onto the proof for `psych::fa()`. We claim the function has an intertia conference of (0, 1).
+Then it follows that `psych::fa()` has an inertia conference of (0, 1).
+
+<details>
+<summary> Prove (0,1) conference of inertia for `psych::fa()`
+</summary>
 
 First, we show that the scores multiplied by the transposed loadings gives an approximation of the data matrix.
 
@@ -219,6 +229,8 @@ sum(common_var) + sum(uniq) # shared variance + uniquenesses
 ```
 
 This implies that the loadings carry full inertia (minus uniquenesses). As previously shown, it follows that the scores carry zero inertia. So, we conclude that `psych::fa()` indeed has an inertia conference of (0, 1).
+
+</details>
 
 ```{r}
 recover_conference.fa <- function(x) {
@@ -313,7 +325,11 @@ recover_aug_cols.fa <- function(x) {
   as_tibble(dplyr::bind_rows(res, res_sup))
 }
 ```
-We will verify that these augmentations have the expected number of rows.
+
+<details>
+<summary> Check number of rows
+</summary>
+We will verify that these augmentations have the expected number of rows to prevent bugs.
 
 ```{r}
 recover_aug_coord.fa(fa_psych) |> 
@@ -326,7 +342,10 @@ recover_aug_cols.fa(fa_psych) |>
   nrow() # should yield twelve rows for the six rows of weights and six rows of loadings
 ```
 
-So, all augmentations indeed give the correct number of rows. And thus, we can generate the below `tbl_ord` object with ease after defining `as_tbl_ord.fa()` as we did `as_tbl_ord.principal()`.
+So, all augmentations indeed give the correct number of rows.
+</details>
+
+And thus, we can generate the below `tbl_ord` object with ease after defining `as_tbl_ord.fa()` as we did `as_tbl_ord.principal()`.
 
 ```{r}
 as_tbl_ord.fa <- getFromNamespace("as_tbl_ord_default", "ordr")
