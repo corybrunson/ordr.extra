@@ -100,8 +100,8 @@ This method draws from the recoverers to produce a `tbl_ord`, illustrated below 
 
 We will begin by defining the following recoverers for a `principal` object: 
 
-  * `ordr::recover_cols()` returns $V$ or some $VD^b$, which factors into the SVD from the right.
   * `ordr::recover_rows()` returns $U$, or more generally $UD^a$ for some $a$, which factors in from the left.
+  * `ordr::recover_cols()` returns $V$ or some $VD^b$, which factors into the SVD from the right.
 
 In an SVD $\bar{X} = UDV^\top$, the left and right matrix factors contain coefficients of the row elements and column elements, respectively, of the original data $X$ in a new coordinate space. This is why we refer to elements of the left factor $U$ (or $UD$) as "row elements" and those of the right factor $V$ (or $VD$) as "column elements". With SVD, both factors are said to contain "active" elements.
 
@@ -161,6 +161,8 @@ head(recover_supp_rows.principal(pca_psych))
 
 ## Inertia and its Conference
 
+The next recoverer obtains the inertia, or variance, along each principal axis:
+
   * `ordr::recover_inertia()` returns the eigenvalues of our EVD, or equivalently the squared singular values of our SVD---the diagonal entries of $D^2$.
 
 From the documentation, `psych::principal()` returns the eigenvalues in the `values` element of the output:
@@ -186,9 +188,9 @@ recover_inertia.principal(pca_psych)
 
 This method is consistent with that for the `prcomp` class.
 
-These values are usually given the names of the artificial coordinates. Because these names are used for several other purposes, they have a separate recovery method. For this, we define 
+These values are usually given the names of the artificial coordinates. Because these names are used for several other purposes, they have a separate recovery method:
 
-  * `ordr::recover_coord()` to return the names of the coordinate axes of our ordination object.
+  * `ordr::recover_coord()` returns the names of the coordinate axes of our ordination object.
 
 As with the row element recoverers above, we obtain these names from the column names of the loading matrix:
 
@@ -199,7 +201,7 @@ recover_coord.principal <- function(x) {
 recover_coord.principal(pca_psych)
 ```
 
-The inertia is established, but the methods must also account for how it is conferred on the matrix factors, which brings us to the next recoverer.
+The inertia is established, but the methods must also account for how it is conferred on the matrix factors ($a$ and $b$ above), which brings us to the next recoverer:
 
   * `ordr::recover_conference()` indicates how the inertia is distributed to the rows or columns ($U$ or $V$) in the object. (**stats** and **psych** make different choices here.)
 
@@ -325,9 +327,11 @@ Either way, the methods must be informed by the additional caution and checks ab
 
 ## Augmentation
 
+We have recovered all of the **ordr**-relevant geometric data from the `principal` object. What remains are any pieces of information in the class that annotate the matrix factors:
+
   * `ordr::recover_aug_rows()` and `ordr::recover_aug_cols()` do not recover raw elements of the PCA but rather reassemble additional, often non-numeric elements that augment the row and column coordinates.
 
-We have recovered all of the **ordr**-relevant geometric data from the `principal` object. What remains are any pieces of information in the class that annotate the matrix factors. This information is organized in each case as a tibble, not a matrix. For convenience, we attach the **tibble** package:
+This information is organized in each case as a tibble, not a matrix. For convenience, we attach the **tibble** package:
 
 ```{r}
 library(tibble)
