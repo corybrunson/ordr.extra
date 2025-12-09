@@ -119,7 +119,7 @@ This decomposition situates the scores as row elements and also prompts us to in
 Indeed, $(W^+_{k \times p})^\top$ and $L_{p\times k}$ share the same dimensions, and we can reason that both contain full inertia.
 
 <details>
-<summary> Reason that the same inertia is conferred on $(W^+)^\top$ as on $L$ </summary>
+<summary> How the same inertia is conferred on $(W^+)^\top$ as on $L$ </summary>
 
 Let $d$ denote the inertia contained in $X$.
 Then $(\bar{X}_{n\times p})^\top\bar{X}_{n\times p} = R_{p\times p}$ contains $d^2$. Recalling that $L_{p\times k}$ contains $d$, it follows that $W_{p\times{k}} = R^{-1}_{p\times{p}}L_{p\times{k}}$ contains $d^{-2}d = d^{-1}$.
@@ -177,28 +177,29 @@ head(recover_supp_rows(fa_stats) / recover_supp_rows(fa_psych))
 
 ### Conference of Inertia
 
-As previously noted, the decomposition for FA does not have a distinct inertia matrix. This is a result of FA allowing correlations between factors. Whereas in PCA the uncorrelated structure of principal components mean that no two components can explain a portion of the same variance, the same is not true in FA. Hence, we cannot take eigenvalues as portions of explained variance in FA as we do in PCA.
+Because FA permits correlations between factors, the procedure does not produce a matrix of inertias; the variance cannot be partitioned and attributed to the factors as it is to the components in PCA.
+Whereas the first $l \leq k$ principal components always correspond to the $l$th eigenspace, only the $k$th eigenspace is expressible as the span of the $k$ factors.
 
-To validate a conference of inertia for `psych::fa()`, we will use an alternative interpretation of inertia that can generalize from PCA to FA.
-
-One meaning of the inertia in PCA is as the variances of the principal components. So, we can obtain the inertia by squaring each loadings entry, then taking the column sums, and lastly multiplying by $n−1$. 
+In order to accommodate the SVD-based recoverers, we must extract values analogous to inertia that are meaningful in the FA setting.
+In PCA, the covariance matrix is decomposed as $X^\top X = (V D) (D V^\top)$, and the inertia of each principal component---each column of $V D$---is the sum of the squares of its principal loadings, multiplied by $n-1$ to account for standardization:
 
 <details>
-<summary> Verify how inertia is computed using PCA example
-</summary>
-Equivalence between this and the previous eigenvalue method of extracting inertia can be demonstrated using the code below.
+<summary> Recover inertia from columns in PCA </summary>
 
 ```{r, eval = FALSE}
 recover_inertia.principal(pca_psych)
-colSums(pca_psych$loadings^2) * (nrow(scaled_iris) - 1)
+colSums(pca_psych$loadings ^ 2) * (nrow(scaled_iris) - 1)
 ```
+
 </details>
 
-Then it follows that `psych::fa()` has an inertia conference of (0, 1).
+For FA, we borrow this calculation and compute the variances of the factors in the same way, with $L$ in place of $V D$.
+This means that full inertia is conferred onto $L$.
+Since the inner products of the scores and loadings approximate the data matrix, $X \approx S L$, the scores must have no inertia conferred.
+It follows that `psych::fa()` has a conference of $(0,1)$.
 
 <details>
-<summary> Prove (0,1) conference of inertia for `psych::fa()`
-</summary>
+<summary> Check that $S L$ approximates $X$ </summary>
 
 First, we show that the scores multiplied by the transposed loadings gives an approximation of the data matrix.
 
@@ -212,47 +213,57 @@ sds <- apply(swiss, 2, sd)
 swiss_approx <- sweep(stdized_approx, 2, sds, "*") # de-scale
 swiss_approx <- sweep(swiss_approx, 2, means, "+") # de-center
 
-head(swiss_approx / swiss) # values close to 1 indicate near equality
+# values close to 1 indicate near equality
+head(swiss_approx / swiss)
 ```
-
-Therefore, the data matrix is approximately the product of the scores and tranposed loadings matrices (after we undo centering and scaling). Then to prove that the scores contain zero inertia, it suffices to show that the loadings contain full inertia.
-
-By default, the `cor` argument in `psych::fa()` is set to "cor", meaning the function performs FA on the correlation matrix. Thus, the total variance is 1 for each variable, i.e. 6 in this case.
-
-Additionally, the total variance is equal to the sum of shared variance and uniquenesses. Observe below that the inertia from the loadings (calculated via column sums of squared entries) can be added to the uniquenesses to obtain the number of variables, as desired.
-
-```{r}
-common_var <- (colSums(fa_psych$loadings^2)) # inertia from loadings
-uniq <- fa_psych$uniquenesses # uniquenesses
-
-sum(common_var) + sum(uniq) # shared variance + uniquenesses
-```
-
-This implies that the loadings carry full inertia (minus uniquenesses). As previously shown, it follows that the scores carry zero inertia. So, we conclude that `psych::fa()` indeed has an inertia conference of (0, 1).
 
 </details>
+
+It also means that we focus on the geometry of the shared factors alone, ignoring the unique factors, which don't contribute to the loadings.
+Recall that, in FA, the total variance is the sum of _shared variance_ and _uniquenesses_.
+The next fold shows that our "inertia" from the loadings can be added to the uniquenesses to recover the total.
+
+<details>
+<summary> Recompose inertia with uniqueness to obtain total variance </summary>
+
+Note below that the total is rescaled by $n-1$, bringing it to $n$, or $1$ for each variable:
+
+```{r}
+# inertia from loadings
+common_var <- (colSums(fa_psych$loadings^2))
+# uniquenesses
+uniq <- fa_psych$uniquenesses
+# shared variance + uniquenesses
+sum(common_var) + sum(uniq)
+```
+
+</details>
+
+These observations lead us to our recoverers for conference and for inertia:
 
 ```{r}
 recover_conference.fa <- function(x) {
   c(0, 1)
 }
-```
 
-Seeing that the column sums of squares agree with the extracted uniquenesses in summing to total variance, we can also define our inertia recoverer as follows.
-
-```{r}
 recover_inertia.fa <- function(x) {
   colSums(x[["loadings"]] ^ 2)
 }
 
+recover_conference.fa(fa_psych)
 recover_inertia.fa(fa_psych)
 ```
 
-Then let us verify that these values returned by `recover_inertia.fa()` approximately equal those recovered from our `factanal` object.
+<details>
+<summary> Check that elements agree with those from `factanal` </summary>
+
+Finally, we check that these values basically agree with those recovered from our `factanal` object:
 
 ```{r}
 recover_inertia(fa_stats)
 ```
+
+</details>
 
 ### Augmentation
 
