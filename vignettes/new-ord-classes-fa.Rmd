@@ -271,7 +271,8 @@ recover_inertia(fa_stats)
 library(tibble)
 ```
 
-Finally, we piece these recovered elements back into an augmented matrix for the user. As with PCA, we want to ascribe each element to a coordinate name, column/row attribute, and active/supplementary attribute. Additionally, we wish to present the user with the uniqueness of each variable as this element is directly accessible from the output of `psych::fa()` and indicates which variables account for the most variance. We write the following functions.
+The unique factors, or uniquenesses, are a property of the manifest variables that we haven't given a clear geometric interpretation, so the place to provide them to the user is as augmentation. The `fa` object returned by `psych::fa()` also contains `communality` and `complexity` values, so we pool all three into the column augmentation.
+The coordinate and row augmentors are perfunctory: names and element types only:
 
 ```{r}
 recover_coord.fa <- function(x) {
@@ -338,30 +339,32 @@ recover_aug_cols.fa <- function(x) {
 ```
 
 <details>
-<summary> Check number of rows
-</summary>
-We will verify that these augmentations have the expected number of rows to prevent bugs.
+<summary> Check that the augmentors have correct numbers of rows </summary>
+
+To preempt bugs (and possibly confusing error messages), we verify that the augmentors have the expected number of rows:
 
 ```{r}
-recover_aug_coord.fa(fa_psych) |> 
-  nrow() # should yield two rows for the two factors
+# should yield two rows for the two factors
+recover_aug_coord.fa(fa_psych) |> nrow()
 
-recover_aug_rows.fa(fa_psych) |>
-  nrow() # should yield 47 rows for the 47 rows in the data frame/scores
+# should yield 47 rows for the 47 rows in the data frame/scores
+recover_aug_rows.fa(fa_psych) |> nrow()
 
-recover_aug_cols.fa(fa_psych) |>
-  nrow() # should yield twelve rows for the six rows of weights and six rows of loadings
+# should yield twelve rows for the six rows of weights and six rows of loadings
+recover_aug_cols.fa(fa_psych) |> nrow()
 ```
 
-So, all augmentations indeed give the correct number of rows.
 </details>
 
-And thus, we can generate the below `tbl_ord` object with ease after defining `as_tbl_ord.fa()` as we did `as_tbl_ord.principal()`.
+See the `principal` vignette for more details.
+
+We can now assemble the `tbl_ord` object by writing a method for `as_tbl_ord()`:
 
 ```{r}
 as_tbl_ord.fa <- getFromNamespace("as_tbl_ord_default", "ordr")
 
-as_tbl_ord(fa_psych) |>
+fa_psych |> 
+  as_tbl_ord() |>
   augment_ord()
 ```
 
