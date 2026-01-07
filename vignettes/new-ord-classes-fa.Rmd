@@ -41,11 +41,21 @@ fa_stats <- factanal(scaled_swiss, factors = 2, rotation = "none", scores = "reg
 
 FA assumes correlations between the factors, which leads to the issue of factor indeterminacy: Different optimization procedures may produce different sets of $k$ factors.
 Moreover, the factors obtained are not ranked and may be inconsistent across different choices of $k$. This is in stark contrast to the fact that the first $l \leq k$ principal components are the same regardless of $k$.
-Compare the results using $k=1$ and $k=2$:
+Compare the results using $k=2$ and $k=3$:
 
 ```{r, echo = TRUE, warning = FALSE, message = FALSE}
-fa(scaled_swiss, nfactors = 1)$loadings
 fa(scaled_swiss, nfactors = 2)$loadings
+fa(scaled_swiss, nfactors = 3)$loadings
+
+op <- par(mfrow = c(1, 2))
+
+fa(scaled_swiss, nfactors = 2) |>
+  biplot.psych(main = "Biplot of FA with 2 factors")
+
+fa(scaled_swiss, nfactors = 3) |>
+  biplot.psych(choose = c("MR1", "MR2"), main = "Biplot of FA with 3 factors")
+
+par(op)
 ```
 
 ## Matrix Decomposition
