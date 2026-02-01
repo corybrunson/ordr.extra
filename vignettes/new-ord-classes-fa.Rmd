@@ -44,18 +44,25 @@ Moreover, the factors obtained are not ranked and may be inconsistent across dif
 Compare the results using $k=1$ and $k=2$:
 
 ```{r, echo = TRUE, warning = FALSE, message = FALSE}
-fa(scaled_swiss, nfactors = 1)$loadings
-fa(scaled_swiss, nfactors = 2)$loadings
+fa1 <- fa(scaled_swiss, nfactors = 1)
+fa2 <- fa(scaled_swiss, nfactors = 2)
 
-op <- par(mfrow = c(1, 2))
+fa1$loadings
+fa2$loadings
 
-fa(scaled_swiss, nfactors = 1) |>
+par(mfrow = c(1, 2))
+
+fa1 |>
   biplot.psych(main = "Biplot of FA with 1 factor")
 
-fa(scaled_swiss, nfactors = 2) |>
+fa2 |>
   biplot.psych(main = "Biplot of FA with 2 factors")
+```
 
-par(op)
+Notice that `biplot.psych()` returns a histogram of factor scores along the single factor in the first case. Observing where the highest bars lie corresponding to the horizontal axis, we can see where the data clusters along a latent variable. Here, we see that the data skews slightly left in the latent variable. In this way, the histogram provides a visualization similar to that of a two-dimensional biplot. For further comparison, the score histogram for the the first factor of the two-factor case is below.
+
+```{r}
+hist(fa2$scores)
 ```
 
 ## Matrix Decomposition
