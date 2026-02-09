@@ -1,7 +1,6 @@
 ---
-title: "new-ord-classes-comparison"
-output: rmarkdown::html_vignette:
-  toc: TRUE
+title: "Extending ordr: Comparison of PCA/FA"
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{new-ord-classes-comparison}
   %\VignetteEngine{knitr::rmarkdown}
