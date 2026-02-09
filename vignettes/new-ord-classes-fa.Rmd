@@ -53,16 +53,18 @@ fa2$loadings
 par(mfrow = c(1, 2))
 
 fa1 |>
-  biplot.psych(main = "Biplot of FA with 1 factor")
+  biplot.psych(main = "Biplot of FA with 1 factor", xlim.s = c(-3,3))
 
 fa2 |>
   biplot.psych(main = "Biplot of FA with 2 factors")
 ```
 
-Notice that `biplot.psych()` returns a histogram of factor scores along the single factor in the first case. Observing where the highest bars lie corresponding to the horizontal axis, we can see where the data clusters along a latent variable. Here, we see that the data skews slightly left in the latent variable. In this way, the histogram provides a visualization similar to that of a two-dimensional biplot. For further comparison, the score histogram for the the first factor of the two-factor case is below.
+Notice that `biplot.psych()` returns a histogram of factor scores along the single factor in the first case. Observing where the highest bars lie corresponding to the horizontal axis, we can see where the data clusters along a latent variable. Here, we see that the data skews slightly left in the latent variable. In this way, the histogram provides a visualization similar to that of a two-dimensional biplot. For further comparison, the score histograms for the the first, then second, factors of the two-factor case is below.
 
 ```{r}
-hist(fa2$scores)
+hist(fa2$scores[, 1], xlim = c(-3,3))
+
+hist(fa2$scores[, 2], xlim = c(-3,3))
 ```
 
 ## Matrix Decomposition
