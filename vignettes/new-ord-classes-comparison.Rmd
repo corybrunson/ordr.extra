@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This vignette proceeds the two "Writing Recovery Methods for New Ordination Classes" vignettes, using the **ordr.extra** incorporations of `psych::principal()` and `psych::fa()` to illustrate some of the similarities and differences between methods at both the theoretical and practical level.
+This vignette proceeds [Extending ordr: PCA](vignettes/new-ord-classes-pca) and [Extending ordr: FA](vignettes/new-ord-classes-fa.html), using the **ordr.extra** incorporations of `psych::principal()` and `psych::fa()` to illustrate some of the similarities and differences between methods at both the theoretical and practical level.
 
 # Comparison of PCA and FA
 
