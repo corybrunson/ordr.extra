@@ -4,9 +4,9 @@
 
 This vignette demonstrates how to integrate methods for a new ordination
 class into **ordr.extra**. It follows the [principal component analysis
-(PCA) vignette](vignettes/new-ord-classes-pca), which for reasons of
-underlying theory is a simpler case. Since we’ll refer to the prequel
-here occasionally, we recommend beginning there.
+(PCA) vignette](new-ord-classes-pca.md), which for reasons of underlying
+theory is a simpler case. Since we’ll refer to the prequel here
+occasionally, we recommend beginning there.
 
 ``` r
 library(ordr)

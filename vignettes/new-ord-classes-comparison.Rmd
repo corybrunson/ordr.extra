@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This vignette proceeds [Extending ordr: PCA](vignettes/new-ord-classes-pca) and [Extending ordr: FA](vignettes/new-ord-classes-fa.html), using the **ordr.extra** incorporations of `psych::principal()` and `psych::fa()` to illustrate some of the similarities and differences between methods at both the theoretical and practical level.
+This vignette proceeds [Extending ordr: PCA](new-ord-classes-pca.html) and [Extending ordr: FA](new-ord-classes-fa.html), using the **ordr.extra** incorporations of `psych::principal()` and `psych::fa()` to illustrate some of the similarities and differences between methods at both the theoretical and practical level.
 
 # Comparison of PCA and FA
 

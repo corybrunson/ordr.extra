@@ -2,9 +2,8 @@
 
 ## Introduction
 
-This vignette proceeds [Extending ordr:
-PCA](vignettes/new-ord-classes-pca) and [Extending ordr:
-FA](vignettes/new-ord-classes-fa.md), using the **ordr.extra**
+This vignette proceeds [Extending ordr: PCA](new-ord-classes-pca.md) and
+[Extending ordr: FA](new-ord-classes-fa.md), using the **ordr.extra**
 incorporations of
 [`psych::principal()`](https://rdrr.io/pkg/psych/man/principal.html) and
 [`psych::fa()`](https://rdrr.io/pkg/psych/man/fa.html) to illustrate
