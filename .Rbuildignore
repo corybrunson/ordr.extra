@@ -25,3 +25,4 @@ README.Rmd
 ^sandbox$
 
 ^README\.Rmd$
+^pkgdown$
