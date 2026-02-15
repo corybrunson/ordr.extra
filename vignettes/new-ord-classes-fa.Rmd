@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This vignette demonstrates how to integrate methods for a new ordination class into **ordr.extra**. It follows the PCA vignette, which for reasons of underlying theory is a simpler case.
+This vignette demonstrates how to integrate methods for a new ordination class into **ordr.extra**. It follows the [principal component analysis (PCA) vignette](vignettes/new-ord-classes-pca), which for reasons of underlying theory is a simpler case.
 Since we'll refer to the prequel here occasionally, we recommend beginning there.
 
 ```{r, message = FALSE}
@@ -27,7 +27,7 @@ library(psych)
 
 ## Factor Analysis
 
-Factor analysis (FA) is a family of dimension-reducing methods of geometric data analysis. Unlike PCA, FA assumes the existence of latent variables (factors) behind a set of data, the number of which is less than the number of variables originally taken to be in the set. Like principal components, the factors in FA are linear combinations of the variables, and the variables are said to load onto the factors. However, factors are chosen to explain correlations between the variables, not to capture maximal variance; it is not assumed that factors are uncorrelated and orthogonal.
+Factor analysis (FA) is a family of dimension-reducing methods of geometric data analysis. Unlike PCA, FA assumes the existence of latent variables (factors) behind a set of data which may better represent that data. The number of factors is less than the number of variables originally taken to be in the set. Like principal components, the factors in FA are linear combinations of the variables, and the variables are said to load onto the factors. However, factors are chosen to explain correlations between the variables, not to capture maximal variance; it is not assumed that factors are uncorrelated and orthogonal. For a further description and simple example of FA, see [here](https://stats.oarc.ucla.edu/spss/seminars/introduction-to-factor-analysis/a-practical-introduction-to-factor-analysis/).
 
 The core R distribution contains `stats::factanal()`, and **ordr** already recognizes its output. This vignette focuses on `psych::fa()`, with `factanal` methods as points of reference. Its integration into **ordr** will be much like that of `psych::principal()`, due to similarities in the linear algebra and in their interpretations, but several pitfalls must be avoided.
 
