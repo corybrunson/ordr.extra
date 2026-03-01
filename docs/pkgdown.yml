@@ -2,9 +2,7 @@ pandoc: '3.2'
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
-  new-ord-classes-class-support-checklist: new-ord-classes-class-support-checklist.html
-  new-ord-classes-comparison: new-ord-classes-comparison.html
-  new-ord-classes-fa: new-ord-classes-fa.html
   new-ord-classes-pca: new-ord-classes-pca.html
-  new-ord-classes: new-ord-classes.html
+  new-ord-classes-fa: new-ord-classes-fa.html
+  new-ord-classes-class-support-checklist: new-ord-classes-class-support-checklist.html
 last_built: 2026-02-15T20:22Z
