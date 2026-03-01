@@ -31,20 +31,3 @@ ggbiplot(iris_fa, scale_cols = 3) +
   # include vector labels in plot window (specific to graphics device)
   scale_x_continuous(limits = ~ range(.x, c(-2, 5))) +
   scale_y_continuous(limits = ~ range(.x, c(-4, 3)))
-
-# data frame of Swiss fertility and socioeconomic indicators
-class(swiss)
-head(swiss)
-
-# fa on swiss
-swiss |>
-  ordinate(~psych::fa(., nfactors = 2L, rotate = "varimax", scores = 
-                        "regression", fm = "ml")) |>
-  print() -> swiss_fa
-
-# symmetric biplot
-swiss_fa |>
-  ggbiplot() +
-  theme_bw() +
-  geom_cols_vector(aes(color = uniqueness, label = name)) +
-  expand_limits(x = c(-2, 2.5), y = c(-1.5, 2))
