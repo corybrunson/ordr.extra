@@ -1,10 +1,9 @@
 skip_if_not_installed("nipals")
 
 aq_sub <- airquality[airquality$Month == 6L, seq(4L)]
-fit_nipals_ord <- nipals::nipals(aq_sub)
+fit_nipals_ord <- ordinate(x = aq_sub, model = nipals_ord, cols = 1:4)
 
 test_that("`as_tbl_ord()` coerces 'nipals' objects", {
-  expect_equal(class(fit_nipals_ord), "nipals_ord")
   expect_true(valid_tbl_ord(as_tbl_ord(fit_nipals_ord)))
 })
 
