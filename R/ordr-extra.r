@@ -13,18 +13,16 @@
 #' models. This package serves as a reservoir of accessors for additional, less
 #' common models.
 
-#' @docType package
 #' @name ordr.extra
 #' @aliases ordr.extra-package
 #' @importFrom tibble tibble is_tibble as_tibble
 #' @example inst/examples/ex-ordinate.r
-NULL
+"_PACKAGE"
 
 # not exported from *ordr*
 #' @importFrom utils getFromNamespace
 
 as_tbl_ord_default <- getFromNamespace("as_tbl_ord_default", "ordr")
-tibble_pole <- getFromNamespace("tibble_pole", "ordr")
 factor_coord <- getFromNamespace("factor_coord", "ordr")
 match_factor <- getFromNamespace("match_factor", "ordr")
 

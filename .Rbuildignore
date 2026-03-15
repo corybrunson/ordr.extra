@@ -24,3 +24,5 @@ README.Rmd
 ^ignore$
 ^sandbox$
 
+^README\.Rmd$
+^pkgdown$

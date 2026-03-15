@@ -1,3 +1,6 @@
+skip_if_not_installed("logisticPCA")
+skip_if_not_installed("cooccur")
+
 data(finches, package = "cooccur")
 fit_lsvd <- logisticSVD_ord(t(finches))
 fit_lpca <- logisticPCA_ord(t(finches))

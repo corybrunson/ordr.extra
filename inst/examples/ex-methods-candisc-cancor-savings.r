@@ -1,6 +1,9 @@
 # data frame of life-cycle savings across countries
 class(LifeCycleSavings)
 head(LifeCycleSavings)
+
+if (require(candisc)) {# {candisc}
+
 # canonical correlation analysis of age distributions and financial factors
 savings_cancor <- candisc::cancor(
   LifeCycleSavings[, c("pop15", "pop75")],
@@ -28,3 +31,5 @@ savings_cancor %>%
   geom_cols_point(elements = "structure", color = "forestgreen") +
   geom_cols_text_repel(elements = "structure", color = "forestgreen") +
   expand_limits(x = c(-1, 1), y = c(-1, 1))
+
+}# {candisc}

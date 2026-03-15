@@ -1,3 +1,6 @@
+skip_if_not_installed("ade4")
+skip_if_not_installed("nipals")
+
 aq_sub <- airquality[airquality$Month == 6L, seq(4L)]
 fit_ade4_nipals <- ade4::nipals(aq_sub)
 fit_nipals_ord <- nipals_ord(aq_sub)

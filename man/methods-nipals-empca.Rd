@@ -35,8 +35,8 @@
 \item{x}{An ordination object.}
 }
 \value{
-The recovery generics \verb{recover_*()} return \link[=recoverers]{core model components}, \link[=conference]{distribution of inertia},
-\link[=supplementation]{supplementary elements}, and \link[=augmentation]{intrinsic metadata}; but they require methods for each model class to
+The recovery generics \verb{recover_*()} return \link[ordr:recoverers]{core model components}, \link[ordr:conference]{distribution of inertia},
+\link[ordr:supplementation]{supplementary elements}, and \link[ordr:augmentation]{intrinsic metadata}; but they require methods for each model class to
 tell them what these components are.
 
 The generic \code{\link[=as_tbl_ord]{as_tbl_ord()}} returns its input wrapped in the 'tbl_ord'
@@ -54,6 +54,9 @@ to identify objects returned by \code{\link[=empca_ord]{empca_ord()}}, which wra
 # incomplete air quality measurements from New York
 class(airquality)
 head(airquality)
+
+if (require(nipals)) {# {nipals}
+
 # single date variable
 airquality \%>\%
   transform(Date = as.Date(paste("1973", Month, Day, sep = "-"))) \%>\%
@@ -64,9 +67,19 @@ rand_wts <- matrix(nrow = nrow(air_quality), ncol = ncol(air_quality) - 1L)
 rand_wts[] <- runif(n = prod(dim(rand_wts)))
 
 # EMPCA on weighted air quality measures
-air_empca <- empca_ord(x = air_quality[, seq(4L)], w = rand_wts)
-# augmented tbl_ord
-augment_ord(as_tbl_ord(air_empca))
+air_empca <-
+  ordinate(x = air_quality, model = empca_ord, cols = 1:4, w = rand_wts)
+
+# compare original and fitted data
+head(air_quality)
+{ get_rows(air_empca) \%*\%
+    diag(get_inertia(air_empca)) \%*\%
+    t(get_cols(air_empca)) } \%>\%
+  sweep(2L, air_empca$scale, "*") \%>\%
+  sweep(2L, air_empca$center, "+") \%>\%
+  head()
+
+}# {nipals}
 }
 \seealso{
 Other methods for singular value decomposition-based techniques: 

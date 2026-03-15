@@ -72,8 +72,8 @@
 \item{x}{An ordination object.}
 }
 \value{
-The recovery generics \verb{recover_*()} return \link[=recoverers]{core model components}, \link[=conference]{distribution of inertia},
-\link[=supplementation]{supplementary elements}, and \link[=augmentation]{intrinsic metadata}; but they require methods for each model class to
+The recovery generics \verb{recover_*()} return \link[ordr:recoverers]{core model components}, \link[ordr:conference]{distribution of inertia},
+\link[ordr:supplementation]{supplementary elements}, and \link[ordr:augmentation]{intrinsic metadata}; but they require methods for each model class to
 tell them what these components are.
 
 The generic \code{\link[=as_tbl_ord]{as_tbl_ord()}} returns its input wrapped in the 'tbl_ord'
@@ -81,8 +81,8 @@ class. Its methods determine what model classes it is allowed to wrap. It
 then provides 'tbl_ord' methods with access to the recoverers and hence to
 the model components.
 
-The recovery generics \verb{recover_*()} return \link[=recoverers]{core model components}, \link[=conference]{distribution of inertia},
-\link[=supplementation]{supplementary elements}, and \link[=augmentation]{intrinsic metadata}; but they require methods for each model class to
+The recovery generics \verb{recover_*()} return \link[ordr:recoverers]{core model components}, \link[ordr:conference]{distribution of inertia},
+\link[ordr:supplementation]{supplementary elements}, and \link[ordr:augmentation]{intrinsic metadata}; but they require methods for each model class to
 tell them what these components are.
 
 The generic \code{\link[=as_tbl_ord]{as_tbl_ord()}} returns its input wrapped in the 'tbl_ord'
@@ -90,8 +90,8 @@ class. Its methods determine what model classes it is allowed to wrap. It
 then provides 'tbl_ord' methods with access to the recoverers and hence to
 the model components.
 
-The recovery generics \verb{recover_*()} return \link[=recoverers]{core model components}, \link[=conference]{distribution of inertia},
-\link[=supplementation]{supplementary elements}, and \link[=augmentation]{intrinsic metadata}; but they require methods for each model class to
+The recovery generics \verb{recover_*()} return \link[ordr:recoverers]{core model components}, \link[ordr:conference]{distribution of inertia},
+\link[ordr:supplementation]{supplementary elements}, and \link[ordr:augmentation]{intrinsic metadata}; but they require methods for each model class to
 tell them what these components are.
 
 The generic \code{\link[=as_tbl_ord]{as_tbl_ord()}} returns its input wrapped in the 'tbl_ord'
@@ -148,6 +148,8 @@ column names from the input matrix to the output matrices.
 }
 
 \examples{
+if (require(logisticPCA) && require(cooccur)) {# {logisticPCA}
+
 # site-species data frame of Sanderson Galapagos finches data
 data(finches, package = "cooccur")
 class(finches)
@@ -187,6 +189,10 @@ finches_lsvd \%>\%
     "Islands (finches) scaled to the primary (secondary) axes"
   ) +
   expand_limits(x = c(-80, 60))
+
+}# {logisticPCA}
+if (require(logisticPCA) && require(cooccur)) {# {logisticPCA}
+
 # site-species data frame of Sanderson Galapagos finches data
 data(finches, package = "cooccur")
 class(finches)
@@ -216,6 +222,10 @@ finches_lpca \%>\%
     "Islands (finches) scaled to the primary (secondary) axes"
   ) +
   expand_limits(x = c(-25, 35))
+
+}# {logisticPCA}
+if (require(logisticPCA) && require(cooccur)) {# {logisticPCA}
+
 # site-species data frame of Sanderson Galapagos finches data
 data(finches, package = "cooccur")
 class(finches)
@@ -245,6 +255,8 @@ finches_clpca \%>\%
     "Islands (finches) scaled to the primary (secondary) axes"
   ) +
   expand_limits(x = c(-25, 35))
+
+}# {logisticPCA}
 }
 \references{
 Landgraf AJ & Lee Y (2020) "Dimensionality reduction for binary data through

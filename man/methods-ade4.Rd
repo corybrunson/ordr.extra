@@ -35,8 +35,8 @@
 \item{x}{An ordination object.}
 }
 \value{
-The recovery generics \verb{recover_*()} return \link[=recoverers]{core model components}, \link[=conference]{distribution of inertia},
-\link[=supplementation]{supplementary elements}, and \link[=augmentation]{intrinsic metadata}; but they require methods for each model class to
+The recovery generics \verb{recover_*()} return \link[ordr:recoverers]{core model components}, \link[ordr:conference]{distribution of inertia},
+\link[ordr:supplementation]{supplementary elements}, and \link[ordr:augmentation]{intrinsic metadata}; but they require methods for each model class to
 tell them what these components are.
 
 The generic \code{\link[=as_tbl_ord]{as_tbl_ord()}} returns its input wrapped in the 'tbl_ord'
@@ -52,6 +52,8 @@ objects of class \code{"nipals"} as returned by \code{\link[ade4:nipals]{ade4::n
 # incomplete air quality measurements from New York
 class(airquality)
 head(airquality)
+
+if (require(ade4)) {# {ade4}
 
 # NIPALS on air quality measures
 airquality[, seq(4L)] \%>\%
@@ -89,6 +91,8 @@ air_nipals \%>\%
   geom_rows_point(aes(shape = Missingness), size = 3) +
   scale_shape_manual(values = c(`TRUE` = 1L, `FALSE` = NA)) +
   ggtitle("Row-principal PCA biplot of 1973 air quality measurements")
+
+}# {ade4}
 }
 \seealso{
 Other methods for singular value decomposition-based techniques: 

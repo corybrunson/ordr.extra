@@ -51,7 +51,7 @@ recover_coord.ca <- function(x) {
 recover_aug_rows.ca <- function(x) {
   name <- rownames(x$rowcoord)
   res <- if (is.null(name)) {
-    tibble_pole(nrow(x$rowcoord))
+    tibble(.rows = nrow(x$rowcoord))
   } else {
     tibble(name = name)
   }
@@ -68,7 +68,7 @@ recover_aug_rows.ca <- function(x) {
 recover_aug_cols.ca <- function(x) {
   name <- rownames(x$colcoord)
   res <- if (is.null(name)) {
-    tibble_pole(nrow(x$colcoord))
+    tibble(.rows = nrow(x$colcoord))
   } else {
     tibble(name = name)
   }

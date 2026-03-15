@@ -49,7 +49,7 @@ recover_coord.lpca <- function(x) paste0("LPC", 1:ncol(x$U))
 recover_aug_rows.lpca <- function(x) {
   name <- rownames(x$PCs)
   res <- if (is.null(name)) {
-    tibble_pole(nrow(x$PCs))
+    tibble(.rows = nrow(x$PCs))
   } else {
     tibble(name = name)
   }
@@ -61,7 +61,7 @@ recover_aug_rows.lpca <- function(x) {
 recover_aug_cols.lpca <- function(x) {
   name <- rownames(x$U)
   res <- if (is.null(name)) {
-    tibble_pole(nrow(x$U))
+    tibble(.rows = nrow(x$U))
   } else {
     tibble(name = name)
   }

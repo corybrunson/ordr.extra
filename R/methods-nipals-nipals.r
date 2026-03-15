@@ -46,7 +46,7 @@ recover_conference.nipals_ord <- function(x) {
 recover_aug_rows.nipals_ord <- function(x) {
   name <- rownames(x[["scores"]])
   if (is.null(name)) {
-    tibble_pole(nrow(x[["scores"]]))
+    tibble(.rows = nrow(x[["scores"]]))
   } else {
     tibble(name = name)
   }
@@ -57,7 +57,7 @@ recover_aug_rows.nipals_ord <- function(x) {
 recover_aug_cols.nipals_ord <- function(x) {
   name <- rownames(x[["loadings"]])
   res <- if (is.null(name)) {
-    tibble_pole(nrow(x[["loadings"]]))
+    tibble(.rows = nrow(x[["loadings"]]))
   } else {
     tibble(name = name)
   }

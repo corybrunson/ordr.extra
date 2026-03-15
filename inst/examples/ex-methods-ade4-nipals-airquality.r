@@ -2,6 +2,8 @@
 class(airquality)
 head(airquality)
 
+if (require(ade4)) {# {ade4}
+
 # NIPALS on air quality measures
 airquality[, seq(4L)] %>%
   ade4::nipals(nf = 3L) %>%
@@ -38,3 +40,5 @@ air_nipals %>%
   geom_rows_point(aes(shape = Missingness), size = 3) +
   scale_shape_manual(values = c(`TRUE` = 1L, `FALSE` = NA)) +
   ggtitle("Row-principal PCA biplot of 1973 air quality measurements")
+
+}# {ade4}

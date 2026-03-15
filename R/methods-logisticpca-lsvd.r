@@ -48,7 +48,7 @@ recover_coord.lsvd <- function(x) paste0("LSC", 1:ncol(x$A))
 recover_aug_rows.lsvd <- function(x) {
   name <- rownames(x$A)
   res <- if (is.null(name)) {
-    tibble_pole(nrow(x$A))
+    tibble(.rows = nrow(x$A))
   } else {
     tibble(name = name)
   }
@@ -60,7 +60,7 @@ recover_aug_rows.lsvd <- function(x) {
 recover_aug_cols.lsvd <- function(x) {
   name <- rownames(x$B)
   res <- if (is.null(name)) {
-    tibble_pole(nrow(x$B))
+    tibble(.rows = nrow(x$B))
   } else {
     tibble(name = name)
   }

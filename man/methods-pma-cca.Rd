@@ -35,8 +35,8 @@
 \item{x}{An ordination object.}
 }
 \value{
-The recovery generics \verb{recover_*()} return \link[=recoverers]{core model components}, \link[=conference]{distribution of inertia},
-\link[=supplementation]{supplementary elements}, and \link[=augmentation]{intrinsic metadata}; but they require methods for each model class to
+The recovery generics \verb{recover_*()} return \link[ordr:recoverers]{core model components}, \link[ordr:conference]{distribution of inertia},
+\link[ordr:supplementation]{supplementary elements}, and \link[ordr:augmentation]{intrinsic metadata}; but they require methods for each model class to
 tell them what these components are.
 
 The generic \code{\link[=as_tbl_ord]{as_tbl_ord()}} returns its input wrapped in the 'tbl_ord'
@@ -65,13 +65,18 @@ specializations as well as one to sparse multiple CCA.
 # data frame of life-cycle savings across countries
 class(LifeCycleSavings)
 head(LifeCycleSavings)
+
+if (require(PMA)) {# {PMA}
+
 # canonical correlation analysis of age distributions and financial factors
 savings_cca <- PMA::CCA(
   LifeCycleSavings[, c(2L, 3L)],
   LifeCycleSavings[, c(1L, 4L, 5L)],
   K = 2L, penaltyx = .7, penaltyz = .7,
   xnames = names(LifeCycleSavings)[c(2L, 3L)],
-  znames = names(LifeCycleSavings)[c(1L, 4L, 5L)]
+  znames = names(LifeCycleSavings)[c(1L, 4L, 5L)],
+  # prevent errors
+  typex = "standard", typez = "standard"
 )
 
 # wrap as a 'tbl_ord' object
@@ -98,6 +103,8 @@ savings_cca \%>\%
   geom_rows_point(subset = nz_rows) +
   geom_rows_text_repel(subset = nz_rows) +
   expand_limits(x = c(-1, 1), y = c(-1, 1))
+
+}# {PMA}
 }
 \references{
 Witten DM, Tibshirani R, & Hastie T (2009) "A penalized matrix decomposition,

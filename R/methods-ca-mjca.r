@@ -59,7 +59,7 @@ recover_coord.mjca <- function(x) paste0("Dim", seq(ncol(x$rowcoord)))
 recover_aug_rows.mjca <- function(x) {
   name <- x$rownames
   res <- if (is.null(name)) {
-    tibble_pole(nrow(x$rowcoord))
+    tibble(.rows = nrow(x$rowcoord))
   } else {
     tibble(name = name)
   }
@@ -76,7 +76,7 @@ recover_aug_rows.mjca <- function(x) {
 recover_aug_cols.mjca <- function(x){
   name <- x$levelnames
   res <- if (is.null(name)) {
-    tibble_pole(nrow(x$colcoord))
+    tibble(.rows = nrow(x$colcoord))
   } else {
     tibble(name = name)
   }

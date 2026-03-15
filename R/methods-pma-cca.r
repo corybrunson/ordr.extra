@@ -65,7 +65,7 @@ recover_conference.CCA <- function(x) {
 recover_aug_rows.CCA <- function(x) {
   name <- x$xnames
   if (is.null(name)) {
-    tibble_pole(nrow(x$u))
+    tibble(.rows = nrow(x$u))
   } else {
     tibble(name = name)
   }
@@ -76,7 +76,7 @@ recover_aug_rows.CCA <- function(x) {
 recover_aug_cols.CCA <- function(x) {
   name <- x$znames
   if (is.null(name)) {
-    tibble_pole(nrow(x$v))
+    tibble(.rows = nrow(x$v))
   } else {
     tibble(name = name)
   }

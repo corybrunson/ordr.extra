@@ -1,13 +1,18 @@
 # data frame of life-cycle savings across countries
 class(LifeCycleSavings)
 head(LifeCycleSavings)
+
+if (require(PMA)) {# {PMA}
+
 # canonical correlation analysis of age distributions and financial factors
 savings_cca <- PMA::CCA(
   LifeCycleSavings[, c(2L, 3L)],
   LifeCycleSavings[, c(1L, 4L, 5L)],
   K = 2L, penaltyx = .7, penaltyz = .7,
   xnames = names(LifeCycleSavings)[c(2L, 3L)],
-  znames = names(LifeCycleSavings)[c(1L, 4L, 5L)]
+  znames = names(LifeCycleSavings)[c(1L, 4L, 5L)],
+  # prevent errors
+  typex = "standard", typez = "standard"
 )
 
 # wrap as a 'tbl_ord' object
@@ -34,3 +39,5 @@ savings_cca %>%
   geom_rows_point(subset = nz_rows) +
   geom_rows_text_repel(subset = nz_rows) +
   expand_limits(x = c(-1, 1), y = c(-1, 1))
+
+}# {PMA}

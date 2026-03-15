@@ -1,4 +1,15 @@
+# Mac OS X
+**/.DS_Store
+
+# R project
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
+
+# package organization
+data-raw
+ignore
+
+inst/doc
+docs

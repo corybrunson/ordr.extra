@@ -55,7 +55,7 @@ recover_conference.nipals <- function(x) {
 recover_aug_rows.nipals <- function(x) {
   name <- rownames(x[["li"]])
   if (is.null(name)) {
-    tibble_pole(nrow(x[["li"]]))
+    tibble(.rows = nrow(x[["li"]]))
   } else {
     tibble(name = name)
   }
@@ -66,7 +66,7 @@ recover_aug_rows.nipals <- function(x) {
 recover_aug_cols.nipals <- function(x) {
   name <- rownames(x[["c1"]])
   res <- if (is.null(name)) {
-    tibble_pole(nrow(x[["c1"]]))
+    tibble(.rows = nrow(x[["c1"]]))
   } else {
     tibble(name = name)
   }

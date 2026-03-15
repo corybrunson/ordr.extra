@@ -3,6 +3,8 @@ class(HairEyeColor)
 haireye <- as.data.frame(rowSums(HairEyeColor, dims = 2L))
 print(haireye)
 
+if (require(ca)) {# {ca}
+
 # use correspondence analysis to construct row and column profiles
 haireye %>%
   ca::ca() %>%
@@ -14,3 +16,5 @@ get_rows(haireye_ca)
 get_cols(haireye_ca)
 # augment profiles with names, masses, distances, and inertias
 (haireye_ca <- augment_ord(haireye_ca))
+
+}# {ca}

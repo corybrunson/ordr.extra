@@ -35,8 +35,8 @@
 \item{x}{An ordination object.}
 }
 \value{
-The recovery generics \verb{recover_*()} return \link[=recoverers]{core model components}, \link[=conference]{distribution of inertia},
-\link[=supplementation]{supplementary elements}, and \link[=augmentation]{intrinsic metadata}; but they require methods for each model class to
+The recovery generics \verb{recover_*()} return \link[ordr:recoverers]{core model components}, \link[ordr:conference]{distribution of inertia},
+\link[ordr:supplementation]{supplementary elements}, and \link[ordr:augmentation]{intrinsic metadata}; but they require methods for each model class to
 tell them what these components are.
 
 The generic \code{\link[=as_tbl_ord]{as_tbl_ord()}} returns its input wrapped in the 'tbl_ord'
@@ -63,6 +63,8 @@ class(HairEyeColor)
 haireye <- as.data.frame(rowSums(HairEyeColor, dims = 2L))
 print(haireye)
 
+if (require(ca)) {# {ca}
+
 # use correspondence analysis to construct row and column profiles
 haireye \%>\%
   ca::ca() \%>\%
@@ -74,6 +76,8 @@ get_rows(haireye_ca)
 get_cols(haireye_ca)
 # augment profiles with names, masses, distances, and inertias
 (haireye_ca <- augment_ord(haireye_ca))
+
+}# {ca}
 }
 \references{
 Greenacre MJ (2007) \emph{Correspondence Analysis in Practice}, Second Edition.

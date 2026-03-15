@@ -1,0 +1,21 @@
+# Extension checklist
+
+The recovery methods that power **ordr** rely on a general framework to
+dissect and recompile SVD-based and similar methods. Use the following
+checklist (copied into a GitHub issue) to implement recovery methods for
+a new ordination class `<class>`, though note that it will need to be
+adapted for certain methods.
+
+    * [ ] Determine how the inertia (variance) is conferred (distributed) onto the matrix factors and write a (probably static) recovery method `recover_conference.<class>()`.
+    * [ ] Write recovery functions `recover_rows.<class>()` and `recover_cols.<class>()` for the row and column factors as matrices
+    * [ ] Write recover functions `recover_inertia.<class>()` for the inertia as a vector and `recover_coord.<class>()` for the names of the new "artificial" or "scaffolding" coordinates.
+    * [ ] Validate recovery functions by comparison to existing methods in **ordr** for similar classes or by matrix algebra.
+    * [ ] Determine whether any supplementary elements can be extracted from the class and, if so, write functions `recover_supp_rows.<class>()` and/or `recover_supp_cols.<class>()` to recover them as matrices.
+    * [ ] Write augmentation functions `recover_aug_rows.<class>()`, `recover_aug_cols.<class>()`, and `recover_aug_coord.<class>()` that return `tbl_df`s.
+    * [ ] Write all recovery and augmentation functions into a new script following the naming convention 'R/methods-<package>-<class>.r'.
+    * [ ] Use **roxygen2** comments and tags to document these methods (see existing scripts for illustrations).
+    * [ ] Write examples using the new methods on a data set into a new script 'inst/examples/ex-methods-<package>-<class>-<data>.r' and tag these in the methods script.
+    * [ ] Write unit tests for the new methods into a new or existing script 'tests/testthat/test-<package>.r'.
+    * [ ] Generate documentation from **roxygen2** comments using `roxygen2::roxygenize()` or `devtools::document()`.
+
+For a full demonstration, see the PCA and FA vignettes.
