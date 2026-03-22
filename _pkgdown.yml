@@ -2,3 +2,26 @@ url: ~
 template:
   bootstrap: 5
 
+reference:
+- title: "'ordr.extra' package"
+  desc: >
+    An extension to `ordr`: a unified framework for ordination objects and biplot methods using tidy
+    principles
+  contents:
+  - '`ordr.extra`'
+- title: "Functions, classes, and methods"
+  desc: >
+    Introducing and adapting ordination techniques for the **ordr** workflow
+  contents:
+  - ends_with("-ord")
+- title: "Data sets"
+  desc: >
+    Additional data sets used to illustrate ordination techniques
+  contents:
+  - '`hcw`'
+- title: "Class methods"
+  desc: >
+    Recovery and augmentation methods for ordination model classes
+  contents:
+  - starts_with("methods-")
+  - '`wrap-ord-extra`'
