@@ -27,6 +27,18 @@ reference:
   - '`wrap-ord-extra`'
   
 articles:
-  new-ord-classes-class-support-checklist: new-ord-classes-class-support-checklist.html
-  new-ord-classes-fa: new-ord-classes-fa.html
-  new-ord-classes-pca: new-ord-classes-pca.html
+- title: "Extending ordr: Class support checklist"
+  desc: >
+    Checklist to implement recovery methods for a new ordination class
+  contents: 
+  - '`new-ord-classes-class-support-checklist`'
+- title: "Extending ordr: PCA"
+  desc: >
+    Extending ordr to incorporate `psych::principal()`
+  contents:
+  - '`new-ord-classes-pca`'
+- title: "Extending ordr: FA"
+  desc: >
+    Extending ordr to incorporate `psych::fa()`
+  contents:
+  - '`new-ord-classes-fa`'
