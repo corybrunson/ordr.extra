@@ -25,3 +25,8 @@ reference:
   contents:
   - starts_with("methods-")
   - '`wrap-ord-extra`'
+  
+articles:
+  new-ord-classes-class-support-checklist: new-ord-classes-class-support-checklist.html
+  new-ord-classes-fa: new-ord-classes-fa.html
+  new-ord-classes-pca: new-ord-classes-pca.html
