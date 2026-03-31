@@ -156,8 +156,6 @@ savings_cca %>%
   expand_limits(x = c(-1, 1), y = c(-1, 1))
 
 }# {PMA}
-#> Loading required package: PMA
-#> Warning: package 'PMA' was built under R version 4.3.3
 #> 12
 #> 12
 #> `subset` will be applied after data are restricted to active elements.

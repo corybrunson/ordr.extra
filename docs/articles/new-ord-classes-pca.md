@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is the first of 3 vignettes that detail the process of extending
+This is the first of two vignettes that detail the process of extending
 **ordr** to incorporate new ordination methods. The vignettes may be
 informative to researchers leveraging geometric data analysis tools
 (e.g. psychometric researchers), but the extension process we detail is
