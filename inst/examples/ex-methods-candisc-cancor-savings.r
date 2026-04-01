@@ -1,8 +1,8 @@
+if (require(candisc)) {# {candisc}
+
 # data frame of life-cycle savings across countries
 class(LifeCycleSavings)
 head(LifeCycleSavings)
-
-if (require(candisc)) {# {candisc}
 
 # canonical correlation analysis of age distributions and financial factors
 savings_cancor <- candisc::cancor(

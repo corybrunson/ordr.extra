@@ -83,6 +83,7 @@ get_cols(iris_pca)
 }
 \seealso{
 Other methods for eigen-decomposition-based techniques: 
+\code{\link{methods-candisc-candisc}},
 \code{\link{methods-fa}}
 
 Other models from the psych package: 

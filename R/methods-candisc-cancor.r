@@ -7,12 +7,14 @@
 #' @details
 #'
 #' ter Braak (1990) recommends two families of biplots for the canonical
-#' correspondence analysis of data matrices \eqn{X} and \eqn{Y}. For the first,
-#' using structural correlations, either the interset correlations of \eqn{X}
-#' (equivalent to principal coordinates) are plotted with the intraset
-#' correlations of \eqn{Y} (standard coordinates) or vice-versa, so that their
-#' product recovers the inner product matrix \eqn{XY'}. ter Braak's biplots can
-#' then be recovered by balancing the inertia across the two factors.
+#' correspondence analysis of data matrices \eqn{X} and \eqn{Y}.
+#'
+#' For the first, using structural correlations, either the interset
+#' correlations of \eqn{X} (equivalent to principal coordinates) are plotted
+#' with the intraset correlations of \eqn{Y} (standard coordinates) or
+#' vice-versa, so that their product recovers the inner product matrix
+#' \eqn{XY'}. ter Braak's biplots can then be recovered by balancing the inertia
+#' across the two factors.
 #'
 #' For the second, if the variables are distinguished as predictors and
 #' criteria, then the superposition of the interset correlations of the criteria

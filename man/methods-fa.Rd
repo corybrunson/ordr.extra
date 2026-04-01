@@ -100,6 +100,7 @@ ggbiplot(iris_fa, scale_cols = 3) +
 }
 \seealso{
 Other methods for eigen-decomposition-based techniques: 
+\code{\link{methods-candisc-candisc}},
 \code{\link{methods-principal}}
 
 Other models from the psych package: 

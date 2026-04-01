@@ -41,8 +41,8 @@
 \item{x}{An ordination object.}
 }
 \value{
-The recovery generics \verb{recover_*()} return \link[=recoverers]{core model components}, \link[=conference]{distribution of inertia},
-\link[=supplementation]{supplementary elements}, and \link[=augmentation]{intrinsic metadata}; but they require methods for each model class to
+The recovery generics \verb{recover_*()} return \link[ordr:recoverers]{core model components}, \link[ordr:conference]{distribution of inertia},
+\link[ordr:supplementation]{supplementary elements}, and \link[ordr:augmentation]{intrinsic metadata}; but they require methods for each model class to
 tell them what these components are.
 
 The generic \code{\link[=as_tbl_ord]{as_tbl_ord()}} returns its input wrapped in the 'tbl_ord'
@@ -55,8 +55,50 @@ These methods extract data from, and attribute new data to,
 objects of class 'candisc' from the \strong{\link[candisc:candisc-package]{candisc}}
 package.
 }
+\details{
+As implemented in \strong{\link[candisc:candisc-package]{candisc}}, canonical
+discriminant analysis arrives at linear discriminant analysis by way of
+multivariate linear regression; see documentation in that package for more
+detail.
+
+The methods for \code{\link[candisc:candisc]{candisc::candisc()}} agree with those for \code{\link[MASS:lda]{MASS::lda()}} and
+extend them to include canonical structure coefficients as column
+supplementary points.
+}
+\examples{
+if (require(candisc)) {# {candisc}
+
+# data frame of Anderson iris species measurements
+class(iris)
+head(iris)
+
+# multivariate linear model (MANOVA)
+iris_mlm <-lm(
+  cbind(Petal.Length, Sepal.Length, Petal.Width, Sepal.Width) ~ Species,
+  data = iris
+)
+aov(iris_mlm)
+
+# canonical discriminant analysis
+( iris_cda <- as_tbl_ord(candisc::candisc(iris_mlm)) )
+
+# recover centroid coordinates and discriminant coefficients
+get_rows(iris_cda, elements = "active")
+get_rows(iris_cda, elements = "score")
+get_cols(iris_cda, elements = "active")
+get_cols(iris_cda, elements = "structure")
+
+# augment ordination
+augment_ord(iris_cda)
+
+}# {candisc}
+}
 \seealso{
 \link[ordr:methods-cancor]{ordr::methods-cancor}
+
+Other methods for eigen-decomposition-based techniques: 
+\code{\link{methods-fa}},
+\code{\link{methods-principal}}
 
 Other models from the \strong{candisc} package: 
 \code{\link{methods-candisc-cancor}}

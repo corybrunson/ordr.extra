@@ -3,6 +3,17 @@
 #' @description These methods extract data from, and attribute new data to,
 #'   objects of class 'candisc' from the **[candisc][candisc::candisc-package]**
 #'   package.
+#'
+#' @details
+#'
+#' As implemented in **[candisc][candisc::candisc-package]**, canonical
+#' discriminant analysis arrives at linear discriminant analysis by way of
+#' multivariate linear regression; see documentation in that package for more
+#' detail.
+#'
+#' The methods for [candisc::candisc()] agree with those for [MASS::lda()] and
+#' extend them to include canonical structure coefficients as column
+#' supplementary points.
 #' 
 
 #' @name methods-candisc-candisc
@@ -12,6 +23,7 @@
 #' @family methods for eigen-decomposition-based techniques
 #' @family models from the **candisc** package
 #' @seealso [ordr::methods-cancor]
+#' @example inst/examples/ex-methods-candisc-candisc-iris.r
 NULL
 
 #' @rdname methods-candisc-candisc
@@ -20,74 +32,58 @@ as_tbl_ord.candisc <- as_tbl_ord_default
 
 #' @rdname methods-candisc-candisc
 #' @export
-recover_rows.candisc <- function(x) x$means
+recover_rows.candisc <- function(x) as.matrix(x$means)
 
 #' @rdname methods-candisc-candisc
 #' @export
-recover_cols.candisc <- function(x) {
-  res <- x$coef$Y
-  colnames(res) <- recover_coord(x)
-  res
+recover_cols.candisc <- function(x) x$coeffs.raw
+
+#' @rdname methods-candisc-candisc
+#' @export
+recover_inertia.candisc <- function(x) {
+  # un-scale by relative degrees of freedom
+  x$eigenvalues[seq(x$rank)] / x$dfe * x$dfh
 }
 
 #' @rdname methods-candisc-candisc
 #' @export
-recover_inertia.candisc <- function(x) x$eigenvalues
-
-#' @rdname methods-candisc-candisc
-#' @export
-recover_coord.candisc <- function(x) paste0("can", seq_along(x$cancor))
+recover_coord.candisc <- function(x) colnames(x$means)
 
 #' @rdname methods-candisc-candisc
 #' @export
 recover_conference.candisc <- function(x) {
-  # `x$coef$*` are (inertia-free) canonical weights
-  c(0, 0)
+  # rows and cols agree with `MASS::lda()`
+  c(1, 0)
 }
 
 #' @rdname methods-candisc-candisc
 #' @export
 recover_supp_rows.candisc <- function(x) {
-  rbind(x$scores$X, x$structure$X.xscores)
+  as.matrix(x$scores[, c(2L, 3L)])
 }
 
 #' @rdname methods-candisc-candisc
 #' @export
 recover_supp_cols.candisc <- function(x) {
-  rbind(x$scores$Y, x$structure$Y.yscores)
+  rbind(
+    # TODO: Show how to obtain these from `recover_cols()` instead.
+    # x$coeffs.std,
+    x$structure
+  )
 }
 
 #' @rdname methods-candisc-candisc
 #' @export
 recover_aug_rows.candisc <- function(x) {
-  name <- x$names$X
-  res <- if (is.null(name)) {
-    tibble_pole(nrow(x$coef$X))
-  } else {
-    tibble(name = name)
-  }
+  # group names are expected to always be present
+  res <- tibble(name = rownames(x$means))
   res$.element <- "active"
   
-  # case scores and structure correlations as supplementary points
-  res_sup <- NULL
-  if (! is.null(x$scores$X)) {
-    res_sup_elt <- if (is.null(rownames(x$scores$X))) {
-      tibble_pole(nrow(x$scores$X))
-    } else {
-      tibble(name = rownames(x$scores$X))
-    }
-    res_sup_elt$.element <- "score"
-    res_sup <- dplyr::bind_rows(res_sup, res_sup_elt)
-  }
-  if (! is.null(x$structure$X.xscores)) {
-    res_sup_elt <- if (is.null(rownames(x$structure$X.xscores))) {
-      tibble_pole(nrow(x$structure$X.xscores))
-    } else {
-      tibble(name = rownames(x$structure$X.xscores))
-    }
-    res_sup_elt$.element <- "structure"
-    res_sup <- dplyr::bind_rows(res_sup, res_sup_elt)
-  }
+  # case scores as supplementary points
+  res_sup <- tibble(
+    name = as.character(x$factors[[x$term]]),
+    .element = "score"
+  )
   
   as_tibble(dplyr::bind_rows(res, res_sup))
 }
@@ -95,34 +91,20 @@ recover_aug_rows.candisc <- function(x) {
 #' @rdname methods-candisc-candisc
 #' @export
 recover_aug_cols.candisc <- function(x) {
-  name <- x$names$Y
-  res <- if (is.null(name)) {
-    tibble_pole(nrow(x$coef$Y))
+  res <- if (is.null(rownames(x$coeffs.raw))) {
+    tibble(.rows = nrow(x$coeffs.raw))
   } else {
-    tibble(name = name)
+    tibble(name = rownames(x$coeffs.raw))
   }
   res$.element <- "active"
   
-  # case scores and structure correlations as supplementary points
-  res_sup <- NULL
-  if (! is.null(x$scores$Y)) {
-    res_sup_elt <- if (is.null(rownames(x$scores$Y))) {
-      tibble_pole(nrow(x$scores$Y))
-    } else {
-      tibble(name = rownames(x$scores$Y))
-    }
-    res_sup_elt$.element <- "score"
-    res_sup <- dplyr::bind_rows(res_sup, res_sup_elt)
+  # canonical structure coefficients as supplementary points
+  res_sup <- if (is.null(rownames(x$structure))) {
+    tibble(.rows = nrow(x$structure))
+  } else {
+    tibble(name = rownames(x$structure))
   }
-  if (! is.null(x$structure$Y.yscores)) {
-    res_sup_elt <- if (is.null(rownames(x$structure$Y.yscores))) {
-      tibble_pole(nrow(x$structure$Y.yscores))
-    } else {
-      tibble(name = rownames(x$structure$Y.yscores))
-    }
-    res_sup_elt$.element <- "structure"
-    res_sup <- dplyr::bind_rows(res_sup, res_sup_elt)
-  }
+  res_sup$.element <- "structure"
   
   as_tibble(dplyr::bind_rows(res, res_sup))
 }
@@ -132,6 +114,7 @@ recover_aug_cols.candisc <- function(x) {
 recover_aug_coord.candisc <- function(x) {
   tibble(
     name = factor_coord(recover_coord(x)),
-    cancor = x$cancor
+    hyp_err_ev = x$eigenvalues,
+    can_rsq = x$canrsq
   )
 }
