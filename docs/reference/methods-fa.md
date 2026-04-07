@@ -209,6 +209,4 @@ ggbiplot(iris_fa, scale_cols = 3) +
   scale_y_continuous(limits = ~ range(.x, c(-4, 3)))
 #> Warning: Ignoring unknown parameters: `linetype`
 #> Warning: Ignoring unknown parameters: `linetype`
-#> Warning: `GeomTextRadiate` is deprecated; use `GeomVector` instead.
-#> This warning is displayed once every 8 hours.
 ```

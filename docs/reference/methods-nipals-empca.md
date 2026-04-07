@@ -3,7 +3,8 @@
 These methods extract data from, and attribute new data to, objects of
 class `"empca_ord"`. This is a class introduced in this package to
 identify objects returned by [`empca_ord()`](wrap-ord-extra.md), which
-wraps `nipals::empca()`.
+wraps
+[`nipals::empca()`](https://kwstat.github.io/nipals/reference/empca.html).
 
 ## Usage
 
@@ -116,5 +117,16 @@ head(air_quality)
 
 }# {nipals}
 #> Loading required package: nipals
-#> Warning: there is no package called ‘nipals’
+#> 
+#> Attaching package: ‘nipals’
+#> The following object is masked from ‘package:ade4’:
+#> 
+#>     nipals
+#>       Ozone    Solar.R      Wind     Temp
+#> 1  39.76855 195.851140  7.337370 66.88373
+#> 2  34.95815 124.427844  8.019463 71.92432
+#> 3   9.92353 166.253377 12.592094 73.45501
+#> 4  15.16476 331.394099 11.298033 61.28502
+#> 5 -57.03140   7.961955 14.326004 54.31510
+#> 6  26.75840 662.379219 14.441378 65.29078
 ```

@@ -41,8 +41,27 @@ if (require(ade4)) {# {ade4}
 ordinate(airquality, ~ ade4::nipals(.), cols = seq(4L))
 ordinate(airquality, cols = c("Ozone", "Solar.R", "Wind", "Temp"), ade4::nipals)
 }# {ade4}
-#> Loading required package: ade4
-#> Warning: there is no package called ‘ade4’
+#> # A tbl_ord of class 'nipals': (153 x 2) x (4 x 2)'
+#> # 2 coordinates: Fac1 and Fac2
+#> # 
+#> # Rows (principal): [ 153 x 2 | 3 ]
+#>     Fac1    Fac2 |   name  Month   Day
+#>                  |   <chr> <int> <int>
+#> 1 -0.305  0.334  | 1 1         5     1
+#> 2 -0.426  0.930  | 2 2         5     2
+#> 3 -1.27  -0.0592 | 3 3         5     3
+#> 4 -1.16  -1.46   | 4 4         5     4
+#> 5 -3.41   0.906  | 5 5         5     5
+#> # ℹ 148 more rows | # ℹ 148 more rows
+#> 
+#> # 
+#> # Columns (standard): [ 4 x 2 | 1 ]
+#>     Fac1    Fac2 |   name   
+#>                  |   <chr>  
+#> 1  0.582  0.0175 | 1 Ozone  
+#> 2  0.312 -0.867  | 2 Solar.R
+#> 3 -0.491 -0.497  | 3 Wind   
+#> 4  0.569 -0.0173 | 4 Temp   
 
 if (require(PMA)) {# {PMA}
 # sparse CCA of savings data
@@ -54,14 +73,29 @@ ordinate(
   typex = "standard", typez = "standard"
 )
 }# {PMA}
-#> Loading required package: PMA
-#> Warning: there is no package called ‘PMA’
+#> 12
+#> 123
+#> # A tbl_ord of class 'CCA': (2 x 2) x (3 x 2)'
+#> # 2 coordinates: sCD1 and sCD2
+#> # 
+#> # Rows (standard): [ 2 x 2 | 1 ]
+#>    sCD1  sCD2 |   name 
+#>               |   <chr>
+#> 1     0     1 | 1 pop15
+#> 2     1     0 | 2 pop75
+#> # 
+#> # Columns (standard): [ 3 x 2 | 1 ]
+#>    sCD1  sCD2 |   name 
+#>               |   <chr>
+#> 1     0     0 | 1 sr   
+#> 2     1    -1 | 2 dpi  
+#> 3     0     0 | 3 ddpi 
 
 if (require(logisticPCA) && require(cooccur)) {# {logisticPCA}
 # lSVD of finches data
 data(finches, package = "cooccur")
 ordinate(finches, logisticSVD_ord)
 }# {logisticPCA}
-#> Loading required package: logisticPCA
-#> Warning: there is no package called ‘logisticPCA’
+#> Loading required package: cooccur
+#> Warning: there is no package called ‘cooccur’
 ```

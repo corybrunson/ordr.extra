@@ -120,6 +120,9 @@ get_cols(iris_pca)
 #> Loading required package: psych
 #> 
 #> Attaching package: ‘psych’
+#> The following object is masked from ‘package:candisc’:
+#> 
+#>     reflect
 #> The following objects are masked from ‘package:ggplot2’:
 #> 
 #>     %+%, alpha

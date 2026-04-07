@@ -1,7 +1,8 @@
 # Functionality for multiple and joint correspondence analysis ('mjca') objects
 
 These methods extract data from, and attribute new data to, objects of
-class `"mjca"` from the **ca** package.
+class `"mjca"` from the **[ca](https://rdrr.io/pkg/ca/man/mjca.html)**
+package.
 
 ## Usage
 
@@ -139,6 +140,35 @@ admissions_mca %>%
   labs(shape = "Factor level")
 
 }# {ca}
-#> Loading required package: ca
-#> Warning: there is no package called ‘ca’
+#> Warning: 'as.is' should be specified by the caller; using TRUE
+#> Warning: 'as.is' should be specified by the caller; using TRUE
+#> Warning: 'as.is' should be specified by the caller; using TRUE
+#> # A tbl_ord of class 'mjca': (4526 x 2) x (10 x 2)'
+#> # 2 coordinates: Dim1 and Dim2
+#> # 
+#> # Rows (standard): [ 4526 x 2 | 4 ]
+#>    Dim1  Dim2 |   name      mass    dist     inertia
+#>               |   <chr>    <dbl>   <dbl>       <dbl>
+#> 1  3.33  2.68 | 1 1     0.000221 0.00672     9.97e-9
+#> 2  3.33  2.68 | 2 2     0.000221 0.00672     9.97e-9
+#> 3  3.33  2.68 | 3 3     0.000221 0.00672     9.97e-9
+#> 4  3.33  2.68 | 4 4     0.000221 0.00672     9.97e-9
+#> 5  3.33  2.68 | 5 5     0.000221 0.00672     9.97e-9
+#> # ℹ 4,521 more rows | # ℹ 4,521 more rows
+#> 
+#> # 
+#> # Columns (standard): [ 10 x 2 | 6 ]
+#>      Dim1    Dim2 |    name    factor level   mass  dist
+#>                   |    <chr>   <chr>  <chr>  <dbl> <dbl>
+#>  1  1.08   0.975  |  1 Admit:… Admit  Admi… 0.129  0.792
+#>  2 -0.681 -0.617  |  2 Admit:… Admit  Reje… 0.204  0.502
+#>  3 -1.18   0.786  |  3 Gender… Gender Fema… 0.135  0.784
+#>  4  0.802 -0.536  |  4 Gender… Gender Male  0.198  0.534
+#>  5  1.51   0.167  |  5 Dept:A  Dept   A     0.0687 1.22 
+#>  6  1.69  -0.596  |  6 Dept:B  Dept   B     0.0431 1.58 
+#>  7 -0.797  1.72   |  7 Dept:C  Dept   C     0.0676 1.18 
+#>  8 -0.323  0.0886 |  8 Dept:D  Dept   D     0.0583 1.26 
+#>  9 -1.13   0.908  |  9 Dept:E  Dept   E     0.0430 1.54 
+#> 10 -1.05  -2.78   | 10 Dept:F  Dept   F     0.0526 1.39 
+#> # ℹ 1 more variable: inertia <dbl>
 ```

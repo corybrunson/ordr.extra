@@ -1,7 +1,9 @@
 # Functionality for canonical correlation ('cancor') objects
 
 These methods extract data from, and attribute new data to, objects of
-class 'cancor' from the **candisc** package.
+class 'cancor' from the
+**[candisc](https://friendly.github.io/candisc/reference/candisc-package.html)**
+package.
 
 ## Usage
 
@@ -83,7 +85,9 @@ criteria with the (inertia-free) canonical coefficients of the
 predictors yields a biplot that approximates the matrix of coefficients
 in the multivariate regression model.
 
-The methods for `candisc::cancor()` mirror those for
+The methods for
+[`candisc::cancor()`](https://friendly.github.io/candisc/reference/cancor.html)
+mirror those for
 [`ordr::cancor_ord()`](https://corybrunson.github.io/ordr/reference/wrap-ord.html)
 in **ordr**, though the canonical coefficients (hence the canonical
 scores) are inversely scaled by \\(n - 1\\).
@@ -150,5 +154,11 @@ savings_cancor %>%
 
 }# {candisc}
 #> Loading required package: candisc
-#> Warning: there is no package called ‘candisc’
+#> Loading required package: heplots
+#> Loading required package: broom
+#> 
+#> Attaching package: ‘candisc’
+#> The following object is masked from ‘package:stats’:
+#> 
+#>     cancor
 ```

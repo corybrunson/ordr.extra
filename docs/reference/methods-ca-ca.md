@@ -1,7 +1,8 @@
 # Functionality for correspondence analysis ('ca') objects
 
 These methods extract data from, and attribute new data to, objects of
-class `"ca"` from the **ca** package.
+class `"ca"` from the **[ca](https://rdrr.io/pkg/ca/man/ca.html)**
+package.
 
 ## Usage
 
@@ -119,5 +120,40 @@ get_cols(haireye_ca)
 
 }# {ca}
 #> Loading required package: ca
-#> Warning: there is no package called ‘ca’
+#> # A tbl_ord of class 'ca': (4 x 3) x (4 x 3)'
+#> # 3 coordinates: Dim1, Dim2, Dim3
+#> # 
+#> # Rows (standard): [ 4 x 3 | 0 ]
+#>     Dim1   Dim2   Dim3 | 
+#>                        | 
+#> 1 -1.10   1.44  -1.09  | 
+#> 2 -0.324 -0.219  0.957 | 
+#> 3 -0.283 -2.14  -1.63  | 
+#> 4  1.83   0.467 -0.318 | 
+#> # 
+#> # Columns (standard): [ 4 x 3 | 0 ]
+#>     Dim1   Dim2    Dim3 | 
+#>                         | 
+#> 1 -1.08   0.592 -0.424  | 
+#> 2  1.20   0.556  0.0924 | 
+#> 3 -0.465 -1.12   1.97   | 
+#> 4  0.354 -2.27  -1.72   | 
+#> # A tbl_ord of class 'ca': (4 x 3) x (4 x 3)'
+#> # 3 coordinates: Dim1, Dim2, Dim3
+#> # 
+#> # Rows (standard): [ 4 x 3 | 4 ]
+#>     Dim1   Dim2   Dim3 |   name   mass  dist inertia
+#>                        |   <chr> <dbl> <dbl>   <dbl>
+#> 1 -1.10   1.44  -1.09  | 1 Black 0.182 0.551  0.0554
+#> 2 -0.324 -0.219  0.957 | 2 Brown 0.483 0.159  0.0123
+#> 3 -0.283 -2.14  -1.63  | 3 Red   0.120 0.355  0.0151
+#> 4  1.83   0.467 -0.318 | 4 Blond 0.215 0.838  0.151 
+#> # 
+#> # Columns (standard): [ 4 x 3 | 4 ]
+#>     Dim1   Dim2    Dim3 |   name   mass  dist inertia
+#>                         |   <chr> <dbl> <dbl>   <dbl>
+#> 1 -1.08   0.592 -0.424  | 1 Brown 0.372 0.500  0.0931
+#> 2  1.20   0.556  0.0924 | 2 Blue  0.363 0.554  0.111 
+#> 3 -0.465 -1.12   1.97   | 3 Hazel 0.157 0.289  0.0131
+#> 4  0.354 -2.27  -1.72   | 4 Green 0.108 0.386  0.0161
 ```

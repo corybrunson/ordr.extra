@@ -1,7 +1,8 @@
 # Functionality for penalized multivariate analysis ('CCA') objects
 
 These methods extract data from, and attribute new data to, objects of
-class 'CCA' from the **PMA** package.
+class 'CCA' from the
+**[PMA](https://rdrr.io/pkg/PMA/man/PMA-package.html)** package.
 
 ## Usage
 
@@ -156,5 +157,8 @@ savings_cca %>%
 
 }# {PMA}
 #> Loading required package: PMA
-#> Warning: there is no package called ‘PMA’
+#> 12
+#> 12
+#> `subset` will be applied after data are restricted to active elements.
+#> This message is displayed once per session.
 ```

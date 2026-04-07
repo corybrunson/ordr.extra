@@ -36,7 +36,7 @@ objects of class "nipals" as returned by ade4::nipals().'></head><body>
 
     <div class="ref-description section level2">
     <p>These methods extract data from, and attribute new data to,
-objects of class <code>"nipals"</code> as returned by <code>ade4::nipals()</code>.</p>
+objects of class <code>"nipals"</code> as returned by <code><a href="https://adeverse.github.io/ade4/reference/nipals.html" class="external-link">ade4::nipals()</a></code>.</p>
     </div>
 
     <div class="section level2">
@@ -118,7 +118,7 @@ the model components.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># NIPALS on air quality measures</span></span></span>
 <span class="r-in"><span><span class="va">airquality</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">4L</span><span class="op">)</span><span class="op">]</span> <span class="op">%&gt;%</span></span></span>
-<span class="r-in"><span>  <span class="fu">ade4</span><span class="fu">::</span><span class="fu">nipals</span><span class="op">(</span>nf <span class="op">=</span> <span class="fl">3L</span><span class="op">)</span> <span class="op">%&gt;%</span></span></span>
+<span class="r-in"><span>  <span class="fu">ade4</span><span class="fu">::</span><span class="fu"><a href="https://adeverse.github.io/ade4/reference/nipals.html" class="external-link">nipals</a></span><span class="op">(</span>nf <span class="op">=</span> <span class="fl">3L</span><span class="op">)</span> <span class="op">%&gt;%</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://corybrunson.github.io/ordr/reference/tbl_ord.html" class="external-link">as_tbl_ord</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">air_nipals</span></span></span>
 <span class="r-in"><span><span class="co"># bind dates and missingness flags to observation coordinates</span></span></span>
@@ -155,7 +155,32 @@ the model components.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="op">}</span><span class="co"># {ade4}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: ade4</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>there is no package called ‘ade4’</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # A tbl_ord of class 'nipals': (153 x 3) x (4 x 3)'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 3 coordinates: Fac1, Fac2, Fac3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Rows (principal): [ 153 x 3 | 0 ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Fac1    Fac2   Fac3 | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> -<span style="color: #BB0000;">0.305</span>  0.334  -<span style="color: #BB0000;">1.25</span>  | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> -<span style="color: #BB0000;">0.426</span>  0.930  -<span style="color: #BB0000;">0.501</span> | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> -<span style="color: #BB0000;">1.27</span>  -<span style="color: #BB0000;">0.059</span><span style="color: #BB0000; text-decoration: underline;">2</span>  0.279 | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> -<span style="color: #BB0000;">1.16</span>  -<span style="color: #BB0000;">1.46</span>   -<span style="color: #BB0000;">1.44</span>  | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> -<span style="color: #BB0000;">3.41</span>   0.906  -<span style="color: #BB0000;">0.280</span> | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 148 more rows</span> | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Columns (standard): [ 4 x 3 | 0 ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Fac1    Fac2   Fac3 | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>  0.582  0.017<span style="text-decoration: underline;">5</span>  0.104 | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>  0.312 -<span style="color: #BB0000;">0.867</span>  -<span style="color: #BB0000;">0.374</span> | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> -<span style="color: #BB0000;">0.491</span> -<span style="color: #BB0000;">0.497</span>   0.623 | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>  0.569 -<span style="color: #BB0000;">0.017</span><span style="color: #BB0000; text-decoration: underline;">3</span>  0.679 | </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`GeomTextRadiate` is deprecated; use `GeomVector` instead.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 111 rows containing missing values or values outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`geom_point()`).</span>
+<span class="r-plt img"><img src="methods-ade4-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

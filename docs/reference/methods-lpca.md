@@ -1,13 +1,19 @@
 # Functionality for logistic PCA and logistic SVD objects
 
 These methods extract data from, and attribute new data to, objects of
-class `"lpca"` and `"lsvd"` from the **logisticPCA** package.
+class `"lpca"` and `"lsvd"` from the
+**[logisticPCA](https://rdrr.io/pkg/logisticPCA/man/logisticPCA-package.html)**
+package.
 
 These methods extract data from, and attribute new data to, objects of
-class `"lpca"` and `"lsvd"` from the **logisticPCA** package.
+class `"lpca"` and `"lsvd"` from the
+**[logisticPCA](https://rdrr.io/pkg/logisticPCA/man/logisticPCA-package.html)**
+package.
 
 These methods extract data from, and attribute new data to, objects of
-class `"lpca"` and `"lsvd"` from the **logisticPCA** package.
+class `"lpca"` and `"lsvd"` from the
+**[logisticPCA](https://rdrr.io/pkg/logisticPCA/man/logisticPCA-package.html)**
+package.
 
 ## Usage
 
@@ -142,27 +148,39 @@ implementation and extension of the logistic PCA introduced by Collins
 et al (2001). These methods use techniques from generalized linear
 regression to generalize classical principal components analysis (PCA)
 to the problem of dimension reduction for binary data. The signature
-functions `logisticPCA::logisticPCA()`, `logisticPCA::logisticSVD()`,
-and `logisticPCA::convexLogisticPCA()` have `*_ord()` wrappers that add
-row and column names from the input matrix to the output matrices.
+functions
+[`logisticPCA::logisticPCA()`](https://rdrr.io/pkg/logisticPCA/man/logisticPCA.html),
+[`logisticPCA::logisticSVD()`](https://rdrr.io/pkg/logisticPCA/man/logisticSVD.html),
+and
+[`logisticPCA::convexLogisticPCA()`](https://rdrr.io/pkg/logisticPCA/man/convexLogisticPCA.html)
+have `*_ord()` wrappers that add row and column names from the input
+matrix to the output matrices.
 
 Landgraf and Lee (2020) provide in their package **logisticPCA** a new
 implementation and extension of the logistic PCA introduced by Collins
 et al (2001). These methods use techniques from generalized linear
 regression to generalize classical principal components analysis (PCA)
 to the problem of dimension reduction for binary data. The signature
-functions `logisticPCA::logisticPCA()`, `logisticPCA::logisticSVD()`,
-and `logisticPCA::convexLogisticPCA()` have `*_ord()` wrappers that add
-row and column names from the input matrix to the output matrices.
+functions
+[`logisticPCA::logisticPCA()`](https://rdrr.io/pkg/logisticPCA/man/logisticPCA.html),
+[`logisticPCA::logisticSVD()`](https://rdrr.io/pkg/logisticPCA/man/logisticSVD.html),
+and
+[`logisticPCA::convexLogisticPCA()`](https://rdrr.io/pkg/logisticPCA/man/convexLogisticPCA.html)
+have `*_ord()` wrappers that add row and column names from the input
+matrix to the output matrices.
 
 Landgraf and Lee (2020) provide in their package **logisticPCA** a new
 implementation and extension of the logistic PCA introduced by Collins
 et al (2001). These methods use techniques from generalized linear
 regression to generalize classical principal components analysis (PCA)
 to the problem of dimension reduction for binary data. The signature
-functions `logisticPCA::logisticPCA()`, `logisticPCA::logisticSVD()`,
-and `logisticPCA::convexLogisticPCA()` have `*_ord()` wrappers that add
-row and column names from the input matrix to the output matrices.
+functions
+[`logisticPCA::logisticPCA()`](https://rdrr.io/pkg/logisticPCA/man/logisticPCA.html),
+[`logisticPCA::logisticSVD()`](https://rdrr.io/pkg/logisticPCA/man/logisticSVD.html),
+and
+[`logisticPCA::convexLogisticPCA()`](https://rdrr.io/pkg/logisticPCA/man/convexLogisticPCA.html)
+have `*_ord()` wrappers that add row and column names from the input
+matrix to the output matrices.
 
 ## References
 
@@ -275,7 +293,8 @@ finches_lsvd %>%
 
 }# {logisticPCA}
 #> Loading required package: logisticPCA
-#> Warning: there is no package called ‘logisticPCA’
+#> Loading required package: cooccur
+#> Warning: there is no package called ‘cooccur’
 if (require(logisticPCA) && require(cooccur)) {# {logisticPCA}
 
 # site-species data frame of Sanderson Galapagos finches data
@@ -309,8 +328,8 @@ finches_lpca %>%
   expand_limits(x = c(-25, 35))
 
 }# {logisticPCA}
-#> Loading required package: logisticPCA
-#> Warning: there is no package called ‘logisticPCA’
+#> Loading required package: cooccur
+#> Warning: there is no package called ‘cooccur’
 if (require(logisticPCA) && require(cooccur)) {# {logisticPCA}
 
 # site-species data frame of Sanderson Galapagos finches data
@@ -344,6 +363,6 @@ finches_clpca %>%
   expand_limits(x = c(-25, 35))
 
 }# {logisticPCA}
-#> Loading required package: logisticPCA
-#> Warning: there is no package called ‘logisticPCA’
+#> Loading required package: cooccur
+#> Warning: there is no package called ‘cooccur’
 ```

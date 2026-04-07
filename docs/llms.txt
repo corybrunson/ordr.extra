@@ -50,7 +50,8 @@ head(as.data.frame(UCBAdmissions))
 ```
 
 We can use **ordr** syntax to model these data using joint
-correspondence analysis with the function `ca::mjca()`[²](#fn2), once
+correspondence analysis with the function
+[`ca::mjca()`](https://rdrr.io/pkg/ca/man/mjca.html)[²](#fn2), once
 we’ve ensured that **ca** is installed:
 
 ``` r
@@ -117,9 +118,10 @@ acknowledgments.
     Joint Correspondence Analysis”. Available at SSRN:
     <https://ssrn.com/abstract=847664>
 
-2.  Note that the array is being passed as input. `ca::mjca()` can also
-    take data frame input, but it requires a format that differs from
-    that produced by
+2.  Note that the array is being passed as input.
+    [`ca::mjca()`](https://rdrr.io/pkg/ca/man/mjca.html) can also take
+    data frame input, but it requires a format that differs from that
+    produced by
     [`as.data.frame()`](https://rdrr.io/r/base/as.data.frame.html).
 
 3.  This is a monoplot because JCA is based on the SVD of a

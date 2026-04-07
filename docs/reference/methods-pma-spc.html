@@ -36,7 +36,7 @@ objects of class 'SPC' from the PMA package."></head><body>
 
     <div class="ref-description section level2">
     <p>These methods extract data from, and attribute new data to,
-objects of class 'SPC' from the <strong>PMA</strong> package.</p>
+objects of class 'SPC' from the <strong><a href="https://rdrr.io/pkg/PMA/man/PMA-package.html" class="external-link">PMA</a></strong> package.</p>
     </div>
 
     <div class="section level2">
@@ -136,7 +136,7 @@ analysis". <em>Biostatistics</em> <strong>10</strong>(3): 515–534.
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bnaras/PMA" class="external-link">PMA</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span><span class="co"># {PMA}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># compute principal components of scaled measurements</span></span></span>
-<span class="r-in"><span><span class="va">iris_spca</span> <span class="op">&lt;-</span> <span class="fu">PMA</span><span class="fu">::</span><span class="fu">SPC</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">iris_spca</span> <span class="op">&lt;-</span> <span class="fu">PMA</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/PMA/man/SPC.html" class="external-link">SPC</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span>, <span class="op">-</span><span class="fl">5L</span><span class="op">]</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  sumabsv <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  K <span class="op">=</span> <span class="fl">2L</span>,</span></span>
@@ -169,8 +169,11 @@ analysis". <em>Biostatistics</em> <strong>10</strong>(3): 515–534.
 <span class="r-in"><span>  <span class="fu">expand_limits</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">.12</span>, <span class="fl">.2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="op">}</span><span class="co"># {PMA}</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: PMA</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>there is no package called ‘PMA’</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>PMDL1L1 was run without first subtracting out the mean of x.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 123456789</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 123</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Predictive biplots are only implemented for linear methods (ED, SVD, PCA).</span>
+<span class="r-plt img"><img src="methods-pma-spc-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

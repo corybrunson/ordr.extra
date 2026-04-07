@@ -36,7 +36,7 @@ objects of class "ca" from the ca package.'></head><body>
 
     <div class="ref-description section level2">
     <p>These methods extract data from, and attribute new data to,
-objects of class <code>"ca"</code> from the <strong>ca</strong> package.</p>
+objects of class <code>"ca"</code> from the <strong><a href="https://rdrr.io/pkg/ca/man/ca.html" class="external-link">ca</a></strong> package.</p>
     </div>
 
     <div class="section level2">
@@ -136,7 +136,7 @@ Boca Raton: Chapman &amp; Hall/CRC, ISBN 978-1-58488-616-7.
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># use correspondence analysis to construct row and column profiles</span></span></span>
 <span class="r-in"><span><span class="va">haireye</span> <span class="op">%&gt;%</span></span></span>
-<span class="r-in"><span>  <span class="fu">ca</span><span class="fu">::</span><span class="fu">ca</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span></span>
+<span class="r-in"><span>  <span class="fu">ca</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ca/man/ca.html" class="external-link">ca</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://corybrunson.github.io/ordr/reference/tbl_ord.html" class="external-link">as_tbl_ord</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">haireye_ca</span></span></span>
 <span class="r-in"><span></span></span>
@@ -148,7 +148,42 @@ Boca Raton: Chapman &amp; Hall/CRC, ISBN 978-1-58488-616-7.
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="op">}</span><span class="co"># {ca}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: ca</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>there is no package called ‘ca’</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # A tbl_ord of class 'ca': (4 x 3) x (4 x 3)'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 3 coordinates: Dim1, Dim2, Dim3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Rows (standard): [ 4 x 3 | 0 ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Dim1   Dim2   Dim3 | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                        | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> -<span style="color: #BB0000;">1.10</span>   1.44  -<span style="color: #BB0000;">1.09</span>  | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> -<span style="color: #BB0000;">0.324</span> -<span style="color: #BB0000;">0.219</span>  0.957 | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> -<span style="color: #BB0000;">0.283</span> -<span style="color: #BB0000;">2.14</span>  -<span style="color: #BB0000;">1.63</span>  | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>  1.83   0.467 -<span style="color: #BB0000;">0.318</span> | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Columns (standard): [ 4 x 3 | 0 ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Dim1   Dim2    Dim3 | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> -<span style="color: #BB0000;">1.08</span>   0.592 -<span style="color: #BB0000;">0.424</span>  | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>  1.20   0.556  0.092<span style="text-decoration: underline;">4</span> | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> -<span style="color: #BB0000;">0.465</span> -<span style="color: #BB0000;">1.12</span>   1.97   | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>  0.354 -<span style="color: #BB0000;">2.27</span>  -<span style="color: #BB0000;">1.72</span>   | </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # A tbl_ord of class 'ca': (4 x 3) x (4 x 3)'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 3 coordinates: Dim1, Dim2, Dim3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Rows (standard): [ 4 x 3 | 4 ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Dim1   Dim2   Dim3 |   name   mass  dist inertia</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                        |   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> -<span style="color: #BB0000;">1.10</span>   1.44  -<span style="color: #BB0000;">1.09</span>  | <span style="color: #BCBCBC;">1</span> Black 0.182 0.551  0.055<span style="text-decoration: underline;">4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> -<span style="color: #BB0000;">0.324</span> -<span style="color: #BB0000;">0.219</span>  0.957 | <span style="color: #BCBCBC;">2</span> Brown 0.483 0.159  0.012<span style="text-decoration: underline;">3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> -<span style="color: #BB0000;">0.283</span> -<span style="color: #BB0000;">2.14</span>  -<span style="color: #BB0000;">1.63</span>  | <span style="color: #BCBCBC;">3</span> Red   0.120 0.355  0.015<span style="text-decoration: underline;">1</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>  1.83   0.467 -<span style="color: #BB0000;">0.318</span> | <span style="color: #BCBCBC;">4</span> Blond 0.215 0.838  0.151 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Columns (standard): [ 4 x 3 | 4 ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Dim1   Dim2    Dim3 |   name   mass  dist inertia</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         |   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> -<span style="color: #BB0000;">1.08</span>   0.592 -<span style="color: #BB0000;">0.424</span>  | <span style="color: #BCBCBC;">1</span> Brown 0.372 0.500  0.093<span style="text-decoration: underline;">1</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>  1.20   0.556  0.092<span style="text-decoration: underline;">4</span> | <span style="color: #BCBCBC;">2</span> Blue  0.363 0.554  0.111 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> -<span style="color: #BB0000;">0.465</span> -<span style="color: #BB0000;">1.12</span>   1.97   | <span style="color: #BCBCBC;">3</span> Hazel 0.157 0.289  0.013<span style="text-decoration: underline;">1</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>  0.354 -<span style="color: #BB0000;">2.27</span>  -<span style="color: #BB0000;">1.72</span>   | <span style="color: #BCBCBC;">4</span> Green 0.108 0.386  0.016<span style="text-decoration: underline;">1</span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

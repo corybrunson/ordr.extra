@@ -36,7 +36,7 @@ objects of class "mjca" from the ca package.'></head><body>
 
     <div class="ref-description section level2">
     <p>These methods extract data from, and attribute new data to,
-objects of class <code>"mjca"</code> from the <strong>ca</strong> package.</p>
+objects of class <code>"mjca"</code> from the <strong><a href="https://rdrr.io/pkg/ca/man/mjca.html" class="external-link">ca</a></strong> package.</p>
     </div>
 
     <div class="section level2">
@@ -136,7 +136,7 @@ Boca Raton: Chapman &amp; Hall/CRC, ISBN 978-1-58488-616-7.
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># perform multiple correspondence analysis</span></span></span>
 <span class="r-in"><span><span class="va">UCBAdmissions</span> <span class="op">%&gt;%</span></span></span>
-<span class="r-in"><span>  <span class="fu">ca</span><span class="fu">::</span><span class="fu">mjca</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span></span>
+<span class="r-in"><span>  <span class="fu">ca</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ca/man/mjca.html" class="external-link">mjca</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://corybrunson.github.io/ordr/reference/tbl_ord.html" class="external-link">as_tbl_ord</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span></span>
 <span class="r-in"><span>  <span class="co"># augment profiles with names, masses, distances, and inertias</span></span></span>
 <span class="r-in"><span>  <span class="fu">augment_ord</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span></span>
@@ -170,8 +170,38 @@ Boca Raton: Chapman &amp; Hall/CRC, ISBN 978-1-58488-616-7.
 <span class="r-in"><span>  <span class="fu">labs</span><span class="op">(</span>shape <span class="op">=</span> <span class="st">"Factor level"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="op">}</span><span class="co"># {ca}</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: ca</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>there is no package called ‘ca’</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'as.is' should be specified by the caller; using TRUE</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'as.is' should be specified by the caller; using TRUE</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'as.is' should be specified by the caller; using TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # A tbl_ord of class 'mjca': (4526 x 2) x (10 x 2)'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 2 coordinates: Dim1 and Dim2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Rows (standard): [ 4526 x 2 | 4 ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Dim1  Dim2 |   name      mass    dist     inertia</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               |   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>  3.33  2.68 | <span style="color: #BCBCBC;">1</span> 1     0.000<span style="text-decoration: underline;">221</span> 0.006<span style="text-decoration: underline;">72</span>     9.97<span style="color: #949494;">e</span><span style="color: #BB0000;">-9</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>  3.33  2.68 | <span style="color: #BCBCBC;">2</span> 2     0.000<span style="text-decoration: underline;">221</span> 0.006<span style="text-decoration: underline;">72</span>     9.97<span style="color: #949494;">e</span><span style="color: #BB0000;">-9</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>  3.33  2.68 | <span style="color: #BCBCBC;">3</span> 3     0.000<span style="text-decoration: underline;">221</span> 0.006<span style="text-decoration: underline;">72</span>     9.97<span style="color: #949494;">e</span><span style="color: #BB0000;">-9</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>  3.33  2.68 | <span style="color: #BCBCBC;">4</span> 4     0.000<span style="text-decoration: underline;">221</span> 0.006<span style="text-decoration: underline;">72</span>     9.97<span style="color: #949494;">e</span><span style="color: #BB0000;">-9</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>  3.33  2.68 | <span style="color: #BCBCBC;">5</span> 5     0.000<span style="text-decoration: underline;">221</span> 0.006<span style="text-decoration: underline;">72</span>     9.97<span style="color: #949494;">e</span><span style="color: #BB0000;">-9</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 4,521 more rows</span> | <span style="color: #949494;"># ℹ 4,521 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Columns (standard): [ 10 x 2 | 6 ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      Dim1    Dim2 |    name    factor level   mass  dist</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   |    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>  1.08   0.975  | <span style="color: #BCBCBC;"> 1</span> Admit:… Admit  Admi… 0.129  0.792</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> -<span style="color: #BB0000;">0.681</span> -<span style="color: #BB0000;">0.617</span>  | <span style="color: #BCBCBC;"> 2</span> Admit:… Admit  Reje… 0.204  0.502</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> -<span style="color: #BB0000;">1.18</span>   0.786  | <span style="color: #BCBCBC;"> 3</span> Gender… Gender Fema… 0.135  0.784</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>  0.802 -<span style="color: #BB0000;">0.536</span>  | <span style="color: #BCBCBC;"> 4</span> Gender… Gender Male  0.198  0.534</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>  1.51   0.167  | <span style="color: #BCBCBC;"> 5</span> Dept:A  Dept   A     0.068<span style="text-decoration: underline;">7</span> 1.22 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>  1.69  -<span style="color: #BB0000;">0.596</span>  | <span style="color: #BCBCBC;"> 6</span> Dept:B  Dept   B     0.043<span style="text-decoration: underline;">1</span> 1.58 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> -<span style="color: #BB0000;">0.797</span>  1.72   | <span style="color: #BCBCBC;"> 7</span> Dept:C  Dept   C     0.067<span style="text-decoration: underline;">6</span> 1.18 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> -<span style="color: #BB0000;">0.323</span>  0.088<span style="text-decoration: underline;">6</span> | <span style="color: #BCBCBC;"> 8</span> Dept:D  Dept   D     0.058<span style="text-decoration: underline;">3</span> 1.26 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> -<span style="color: #BB0000;">1.13</span>   0.908  | <span style="color: #BCBCBC;"> 9</span> Dept:E  Dept   E     0.043<span style="text-decoration: underline;">0</span> 1.54 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> -<span style="color: #BB0000;">1.05</span>  -<span style="color: #BB0000;">2.78</span>   | <span style="color: #BCBCBC;">10</span> Dept:F  Dept   F     0.052<span style="text-decoration: underline;">6</span> 1.39 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1 more variable: inertia &lt;dbl&gt;</span></span>
+<span class="r-plt img"><img src="methods-ca-mjca-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
