@@ -82,10 +82,8 @@ agreed upon, the first step will be to open an issue that includes the
 checklist from this developer vignette:
 <code>vignette("extension-checklist")</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/corybrunson/ordr" class="external-link">ordr</a></span><span class="op">)</span></span></code></pre></div>
-<pre><code>Warning: package 'ggplot2' was built under R version 4.3.3</code></pre>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://personality-project.org/r/psych/" class="external-link">psych</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/corybrunson/ordr" class="external-link">ordr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://personality-project.org/r/psych/" class="external-link">psych</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="principal-component-analysis">Principal Component Analysis<a class="anchor" aria-label="anchor" href="#principal-component-analysis"></a>
 </h3>
@@ -129,7 +127,7 @@ are the <em>singular values</em>. Based on the equation, elements from
 and from
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>,
 respectively, are referred to as “row” and “column” elements.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scaled_iris</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">pca_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/prcomp.html" class="external-link">prcomp</a></span><span class="op">(</span><span class="va">scaled_iris</span>, rank. <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
 <p>The other method uses eigenvalue decomposition (EVD), or just
@@ -158,16 +156,16 @@ The positive eigenvalues from these two decompositions agree, and their
 square roots are the singular values of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>X</mi><mo accent="true">‾</mo></mover><annotation encoding="application/x-tex">\bar{X}</annotation></semantics></math>.
 The fold demonstrates these connections between SVD and EVD.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span> <span class="va">pca_psych</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/psych/man/principal.html" class="external-link">principal</a></span><span class="op">(</span><span class="va">scaled_iris</span>, nfactors <span class="op">=</span> <span class="fl">4</span>, rotate <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div>
 <pre><code>Principal Components Analysis
 Call: principal(r = scaled_iris, nfactors = 4, rotate = "none")
 Standardized loadings (pattern matrix) based upon correlation matrix
                PC1  PC2   PC3   PC4 h2       u2 com
-Sepal.Length  0.89 0.36 -0.28 -0.04  1  1.1e-16 1.5
+Sepal.Length  0.89 0.36 -0.28 -0.04  1  6.7e-16 1.5
 Sepal.Width  -0.46 0.88  0.09  0.02  1  4.4e-16 1.5
-Petal.Length  0.99 0.02  0.05  0.12  1 -4.4e-16 1.0
-Petal.Width   0.96 0.06  0.24 -0.08  1  0.0e+00 1.1
+Petal.Length  0.99 0.02  0.05  0.12  1 -1.3e-15 1.0
+Petal.Width   0.96 0.06  0.24 -0.08  1 -6.7e-16 1.1
 
                        PC1  PC2  PC3  PC4
 SS loadings           2.92 0.91 0.15 0.02
@@ -190,7 +188,7 @@ Derive EVD from SVD
 Then when we consider the covariance matrix
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mover><mi>X</mi><mo accent="true">‾</mo></mover><mi>⊤</mi></msup><mover><mi>X</mi><mo accent="true">‾</mo></mover></mrow><annotation encoding="application/x-tex">\bar{X}^\top \bar{X}</annotation></semantics></math>,
 we have</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mover><mi>X</mi><mo accent="true">‾</mo></mover><mrow><mi>n</mi><mo>×</mo><mi>p</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>⊤</mi></msup><msub><mover><mi>X</mi><mo accent="true">‾</mo></mover><mrow><mi>n</mi><mo>×</mo><mi>p</mi></mrow></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>U</mi><mrow><mi>n</mi><mo>×</mo><mi>p</mi></mrow></msub><msub><mi>D</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>V</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>⊤</mi></msup><mo stretchy="true" form="postfix">)</mo></mrow><mi>⊤</mi></msup><msub><mi>U</mi><mrow><mi>n</mi><mo>×</mo><mi>p</mi></mrow></msub><msub><mi>D</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>V</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>⊤</mi></msup></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>V</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>⊤</mi></msup><mo stretchy="true" form="postfix">)</mo></mrow><mi>⊤</mi></msup><msubsup><mi>D</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow><mi>⊤</mi></msubsup><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>U</mi><mrow><mi>n</mi><mo>×</mo><mi>p</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>⊤</mi></msup><msub><mi>U</mi><mrow><mi>n</mi><mo>×</mo><mi>p</mi></mrow></msub><msub><mi>D</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>V</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>⊤</mi></msup></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>V</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><msub><mi>D</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><msub><mi>D</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>V</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>⊤</mi></msup></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>V</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>D</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>V</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>⊤</mi></msup><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right"><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mover><mi>X</mi><mo accent="true">‾</mo></mover><mrow><mi>n</mi><mo>×</mo><mi>p</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>⊤</mi></msup><msub><mover><mi>X</mi><mo accent="true">‾</mo></mover><mrow><mi>n</mi><mo>×</mo><mi>p</mi></mrow></msub></mtd><mtd columnalign="left"><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>U</mi><mrow><mi>n</mi><mo>×</mo><mi>p</mi></mrow></msub><msub><mi>D</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>V</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>⊤</mi></msup><mo stretchy="true" form="postfix">)</mo></mrow><mi>⊤</mi></msup><msub><mi>U</mi><mrow><mi>n</mi><mo>×</mo><mi>p</mi></mrow></msub><msub><mi>D</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>V</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>⊤</mi></msup></mtd></mtr><mtr><mtd columnalign="right"></mtd><mtd columnalign="left"><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>V</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>⊤</mi></msup><mo stretchy="true" form="postfix">)</mo></mrow><mi>⊤</mi></msup><msubsup><mi>D</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow><mi>⊤</mi></msubsup><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>U</mi><mrow><mi>n</mi><mo>×</mo><mi>p</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>⊤</mi></msup><msub><mi>U</mi><mrow><mi>n</mi><mo>×</mo><mi>p</mi></mrow></msub><msub><mi>D</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>V</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>⊤</mi></msup></mtd></mtr><mtr><mtd columnalign="right"></mtd><mtd columnalign="left"><mo>=</mo><msub><mi>V</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><msub><mi>D</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><msub><mi>D</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>V</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>⊤</mi></msup></mtd></mtr><mtr><mtd columnalign="right"></mtd><mtd columnalign="left"><mo>=</mo><msub><mi>V</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>D</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>V</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>⊤</mi></msup><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">
 \begin{align*}
 (\bar{X}_{n\times{p}})^\top \bar{X}_{n\times{p}} &amp;= (U_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^\top )^\top  U_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^\top \tag{1}\\
 &amp;= ((V_{p\times{p}})^\top )^\top D_{p\times{p}}^\top (U_{n\times{p}})^\top U_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^\top \tag{2}\\
@@ -201,7 +199,7 @@ we have</p>
 <p>Note: we use the orthogonality of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>
 to obtain (3) as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>U</mi><mi>⊤</mi></msup><mo>=</mo><msup><mi>U</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">U^\top = U^{-1}</annotation></semantics></math>.</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>U</mi><mi>⊤</mi></msup><mo>=</mo><msup><mi>U</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">U^\top = U^{-1}</annotation></semantics></math>.</p>
 <p>Indeed, the singular values of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>X</mi><mo accent="true">‾</mo></mover><annotation encoding="application/x-tex">\bar{X}</annotation></semantics></math>
 are the square roots of the eigenvalues of
@@ -248,12 +246,12 @@ specific to the technique and its implementation.</p>
 helper function <code><a href="https://corybrunson.github.io/ordr/reference/tbl_ord.html" class="external-link">ordr::as_tbl_ord()</a></code> reduces redundancy and
 expedites debugging, so we give it a method for the
 <code>principal</code> class:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">as_tbl_ord.principal</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/getFromNamespace.html" class="external-link">getFromNamespace</a></span><span class="op">(</span><span class="st">"as_tbl_ord_default"</span>, <span class="st">"ordr"</span><span class="op">)</span></span></code></pre></div>
 <p>This method draws from the recoverers to produce a
 <code>tbl_ord</code>, illustrated below with the pre-loaded set of
 Anderson’s iris data:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span> <span class="va">tbl_ord</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://corybrunson.github.io/ordr/reference/tbl_ord.html" class="external-link">as_tbl_ord</a></span><span class="op">(</span><span class="va">pca_stats</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div>
 <pre><code># A tbl_ord of class 'prcomp': (150 x 4) x (4 x 4)'
 # 4 coordinates: PC1, PC2, ..., PC4
@@ -262,10 +260,11 @@ Anderson’s iris data:</p>
     PC1    PC2     PC3 ... | 
                            | 
  [38;5;250m1 [39m - [31m2 [39m [31m. [39m [31m26 [39m - [31m0 [39m [31m. [39m [31m478 [39m  0.127      | 
- [38;5;250m2 [39m - [31m2 [39m [31m. [39m [31m0 [39m [31m7 [39m  0.672  0.234  ... | 
- [38;5;250m3 [39m - [31m2 [39m [31m. [39m [31m36 [39m  0.341 - [31m0 [39m [31m. [39m [31m0 [39m [31m44 [4m1 [24m [39m     | 
+ [38;5;250m2 [39m - [31m2 [39m [31m. [39m [31m0 [39m [31m7 [39m  0.672  0.234      | 
+ [38;5;250m3 [39m - [31m2 [39m [31m. [39m [31m36 [39m  0.341 - [31m0 [39m [31m. [39m [31m0 [39m [31m44 [4m1 [24m [39m ... | 
  [38;5;250m4 [39m - [31m2 [39m [31m. [39m [31m29 [39m  0.595 - [31m0 [39m [31m. [39m [31m0 [39m [31m91 [4m0 [24m [39m     | 
  [38;5;250m5 [39m - [31m2 [39m [31m. [39m [31m38 [39m - [31m0 [39m [31m. [39m [31m645 [39m - [31m0 [39m [31m. [39m [31m0 [39m [31m15 [4m7 [24m [39m     | 
+ [38;5;246m# ℹ 145 more rows [39m     | 
 
 # 
 # Columns (standard): [ 4 x 4 | 0 ]
@@ -328,7 +327,7 @@ interpret the loadings
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">VD</annotation></semantics></math>
 as active column elements, and we write the column recovery method to
 extract this matrix:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">recover_cols.principal</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">unclass</a></span><span class="op">(</span><span class="va">x</span><span class="op">[[</span><span class="st">"loadings"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
@@ -341,7 +340,7 @@ Petal.Width   0.9649790 0.06399985  0.24298265 -0.07535950</code></pre>
 <p>We obtain no active row elements from this class, so we write the row
 recovery method to return a matrix with no rows (elements) but the
 correct number and names of the columns (artificial coordinates):</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">recover_rows.principal</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span>
 <span>    nrow <span class="op">=</span> <span class="fl">0</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">[[</span><span class="st">"loadings"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
@@ -358,7 +357,7 @@ can still verify that they multiply with the loadings to reconstruct
 Check that scores and loadings reconstruct data
 </summary><p>We divide the scores–loadings product elementwise by the data matrix
 and print the first few rows:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span></span>
 <span>  <span class="op">(</span><span class="va">pca_psych</span><span class="op">$</span><span class="va">scores</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">pca_psych</span><span class="op">$</span><span class="va">loadings</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="va">scaled_iris</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -379,7 +378,7 @@ and write a recovery method for them. We must also account for cases
 where <code>scores = FALSE</code> is passed, resulting in no
 <code>scores</code> element in the <code>principal</code>-class
 output.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">recover_supp_rows.principal</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">x</span><span class="op">[[</span><span class="st">"scores"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">0</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">[[</span><span class="st">"loadings"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
@@ -411,12 +410,12 @@ entries of
 </ul>
 <p>From the documentation, <code><a href="https://rdrr.io/pkg/psych/man/principal.html" class="external-link">psych::principal()</a></code> returns the
 eigenvalues in the <code>values</code> element of the output:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pca_psych</span><span class="op">$</span><span class="va">values</span></span></code></pre></div>
 <pre><code>[1] 2.91849782 0.91403047 0.14675688 0.02071484</code></pre>
 <p>We can validate these values against those returned using the
 recovery method for the <code>prcomp</code> class:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://corybrunson.github.io/ordr/reference/recoverers.html" class="external-link">recover_inertia</a></span><span class="op">(</span><span class="va">pca_stats</span><span class="op">)</span> <span class="op">/</span> <span class="va">pca_psych</span><span class="op">$</span><span class="va">values</span></span></code></pre></div>
 <pre><code>[1] 149 149 149 149</code></pre>
 <p>Notice that
@@ -424,7 +423,7 @@ recovery method for the <code>prcomp</code> class:</p>
 indicating that these eigenvalues have been scaled by the degrees of
 freedom. To obtain the inertia, we need then to multiply them by
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math>:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">recover_inertia.principal</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">x</span><span class="op">[[</span><span class="st">"values"</span><span class="op">]</span><span class="op">]</span> <span class="op">*</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">[[</span><span class="st">"scores"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1L</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
@@ -442,7 +441,7 @@ coordinate axes of our ordination object.</li>
 </ul>
 <p>As with the row element recoverers above, we obtain these names from
 the column names of the loading matrix:</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">recover_coord.principal</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">x</span><span class="op">[[</span><span class="st">"loadings"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
@@ -492,7 +491,7 @@ wishes to maintain the approximate Euclidean distances between data
 cases, then conference onto the left singular vectors is ideal. If
 instead the user wishes to maintain the approximate correlations between
 variables, then conference onto the right singular vectors is ideal.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://corybrunson.github.io/ordr/reference/conference.html" class="external-link">recover_conference</a></span><span class="op">(</span><span class="va">pca_stats</span><span class="op">)</span></span></code></pre></div>
 <pre><code>[1] 1 0</code></pre>
 <p>The conference recovery method is, so far, always a static vector,
@@ -523,7 +522,7 @@ conferred no inertia. Symbolically:</p>
 A careful check follows.</p>
 <details><summary>
 Check that the loadings matrix has full inertia
-</summary><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+</summary><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># X'X from EVD</span></span>
 <span><span class="va">cov</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cov</a></span><span class="op">(</span><span class="va">scaled_iris</span><span class="op">)</span></span>
 <span><span class="va">evd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/eigen.html" class="external-link">eigen</a></span><span class="op">(</span><span class="va">cov</span><span class="op">)</span></span>
@@ -537,7 +536,7 @@ Petal.Width    1  -1  -1  -1</code></pre>
 <p>Hence we have
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><mo>=</mo><msub><mi>V</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><msub><mi>D</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub></mrow><annotation encoding="application/x-tex">L_{p\times{p}} = V_{p\times{p}}D_{p\times{p}}</annotation></semantics></math>.</p>
 </details><p>As such, we define the following recovery method:</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">recover_conference.principal</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
@@ -569,19 +568,17 @@ Oblique rotations compromise the former, while even orthogonal rotations
 undermine the latter. For these reasons, it is contested whether PCA
 with rotation should still be considered PCA. For clarity, we refer to
 these models as “PCA <em>followed by</em> rotation”.</p>
-</details><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://optimizer.r-forge.r-project.org/GPArotation_www/" class="external-link">GPArotation</a></span><span class="op">)</span></span></code></pre></div>
-<pre><code>Warning: package 'GPArotation' was built under R version 4.3.3</code></pre>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="op">(</span> <span class="va">pca_ortho</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/psych/man/principal.html" class="external-link">principal</a></span><span class="op">(</span><span class="va">scaled_iris</span>, rotate <span class="op">=</span> <span class="st">"varimax"</span>, nfactors <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div>
+</details><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://optimizer.r-forge.r-project.org/GPArotation_www/" class="external-link">GPArotation</a></span><span class="op">)</span></span>
+<span><span class="op">(</span> <span class="va">pca_ortho</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/psych/man/principal.html" class="external-link">principal</a></span><span class="op">(</span><span class="va">scaled_iris</span>, rotate <span class="op">=</span> <span class="st">"varimax"</span>, nfactors <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div>
 <pre><code>Principal Components Analysis
 Call: principal(r = scaled_iris, nfactors = 4, rotate = "varimax")
 Standardized loadings (pattern matrix) based upon correlation matrix
                RC1   RC3   RC2   RC4 h2       u2 com
-Sepal.Length  0.53  0.85  0.00  0.00  1  1.1e-16 1.7
+Sepal.Length  0.53  0.85  0.00  0.00  1  6.7e-16 1.7
 Sepal.Width  -0.17 -0.04  0.98 -0.01  1  4.4e-16 1.1
-Petal.Length  0.78  0.54 -0.28  0.14  1 -4.4e-16 2.2
-Petal.Width   0.89  0.41 -0.20 -0.06  1  0.0e+00 1.5
+Petal.Length  0.78  0.54 -0.28  0.14  1 -1.3e-15 2.2
+Petal.Width   0.89  0.41 -0.20 -0.06  1 -6.7e-16 1.5
 
                        RC1  RC3  RC2  RC4
 SS loadings           1.71 1.18 1.09 0.02
@@ -597,7 +594,7 @@ The root mean square of the residuals (RMSR) is  0
  with the empirical chi square  0  with prob &lt;  NA 
 
 Fit based upon off diagonal values = 1</code></pre>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span> <span class="va">pca_obliq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/psych/man/principal.html" class="external-link">principal</a></span><span class="op">(</span><span class="va">scaled_iris</span>, rotate <span class="op">=</span> <span class="st">"oblimin"</span>, nfactors <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div>
 <pre><code>Warning in GPFoblq(A, Tmat = Tmat, normalize = normalize, eps = eps, maxit =
 maxit, : convergence not obtained in GPFoblq. 1000 iterations used.</code></pre>
@@ -605,10 +602,10 @@ maxit, : convergence not obtained in GPFoblq. 1000 iterations used.</code></pre>
 Call: principal(r = scaled_iris, nfactors = 4, rotate = "oblimin")
 Standardized loadings (pattern matrix) based upon correlation matrix
               TC1   TC3   TC2   TC4 h2       u2 com
-Sepal.Length 0.00  1.00  0.00 -0.01  1  1.1e-16 1.0
+Sepal.Length 0.00  1.00  0.00 -0.01  1  6.7e-16 1.0
 Sepal.Width  0.00  0.00  1.00  0.01  1  4.4e-16 1.0
-Petal.Length 0.92  0.05 -0.03  0.14  1 -4.4e-16 1.1
-Petal.Width  1.02 -0.01  0.01 -0.11  1  0.0e+00 1.0
+Petal.Length 0.92  0.05 -0.03  0.14  1 -1.3e-15 1.1
+Petal.Width  1.02 -0.01  0.01 -0.11  1 -6.7e-16 1.0
 
                        TC1  TC3  TC2  TC4
 SS loadings           1.92 1.04 1.01 0.03
@@ -631,13 +628,17 @@ The root mean square of the residuals (RMSR) is  0
  with the empirical chi square  0  with prob &lt;  NA 
 
 Fit based upon off diagonal values = 1</code></pre>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/psych/man/biplot.psych.html" class="external-link">biplot.psych</a></span><span class="op">(</span><span class="va">pca_psych</span>, choose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, main <span class="op">=</span> <span class="st">"no rotation"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/psych/man/biplot.psych.html" class="external-link">biplot.psych</a></span><span class="op">(</span><span class="va">pca_ortho</span>, choose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RC1"</span>,<span class="st">"RC2"</span><span class="op">)</span>, main <span class="op">=</span> <span class="st">"orthogonal rotation"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/psych/man/biplot.psych.html" class="external-link">biplot.psych</a></span><span class="op">(</span><span class="va">pca_obliq</span>, choose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TC1"</span>,<span class="st">"TC2"</span><span class="op">)</span>, main <span class="op">=</span> <span class="st">"oblique rotation"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="new-ord-classes-pca_files/figure-html/unnamed-chunk-18-1.png" class="r-plt" width="768"></p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<span><span class="fu"><a href="https://rdrr.io/pkg/psych/man/biplot.psych.html" class="external-link">biplot.psych</a></span><span class="op">(</span><span class="va">pca_psych</span>, choose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, main <span class="op">=</span> <span class="st">"no rotation"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="new-ord-classes-pca_files/figure-html/unnamed-chunk-18-1.png" class="r-plt" alt="" width="768"></p>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/psych/man/biplot.psych.html" class="external-link">biplot.psych</a></span><span class="op">(</span><span class="va">pca_ortho</span>, choose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RC1"</span>,<span class="st">"RC2"</span><span class="op">)</span>, main <span class="op">=</span> <span class="st">"orthogonal rotation"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="new-ord-classes-pca_files/figure-html/unnamed-chunk-18-2.png" class="r-plt" alt="" width="768"></p>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/psych/man/biplot.psych.html" class="external-link">biplot.psych</a></span><span class="op">(</span><span class="va">pca_obliq</span>, choose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TC1"</span>,<span class="st">"TC2"</span><span class="op">)</span>, main <span class="op">=</span> <span class="st">"oblique rotation"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="new-ord-classes-pca_files/figure-html/unnamed-chunk-18-3.png" class="r-plt" alt="" width="768"></p>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span></span></code></pre></div>
 <p>The biplots suggest that the rotations twist the manifest variables
 (vectors) to better align with the latent variables (axes); in fact,
@@ -658,7 +659,7 @@ loadings are the original loadings matrix
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>L</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><annotation encoding="application/x-tex">L_{p\times{p}}</annotation></semantics></math>
 multiplied by the orthogonal rotation matrix
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>T</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><annotation encoding="application/x-tex">T_{p\times{p}}</annotation></semantics></math>:</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pca_ortho</span><span class="op">$</span><span class="va">loadings</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RC1"</span>, <span class="st">"RC2"</span>, <span class="st">"RC3"</span>, <span class="st">"RC4"</span><span class="op">)</span><span class="op">]</span> <span class="op">/</span></span>
 <span>  <span class="op">(</span><span class="va">pca_psych</span><span class="op">$</span><span class="va">loadings</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">pca_ortho</span><span class="op">$</span><span class="va">rot.mat</span><span class="op">)</span></span></code></pre></div>
 <pre><code>             RC1 RC2 RC3 RC4
@@ -672,7 +673,7 @@ Petal.Width    1   1  -1   1</code></pre>
 The <code>$loadings</code> element extractable from an
 oblique-transformed <code>principal</code> object is the pattern
 matrix:</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pca_obliq</span><span class="op">$</span><span class="va">loadings</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TC1"</span>, <span class="st">"TC2"</span>, <span class="st">"TC3"</span>, <span class="st">"TC4"</span><span class="op">)</span><span class="op">]</span> <span class="op">/</span></span>
 <span>  <span class="op">(</span><span class="va">pca_psych</span><span class="op">$</span><span class="va">loadings</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">pca_obliq</span><span class="op">$</span><span class="va">rot.mat</span><span class="op">)</span></span></code></pre></div>
 <pre><code>             TC1 TC2 TC3 TC4
@@ -687,7 +688,7 @@ into each variable.</p>
 The structure matrix is obtained from the pattern matrix via multiplying
 by the interfactor correlation matrix
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Φ</mi><mrow><mi>p</mi><mo>×</mo><mi>p</mi></mrow></msub><annotation encoding="application/x-tex">\Phi_{p\times p}</annotation></semantics></math>.</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">pca_obliq</span><span class="op">$</span><span class="va">loadings</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">pca_obliq</span><span class="op">$</span><span class="va">Phi</span><span class="op">)</span> <span class="op">/</span></span>
 <span>  <span class="va">pca_obliq</span><span class="op">$</span><span class="va">Structure</span></span></code></pre></div>
 <pre><code>             TC1 TC3 TC2 TC4
@@ -719,14 +720,14 @@ misguided to recover the rotation matrix as an element, as it would
 enable questionable practices like overlaying un-rotated loadings with
 scores based on the rotated loadings. For now, <strong>ordr</strong>
 recovers elements for the rotated model:</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/methods-principal.html">recover_cols.principal</a></span><span class="op">(</span><span class="va">pca_obliq</span><span class="op">)</span></span></code></pre></div>
 <pre><code>                     TC1         TC3         TC2          TC4
 Sepal.Length 0.001135748  1.00104339  0.00135006 -0.007037052
 Sepal.Width  0.000138637  0.00150469  1.00121836  0.005252757
 Petal.Length 0.921306788  0.05149774 -0.03318141  0.143665190
 Petal.Width  1.016481008 -0.01298686  0.01299764 -0.105507227</code></pre>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/methods-principal.html">recover_cols.principal</a></span><span class="op">(</span><span class="va">pca_ortho</span><span class="op">)</span></span></code></pre></div>
 <pre><code>                    RC1         RC3         RC2          RC4
 Sepal.Length  0.5307647  0.84749442  0.00480238 -0.004354515
@@ -751,7 +752,7 @@ augment the row and column coordinates.</li>
 </ul>
 <p>This information is organized in each case as a tibble, not a matrix.
 For convenience, we attach the <strong>tibble</strong> package:</p>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span></code></pre></div>
 <p>The most important annotations are the names, which will usually have
 been taken from the row and column names of the data set
@@ -766,7 +767,7 @@ active and any supplementary elements recovered by those methods. For
 example, our row augmentation function must recognize that no active row
 elements are recovered and that the supplementary elements, if available
 for recovery, correspond to the cases:</p>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">recover_aug_rows.principal</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co"># no active elements</span></span>
 <span>  <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>.rows <span class="op">=</span> <span class="fl">0L</span><span class="op">)</span></span>
@@ -792,7 +793,7 @@ for recovery, correspond to the cases:</p>
 addition to the variable names, we augment the column elements with the
 means and standard deviations obtained during pre-processing and
 included in the <code>principal</code> object:</p>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">recover_aug_cols.principal</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">x</span><span class="op">[[</span><span class="st">"loadings"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span>  <span class="va">res</span> <span class="op">&lt;-</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
@@ -808,7 +809,7 @@ axes.</p>
 <p>Finally, the coordinate augmentation function provides the coordinate
 names and their standard deviations, which are provided in the
 <code>principal</code> object:</p>
-<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">recover_aug_coord.principal</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>    name <span class="op">=</span> <span class="fu"><a href="../reference/methods-principal.html">recover_coord.principal</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
@@ -820,22 +821,22 @@ Check numbers of rows
 </summary><p>To preempt bugs, we should ensure that the number of rows in each
 augmented data frame agree with those of the corresponding extracted
 matrix.</p>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu"><a href="../reference/methods-principal.html">recover_aug_rows.principal</a></span><span class="op">(</span><span class="va">pca_psych</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu"><a href="../reference/methods-principal.html">recover_rows.principal</a></span><span class="op">(</span><span class="va">pca_psych</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu"><a href="../reference/methods-principal.html">recover_supp_rows.principal</a></span><span class="op">(</span><span class="va">pca_psych</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>[1] TRUE</code></pre>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu"><a href="../reference/methods-principal.html">recover_aug_cols.principal</a></span><span class="op">(</span><span class="va">pca_psych</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu"><a href="../reference/methods-principal.html">recover_cols.principal</a></span><span class="op">(</span><span class="va">pca_psych</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>[1] TRUE</code></pre>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu"><a href="../reference/methods-principal.html">recover_aug_coord.principal</a></span><span class="op">(</span><span class="va">pca_psych</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://corybrunson.github.io/ordr/reference/recoverers.html" class="external-link">recover_inertia</a></span><span class="op">(</span><span class="va">pca_psych</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>[1] TRUE</code></pre>
 </details><p>We have now defined the methods required to obtain the
 <code>tbl_ord</code> wrapper for a <code>principal</code> object:</p>
-<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pca_psych</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://corybrunson.github.io/ordr/reference/tbl_ord.html" class="external-link">as_tbl_ord</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://corybrunson.github.io/ordr/reference/augmentation.html" class="external-link">augment_ord</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -846,11 +847,12 @@ matrix.</p>
     PC1    PC2     PC3 ... |   .element
                            |    [3m [38;5;246m&lt;chr&gt; [39m [23m   
  [38;5;250m1 [39m - [31m1 [39m [31m. [39m [31m32 [39m  0.500 - [31m0 [39m [31m. [39m [31m332 [39m      |  [38;5;250m1 [39m score   
- [38;5;250m2 [39m - [31m1 [39m [31m. [39m [31m21 [39m - [31m0 [39m [31m. [39m [31m703 [39m - [31m0 [39m [31m. [39m [31m610 [39m  ... |  [38;5;250m2 [39m score   
- [38;5;250m3 [39m - [31m1 [39m [31m. [39m [31m38 [39m - [31m0 [39m [31m. [39m [31m356 [39m  0.115      |  [38;5;250m3 [39m score   
+ [38;5;250m2 [39m - [31m1 [39m [31m. [39m [31m21 [39m - [31m0 [39m [31m. [39m [31m703 [39m - [31m0 [39m [31m. [39m [31m610 [39m      |  [38;5;250m2 [39m score   
+ [38;5;250m3 [39m - [31m1 [39m [31m. [39m [31m38 [39m - [31m0 [39m [31m. [39m [31m356 [39m  0.115  ... |  [38;5;250m3 [39m score   
  [38;5;250m4 [39m - [31m1 [39m [31m. [39m [31m34 [39m - [31m0 [39m [31m. [39m [31m623 [39m  0.238      |  [38;5;250m4 [39m score   
  [38;5;250m5 [39m - [31m1 [39m [31m. [39m [31m39 [39m  0.674  0.040 [4m9 [24m     |  [38;5;250m5 [39m score   
- [38;5;246m# ℹ 145 more rows [39m
+ [38;5;246m# ℹ 145 more rows [39m     |  [38;5;246m# ℹ 145 more rows [39m
+
 # 
 # Columns (principal): [ 4 x 4 | 2 ]
      PC1    PC2     PC3 ... |   name         .element
@@ -861,7 +863,7 @@ matrix.</p>
  [38;5;250m4 [39m  0.965 0.064 [4m0 [24m  0.243      |  [38;5;250m4 [39m Petal.Width  active  </code></pre>
 <p>This can also now be done “under the hood” by
 <code><a href="https://corybrunson.github.io/ordr/reference/ordinate.html" class="external-link">ordinate()</a></code>:</p>
-<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://corybrunson.github.io/ordr/reference/ordinate.html" class="external-link">ordinate</a></span><span class="op">(</span><span class="va">scaled_iris</span>, <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/pkg/psych/man/principal.html" class="external-link">principal</a></span><span class="op">(</span><span class="va">.</span>, nfactors <span class="op">=</span> <span class="fl">4</span>, rotate <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code># A tbl_ord of class 'psych': (150 x 4) x (4 x 4)'
 # 4 coordinates: PC1, PC2, ..., PC4
@@ -870,11 +872,12 @@ matrix.</p>
     PC1    PC2     PC3 ... |   .element
                            |    [3m [38;5;246m&lt;chr&gt; [39m [23m   
  [38;5;250m1 [39m - [31m1 [39m [31m. [39m [31m32 [39m  0.500 - [31m0 [39m [31m. [39m [31m332 [39m      |  [38;5;250m1 [39m score   
- [38;5;250m2 [39m - [31m1 [39m [31m. [39m [31m21 [39m - [31m0 [39m [31m. [39m [31m703 [39m - [31m0 [39m [31m. [39m [31m610 [39m  ... |  [38;5;250m2 [39m score   
- [38;5;250m3 [39m - [31m1 [39m [31m. [39m [31m38 [39m - [31m0 [39m [31m. [39m [31m356 [39m  0.115      |  [38;5;250m3 [39m score   
+ [38;5;250m2 [39m - [31m1 [39m [31m. [39m [31m21 [39m - [31m0 [39m [31m. [39m [31m703 [39m - [31m0 [39m [31m. [39m [31m610 [39m      |  [38;5;250m2 [39m score   
+ [38;5;250m3 [39m - [31m1 [39m [31m. [39m [31m38 [39m - [31m0 [39m [31m. [39m [31m356 [39m  0.115  ... |  [38;5;250m3 [39m score   
  [38;5;250m4 [39m - [31m1 [39m [31m. [39m [31m34 [39m - [31m0 [39m [31m. [39m [31m623 [39m  0.238      |  [38;5;250m4 [39m score   
  [38;5;250m5 [39m - [31m1 [39m [31m. [39m [31m39 [39m  0.674  0.040 [4m9 [24m     |  [38;5;250m5 [39m score   
- [38;5;246m# ℹ 145 more rows [39m
+ [38;5;246m# ℹ 145 more rows [39m     |  [38;5;246m# ℹ 145 more rows [39m
+
 # 
 # Columns (principal): [ 4 x 4 | 2 ]
      PC1    PC2     PC3 ... |   name         .element
@@ -899,9 +902,8 @@ for these recoverers. We locate the script in
 <code>test-&lt;package&gt;-&lt;class&gt;.r</code>. To demonstrate that
 our methods pass the tests, we attach the <strong>testthat</strong>
 package:</p>
-<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://testthat.r-lib.org" class="external-link">testthat</a></span><span class="op">)</span></span></code></pre></div>
-<pre><code>Warning: package 'testthat' was built under R version 4.3.3</code></pre>
 <pre><code>
 Attaching package: 'testthat'</code></pre>
 <pre><code>The following object is masked from 'package:psych':
@@ -909,7 +911,7 @@ Attaching package: 'testthat'</code></pre>
     describe</code></pre>
 <p>We write the following tests, which will only be run if
 <strong>psych</strong> is installed:</p>
-<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://testthat.r-lib.org/reference/skip.html" class="external-link">skip_if_not_installed</a></span><span class="op">(</span><span class="st">"psych"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">fit_principal</span> <span class="op">&lt;-</span> <span class="fu">psych</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/psych/man/principal.html" class="external-link">principal</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span>, <span class="op">-</span><span class="fl">5</span><span class="op">]</span>, nfactors <span class="op">=</span> <span class="fl">4</span>, rotate <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span>
@@ -919,24 +921,24 @@ Attaching package: 'testthat'</code></pre>
 <span>  <span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html" class="external-link">expect_equal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="fu"><a href="https://corybrunson.github.io/ordr/reference/recoverers.html" class="external-link">get_rows</a></span><span class="op">(</span><span class="va">fit_principal</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>               <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://corybrunson.github.io/ordr/reference/recoverers.html" class="external-link">recover_inertia</a></span><span class="op">(</span><span class="va">fit_principal</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<pre><code> [32mTest passed [39m 🥇</code></pre>
-<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<pre><code> [1mTest passed with 2 successes 🥇 [22m.</code></pre>
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html" class="external-link">test_that</a></span><span class="op">(</span><span class="st">"'principal' has specified distribution of inertia"</span>, <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://testthat.r-lib.org/reference/inheritance-expectations.html" class="external-link">expect_type</a></span><span class="op">(</span><span class="fu"><a href="https://corybrunson.github.io/ordr/reference/conference.html" class="external-link">recover_conference</a></span><span class="op">(</span><span class="va">fit_principal</span><span class="op">)</span>, <span class="st">"double"</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://testthat.r-lib.org/reference/expect_vector.html" class="external-link">expect_vector</a></span><span class="op">(</span><span class="fu"><a href="https://corybrunson.github.io/ordr/reference/conference.html" class="external-link">recover_conference</a></span><span class="op">(</span><span class="va">fit_principal</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<pre><code> [32mTest passed [39m 🎊</code></pre>
-<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<pre><code> [1mTest passed with 2 successes 🎊 [22m.</code></pre>
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html" class="external-link">test_that</a></span><span class="op">(</span><span class="st">"'principal' augmentations are consistent with '.element' column"</span>, <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html" class="external-link">expect_equal</a></span><span class="op">(</span><span class="st">".element"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://corybrunson.github.io/ordr/reference/augmentation.html" class="external-link">recover_aug_rows</a></span><span class="op">(</span><span class="va">fit_principal</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>               <span class="st">".element"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://corybrunson.github.io/ordr/reference/augmentation.html" class="external-link">recover_aug_cols</a></span><span class="op">(</span><span class="va">fit_principal</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<pre><code> [32mTest passed [39m 🌈</code></pre>
-<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
+<pre><code> [1mTest passed with 1 success 🌈 [22m.</code></pre>
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html" class="external-link">test_that</a></span><span class="op">(</span><span class="st">"`as_tbl_ord()` coerces 'principal' objects"</span>, <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://testthat.r-lib.org/reference/logical-expectations.html" class="external-link">expect_true</a></span><span class="op">(</span><span class="fu"><a href="https://corybrunson.github.io/ordr/reference/tbl_ord.html" class="external-link">valid_tbl_ord</a></span><span class="op">(</span><span class="fu"><a href="https://corybrunson.github.io/ordr/reference/tbl_ord.html" class="external-link">as_tbl_ord</a></span><span class="op">(</span><span class="va">fit_principal</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<pre><code> [32mTest passed [39m 🎊</code></pre>
+<pre><code> [1mTest passed with 1 success 🎊 [22m.</code></pre>
 </div>
 <div class="section level3">
 <h3 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
@@ -947,7 +949,7 @@ reflecting some of the special cases we encountered above. The file name
 convention but with the illustrative data set specified (allowing for
 more than one script if helpful), and the script also begins by
 conditioning itself on <strong>psych</strong> being installed:</p>
-<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://personality-project.org/r/psych/" class="external-link">psych</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span><span class="co"># {psych}</span></span>
 <span></span>
 <span><span class="co"># data frame of Anderson iris species measurements</span></span>
@@ -984,7 +986,7 @@ conditioning itself on <strong>psych</strong> being installed:</p>
 <p>Finally, we collect and document the recoverers in a file named
 <code>methods-psych-principal.r</code>, following the pattern
 <code>methods-&lt;package&gt;-&lt;class&gt;.r</code>:</p>
-<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' @title Functionality for principal components analysis ('principal') objects</span></span>
 <span><span class="co">#'</span></span>
 <span><span class="co">#' @description These methods extract data from, and attribute new data to,</span></span>

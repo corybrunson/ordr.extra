@@ -65,8 +65,19 @@ Recovery and augmentation methods for ordination model classes
   [`recover_aug_rows(`*`<cancor>`*`)`](methods-candisc-cancor.md)
   [`recover_aug_cols(`*`<cancor>`*`)`](methods-candisc-cancor.md)
   [`recover_aug_coord(`*`<cancor>`*`)`](methods-candisc-cancor.md) :
-  Functionality for canonical correlation ('cancor') and discriminant
-  ('candisc') objects
+  Functionality for canonical correlation ('cancor') objects
+- [`as_tbl_ord(`*`<candisc>`*`)`](methods-candisc-candisc.md)
+  [`recover_rows(`*`<candisc>`*`)`](methods-candisc-candisc.md)
+  [`recover_cols(`*`<candisc>`*`)`](methods-candisc-candisc.md)
+  [`recover_inertia(`*`<candisc>`*`)`](methods-candisc-candisc.md)
+  [`recover_coord(`*`<candisc>`*`)`](methods-candisc-candisc.md)
+  [`recover_conference(`*`<candisc>`*`)`](methods-candisc-candisc.md)
+  [`recover_supp_rows(`*`<candisc>`*`)`](methods-candisc-candisc.md)
+  [`recover_supp_cols(`*`<candisc>`*`)`](methods-candisc-candisc.md)
+  [`recover_aug_rows(`*`<candisc>`*`)`](methods-candisc-candisc.md)
+  [`recover_aug_cols(`*`<candisc>`*`)`](methods-candisc-candisc.md)
+  [`recover_aug_coord(`*`<candisc>`*`)`](methods-candisc-candisc.md) :
+  Functionality for canonical discriminant ('candisc') objects
 - [`as_tbl_ord(`*`<fa>`*`)`](methods-fa.md)
   [`recover_rows(`*`<fa>`*`)`](methods-fa.md)
   [`recover_cols(`*`<fa>`*`)`](methods-fa.md)

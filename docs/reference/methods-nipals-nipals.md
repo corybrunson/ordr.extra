@@ -3,8 +3,7 @@
 These methods extract data from, and attribute new data to, objects of
 class `"nipals_ord"`. This is a class introduced in this package to
 identify objects returned by [`nipals_ord()`](wrap-ord-extra.md), which
-wraps
-[`nipals::nipals()`](https://kwstat.github.io/nipals/reference/nipals.html).
+wraps `nipals::nipals()`.
 
 ## Usage
 
@@ -134,27 +133,6 @@ air_nipals %>%
   labs(color = "Month")
 
 }# {nipals}
-#> # A tbl_ord of class 'nipals_ord': (153 x 4) x (4 x 4)'
-#> # 4 coordinates: PC1, PC2, ..., PC4
-#> # 
-#> # Rows (standard): [ 153 x 4 | 0 ]
-#>       PC1      PC2     PC3 ... | 
-#>                                | 
-#> 1 -0.0164 -0.0269  -0.148      | 
-#> 2 -0.0229 -0.0748  -0.0588 ... | 
-#> 3 -0.0679  0.00579  0.0326     | 
-#> 4 -0.0622  0.118   -0.171      | 
-#> 5 -0.183  -0.0669  -0.0367     | 
-#> 
-#> # 
-#> # Columns (standard): [ 4 x 4 | 0 ]
-#>      PC1      PC2     PC3 ... | 
-#>                               | 
-#> 1  0.581 -0.0325   0.0884     | 
-#> 2  0.312  0.859   -0.379  ... | 
-#> 3 -0.491  0.511    0.636      | 
-#> 4  0.569  0.00367  0.666      | 
-#> Warning: `GeomTextRadiate` is deprecated; use `GeomVector` instead.
-#> Warning: Removed 111 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
+#> Loading required package: nipals
+#> Warning: there is no package called ‘nipals’
 ```

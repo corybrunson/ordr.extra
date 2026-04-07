@@ -1,8 +1,7 @@
 # Functionality for penalized multivariate analysis ('CCA') objects
 
 These methods extract data from, and attribute new data to, objects of
-class 'CCA' from the
-**[PMA](https://rdrr.io/pkg/PMA/man/PMA-package.html)** package.
+class 'CCA' from the **PMA** package.
 
 ## Usage
 
@@ -156,11 +155,6 @@ savings_cca %>%
   expand_limits(x = c(-1, 1), y = c(-1, 1))
 
 }# {PMA}
-#> 12
-#> 12
-#> `subset` will be applied after data are restricted to active elements.
-#> `subset` will be applied after data are restricted to active elements.
-#> `subset` will be applied after data are restricted to active elements.
-#> `subset` will be applied after data are restricted to active elements.
-#> Warning: `GeomTextRadiate` is deprecated; use `GeomVector` instead.
+#> Loading required package: PMA
+#> Warning: there is no package called ‘PMA’
 ```

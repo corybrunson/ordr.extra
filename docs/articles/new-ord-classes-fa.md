@@ -10,11 +10,6 @@ occasionally, we recommend beginning there.
 
 ``` r
 library(ordr)
-```
-
-    Warning: package 'ggplot2' was built under R version 4.3.3
-
-``` r
 library(psych)
 ```
 
@@ -51,7 +46,7 @@ fa_stats <- factanal(scaled_swiss, factors = 2, rotation = "none", scores = "reg
     # A tbl_ord of class 'factanal': (47 x 2) x (6 x 2)'
     # 2 coordinates: Factor1 and Factor2
     # 
-    # Rows (principal): [ 47 x 2 | 0 ]
+    # Rows (standard): [ 47 x 2 | 0 ]
       Factor1 Factor2 | 
                       | 
      [38;5;250m1 [39m   0.115  - [31m0 [39m [31m. [39m [31m629 [39m | 
@@ -59,6 +54,7 @@ fa_stats <- factanal(scaled_swiss, factors = 2, rotation = "none", scores = "reg
      [38;5;250m3 [39m  - [31m0 [39m [31m. [39m [31m655 [39m   1.17  | 
      [38;5;250m4 [39m  - [31m0 [39m [31m. [39m [31m415 [39m  - [31m0 [39m [31m. [39m [31m182 [39m | 
      [38;5;250m5 [39m   0.419  - [31m0 [39m [31m. [39m [31m646 [39m | 
+     [38;5;246m# ℹ 42 more rows [39m | 
 
     # 
     # Columns (principal): [ 6 x 2 | 0 ]
@@ -75,11 +71,11 @@ fa_stats <- factanal(scaled_swiss, factors = 2, rotation = "none", scores = "reg
 
 FA assumes correlations between the factors, which leads to the issue of
 factor indeterminacy: Different optimization procedures may produce
-different sets of $`k`$ factors. Moreover, the factors obtained are not
-ranked and may be inconsistent across different choices of $`k`$. This
-is in stark contrast to the fact that the first $`l \leq k`$ principal
-components are the same regardless of $`k`$. Compare the results using
-$`k=1`$ and $`k=2`$:
+different sets of $k$ factors. Moreover, the factors obtained are not
+ranked and may be inconsistent across different choices of $k$. This is
+in stark contrast to the fact that the first $l \leq k$ principal
+components are the same regardless of $k$. Compare the results using
+$k = 1$ and $k = 2$:
 
 ``` r
 fa1 <- fa(scaled_swiss, nfactors = 1)
@@ -161,19 +157,14 @@ hist(fa2$scores[, 2], xlim = c(-3,3))
 ### Matrix Decomposition
 
 Factor analysis is based on the following model:
-``` math
-R_{p\times{p}} = L_{p\times{k}}(L_{p\times{k}})^\top + U_{p\times{p}}^2
-```
-Note that FA uses the correlation matrix $`R`$ rather than the
-covariance matrix, which can also be obtained by centering and scaling
-the data:
-``` math
-(\bar{X}_{n\times{p}})^\top\bar{X}_{n\times{p}} = L_{p\times{k}}(L_{p\times{k}})^\top + U_{p\times{p}}^2
-```
+$$R_{p \times p} = L_{p \times k}\left( L_{p \times k} \right)^{\top} + U_{p \times p}^{2}$$
+Note that FA uses the correlation matrix $R$ rather than the covariance
+matrix, which can also be obtained by centering and scaling the data:
+$$\left( {\bar{X}}_{n \times p} \right)^{\top}{\bar{X}}_{n \times p} = L_{p \times k}\left( L_{p \times k} \right)^{\top} + U_{p \times p}^{2}$$
 As with PCA via EVD, we decompose this matrix into the product of a
-loadings matrix $`L`$ and its transpose. However, there is no diagonal
+loadings matrix $L$ and its transpose. However, there is no diagonal
 matrix of inertia here, and we add to the decomposition a residuals
-matrix $`U^2`$. We can check this on the decomposition returned by
+matrix $U^{2}$. We can check this on the decomposition returned by
 [`psych::fa()`](https://rdrr.io/pkg/psych/man/fa.html):
 
 ``` r
@@ -204,7 +195,7 @@ cor_swiss / (L %*% t(L) + Usquared)
     Catholic                        1
     Infant.Mortality                1
 
-As mentioned above, the loadings matrix $`L`$ depends on the FA method;
+As mentioned above, the loadings matrix $L$ depends on the FA method;
 the `fm` argument selects among 12 methods provided by **psych**. In
 this vignette, we’ll hold the method fixed as we expand **ordr** around
 this new class, then verify that the expansion accommodates other
@@ -226,9 +217,9 @@ supplementary row elements. An additional complication in FA, from a PCA
 perspective, is that several methods are available to compute case
 scores, based on different choices of weights. The default, regression
 scores, uses the weight matrix
-$`W_{p\times{k}} = R^{-1}_{p\times{p}}L_{p\times{k}}`$. The scores are
+$W_{p \times k} = R_{p \times p}^{- 1}L_{p \times k}$. The scores are
 obtained from the centered data matrix by multiplication on the right,
-$`S_{n\times{k}} = \bar{X}_{n\times{p}}W_{p\times{k}}`$.
+$S_{n \times k} = {\bar{X}}_{n \times p}W_{p \times k}$.
 
 Check how scores are computed
 
@@ -260,12 +251,12 @@ head(fa_psych$scores / (scaled_swiss %*% w))
 
 The scores do not necessarily multiply with the loadings to recover the
 data, but we may obtain a matrix decomposition that justifies their
-inclusion as row elements. The weight matrix $`W_{p\times k}`$ is not
+inclusion as row elements. The weight matrix $W_{p \times k}$ is not
 invertible, but the *pseudoinverse*
-$`W^+_{k\times p} = ((W_{p\times k})^\top W_{p\times k})^{-1}(W_{p\times k})^\top`$
-is a left inverse in the sense that $`W^+W=I_{k\times k}`$ when $`W`$ is
-full-rank and has the nice property that $`WW^+W = W`$. We then have
-$`S_{n\times k}W^+_{k\times p} = \bar{X}_{n\times p}W_{p\times k}W^+_{k\times p}`$—that
+$W_{k \times p}^{+} = \left( \left( W_{p \times k} \right)^{\top}W_{p \times k} \right)^{- 1}\left( W_{p \times k} \right)^{\top}$
+is a left inverse in the sense that $W^{+}W = I_{k \times k}$ when $W$
+is full-rank and has the nice property that $WW^{+}W = W$. We then have
+$S_{n \times k}W_{k \times p}^{+} = {\bar{X}}_{n \times p}W_{p \times k}W_{k \times p}^{+}$—that
 is, the scores multiply with the pseudoinverse weights to recover an
 idempotent transformation of the scaled data matrix.
 
@@ -278,9 +269,9 @@ w_inv <- solve(t(w) %*% w) %*% t(w)
 w_inv %*% w
 ```
 
-                  ML1           ML2
-    ML1  1.000000e+00 -6.585851e-17
-    ML2 -1.048966e-17  1.000000e+00
+                 ML1         ML2
+    ML1 1.000000e+00 4.09932e-17
+    ML2 1.023895e-16 1.00000e+00
 
 ``` r
 w %*% w_inv
@@ -317,20 +308,21 @@ w %*% w_inv
 This decomposition situates the scores as row elements and also prompts
 us to include (the transpose of) the pseudoinverse weight matrix as a
 set of supplementary column elements. Indeed,
-$`(W^+_{k \times p})^\top`$ and $`L_{p\times k}`$ share the same
-dimensions, and we can reason that both contain full inertia.
+$\left( W_{k \times p}^{+} \right)^{\top}$ and $L_{p \times k}$ share
+the same dimensions, and we can reason that both contain full inertia.
 
-How the same inertia is conferred on $`(W^+)^\top`$ as on $`L`$
+How the same inertia is conferred on $\left( W^{+} \right)^{\top}$ as on
+$L$
 
-Let $`d`$ denote the inertia contained in $`X`$. Then
-$`(\bar{X}_{n\times p})^\top\bar{X}_{n\times p} = R_{p\times p}`$
-contains $`d^2`$. Recalling that $`L_{p\times k}`$ contains $`d`$, it
-follows that $`W_{p\times{k}} = R^{-1}_{p\times{p}}L_{p\times{k}}`$
-contains $`d^{-2}d = d^{-1}`$. Consequently,
-$`W^+_{k\times p} = ((W_{p\times k})^\top W_{p\times k})^{-1}(W_{p\times k})^\top`$
-contains $`(d^{-2})^{-1}d^{-1} = d^2d^{-1} = d`$. This is also
-consistent with the scores being in standard coordinates, as determined
-for
+Let $d$ denote the inertia contained in $X$. Then
+$\left( {\bar{X}}_{n \times p} \right)^{\top}{\bar{X}}_{n \times p} = R_{p \times p}$
+contains $d^{2}$. Recalling that $L_{p \times k}$ contains $d$, it
+follows that $W_{p \times k} = R_{p \times p}^{- 1}L_{p \times k}$
+contains $d^{- 2}d = d^{- 1}$. Consequently,
+$W_{k \times p}^{+} = \left( \left( W_{p \times k} \right)^{\top}W_{p \times k} \right)^{- 1}\left( W_{p \times k} \right)^{\top}$
+contains $\left( d^{- 2} \right)^{- 1}d^{- 1} = d^{2}d^{- 1} = d$. This
+is also consistent with the scores being in standard coordinates, as
+determined for
 [`psych::principal()`](https://rdrr.io/pkg/psych/man/principal.html).
 
 We can now define the row and column recoverers, largely mimicking those
@@ -445,16 +437,17 @@ head(recover_supp_rows(fa_stats) / recover_supp_rows(fa_psych))
 Because FA permits correlations between factors, the procedure does not
 produce a matrix of inertias; the variance cannot be partitioned and
 attributed to the factors as it is to the components in PCA. Whereas the
-first $`l \leq k`$ principal components always correspond to the $`l`$th
-eigenspace, only the $`k`$th eigenspace is expressible as the span of
-the $`k`$ factors.
+first $l \leq k$ principal components always correspond to the $l$th
+eigenspace, only the $k$th eigenspace is expressible as the span of the
+$k$ factors.
 
 In order to accommodate the SVD-based recoverers, we must extract values
 analogous to inertia that are meaningful in the FA setting. In PCA, the
-covariance matrix is decomposed as $`X^\top X = (V D) (D V^\top)`$, and
-the inertia of each principal component—each column of $`V D`$—is the
-sum of the squares of its principal loadings, multiplied by $`n-1`$ to
-account for standardization:
+covariance matrix is decomposed as
+$X^{\top}X = (VD)\left( DV^{\top} \right)$, and the inertia of each
+principal component—each column of $VD$—is the sum of the squares of its
+principal loadings, multiplied by $n - 1$ to account for
+standardization:
 
 Recover inertia from columns in PCA
 
@@ -464,14 +457,14 @@ colSums(pca_psych$loadings ^ 2) * (nrow(scaled_iris) - 1)
 ```
 
 For FA, we borrow this calculation and compute the variances of the
-factors in the same way, with $`L`$ in place of $`V D`$. This means that
-full inertia is conferred onto $`L`$. Since the inner products of the
-scores and loadings approximate the data matrix, $`X \approx S L`$, the
-scores must have no inertia conferred. It follows that
+factors in the same way, with $L$ in place of $VD$. This means that full
+inertia is conferred onto $L$. Since the inner products of the scores
+and loadings approximate the data matrix, $X \approx SL$, the scores
+must have no inertia conferred. It follows that
 [`psych::fa()`](https://rdrr.io/pkg/psych/man/fa.html) has a conference
-of $`(0,1)`$.
+of $(0,1)$.
 
-Check that $`S L`$ approximates $`X`$
+Check that $SL$ approximates $X$
 
 First, we show that the scores multiplied by the transposed loadings
 gives an approximation of the data matrix.
@@ -513,8 +506,8 @@ loadings can be added to the uniquenesses to recover the total.
 
 Recompose inertia with uniqueness to obtain total variance
 
-Note below that the total is rescaled by $`n-1`$, bringing it to $`n`$,
-or $`1`$ for each variable:
+Note below that the total is rescaled by $n - 1$, bringing it to $n$, or
+$1$ for each variable:
 
 ``` r
 # inertia from loadings
@@ -691,7 +684,8 @@ fa_psych |>
      [38;5;250m3 [39m - [31m0 [39m [31m. [39m [31m655 [39m  1.17  |  [38;5;250m3 [39m score    Franches-Mnt
      [38;5;250m4 [39m - [31m0 [39m [31m. [39m [31m415 [39m - [31m0 [39m [31m. [39m [31m182 [39m |  [38;5;250m4 [39m score    Moutier     
      [38;5;250m5 [39m  0.419 - [31m0 [39m [31m. [39m [31m646 [39m |  [38;5;250m5 [39m score    Neuveville  
-     [38;5;246m# ℹ 42 more rows [39m
+     [38;5;246m# ℹ 42 more rows [39m |  [38;5;246m# ℹ 42 more rows [39m
+
     # 
     # Columns (principal): [ 12 x 2 | 5 ]
          ML1     ML2 |   .element name        uniqueness
@@ -701,7 +695,7 @@ fa_psych |>
      [38;5;250m3 [39m  0.713 - [31m0 [39m [31m. [39m [31m471 [39m  |  [38;5;250m3 [39m active   Examination    0.270  
      [38;5;250m4 [39m  0.997  0.025 [4m2 [24m |  [38;5;250m4 [39m active   Education      0.005 [4m0 [24m [4m0 [24m
      [38;5;250m5 [39m - [31m0 [39m [31m. [39m [31m178 [39m  0.953  |  [38;5;250m5 [39m active   Catholic       0.060 [4m7 [24m 
-     [38;5;246m# ℹ 7 more rows [39m
+     [38;5;246m# ℹ 7 more rows [39m |  [38;5;246m# ℹ 7 more rows [39m
      [38;5;246m# ℹ 2 more variables: [39m
      [38;5;246m#   communality <dbl>, [39m
      [38;5;246m#   complexity <dbl> [39m
@@ -759,6 +753,7 @@ swiss_fa <- psych::fa(
      [38;5;250m3 [39m - [31m0 [39m [31m. [39m [31m588 [39m   1.20  | 
      [38;5;250m4 [39m - [31m0 [39m [31m. [39m [31m424 [39m  - [31m0 [39m [31m. [39m [31m158 [39m | 
      [38;5;250m5 [39m  0.382  - [31m0 [39m [31m. [39m [31m668 [39m | 
+     [38;5;246m# ℹ 42 more rows [39m | 
 
     # 
     # Columns (principal): [ 12 x 2 | 0 ]
@@ -769,6 +764,7 @@ swiss_fa <- psych::fa(
      [38;5;250m3 [39m  0.685 - [31m0 [39m [31m. [39m [31m510 [39m  | 
      [38;5;250m4 [39m  0.997 - [31m0 [39m [31m. [39m [31m0 [39m [31m31 [4m3 [24m [39m | 
      [38;5;250m5 [39m - [31m0 [39m [31m. [39m [31m124 [39m  0.961  | 
+     [38;5;246m# ℹ 7 more rows [39m | 
 
 ``` r
 # recover loadings
@@ -812,7 +808,8 @@ head(get_rows(swiss_fa, elements = "score"))
      [38;5;250m3 [39m - [31m0 [39m [31m. [39m [31m588 [39m   1.20  |  [38;5;250m3 [39m score    Franches-Mnt
      [38;5;250m4 [39m - [31m0 [39m [31m. [39m [31m424 [39m  - [31m0 [39m [31m. [39m [31m158 [39m |  [38;5;250m4 [39m score    Moutier     
      [38;5;250m5 [39m  0.382  - [31m0 [39m [31m. [39m [31m668 [39m |  [38;5;250m5 [39m score    Neuveville  
-     [38;5;246m# ℹ 42 more rows [39m
+     [38;5;246m# ℹ 42 more rows [39m |  [38;5;246m# ℹ 42 more rows [39m
+
     # 
     # Columns (principal): [ 12 x 2 | 5 ]
          ML1     ML2 |   .element name        uniqueness
@@ -822,7 +819,7 @@ head(get_rows(swiss_fa, elements = "score"))
      [38;5;250m3 [39m  0.685 - [31m0 [39m [31m. [39m [31m510 [39m  |  [38;5;250m3 [39m active   Examination    0.270  
      [38;5;250m4 [39m  0.997 - [31m0 [39m [31m. [39m [31m0 [39m [31m31 [4m3 [24m [39m |  [38;5;250m4 [39m active   Education      0.005 [4m0 [24m [4m0 [24m
      [38;5;250m5 [39m - [31m0 [39m [31m. [39m [31m124 [39m  0.961  |  [38;5;250m5 [39m active   Catholic       0.060 [4m7 [24m 
-     [38;5;246m# ℹ 7 more rows [39m
+     [38;5;246m# ℹ 7 more rows [39m |  [38;5;246m# ℹ 7 more rows [39m
      [38;5;246m# ℹ 2 more variables: [39m
      [38;5;246m#   communality <dbl>, [39m
      [38;5;246m#   complexity <dbl> [39m
@@ -836,8 +833,6 @@ the same package are included in a single script.
 ``` r
 library(testthat)
 ```
-
-    Warning: package 'testthat' was built under R version 4.3.3
 
     Attaching package: 'testthat'
 
@@ -857,7 +852,7 @@ test_that("'fa' accessors have consistent dimensions", {
 })
 ```
 
-     [32mTest passed [39m 🥇
+     [1mTest passed with 2 successes 🥇 [22m.
 
 ``` r
 test_that("'fa' has specified distribution of inertia", {
@@ -866,7 +861,7 @@ test_that("'fa' has specified distribution of inertia", {
 })
 ```
 
-     [32mTest passed [39m 🎊
+     [1mTest passed with 2 successes 🎊 [22m.
 
 ``` r
 test_that("'fa' augmentations are consistent with '.element' column", {
@@ -877,7 +872,7 @@ test_that("'fa' augmentations are consistent with '.element' column", {
 })
 ```
 
-     [32mTest passed [39m 🌈
+     [1mTest passed with 1 success 🌈 [22m.
 
 ``` r
 test_that("`as_tbl_ord()` coerces 'fa' objects", {
@@ -885,7 +880,7 @@ test_that("`as_tbl_ord()` coerces 'fa' objects", {
 })
 ```
 
-     [32mTest passed [39m 🎊
+     [1mTest passed with 1 success 🎊 [22m.
 
 #### Submission
 

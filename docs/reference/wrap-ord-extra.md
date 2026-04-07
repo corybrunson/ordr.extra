@@ -198,14 +198,14 @@ with new '\*-ord' classes.
 
 The following table summarizes the wrapped functions:
 
-|  |  |  |  |
-|----|----|----|----|
-| Original function | Hide params | Add names | New class |
-| [`logisticPCA::logisticSVD()`](https://rdrr.io/pkg/logisticPCA/man/logisticSVD.html) | No | Yes | No |
-| [`logisticPCA::logisticPCA()`](https://rdrr.io/pkg/logisticPCA/man/logisticPCA.html) | No | Yes | No |
-| [`logisticPCA::convexLogisticPCA()`](https://rdrr.io/pkg/logisticPCA/man/convexLogisticPCA.html) | No | Yes | No |
-| [`nipals::nipals()`](https://kwstat.github.io/nipals/reference/nipals.html) | No | No | Yes |
-| [`nipals::empca()`](https://kwstat.github.io/nipals/reference/empca.html) | No | No | Yes |
+|                                    |             |           |           |
+|------------------------------------|-------------|-----------|-----------|
+| Original function                  | Hide params | Add names | New class |
+| `logisticPCA::logisticSVD()`       | No          | Yes       | No        |
+| `logisticPCA::logisticPCA()`       | No          | Yes       | No        |
+| `logisticPCA::convexLogisticPCA()` | No          | Yes       | No        |
+| `nipals::nipals()`                 | No          | No        | Yes       |
+| `nipals::empca()`                  | No          | No        | Yes       |
 
 ## See also
 

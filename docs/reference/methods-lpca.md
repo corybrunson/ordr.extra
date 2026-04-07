@@ -1,19 +1,13 @@
 # Functionality for logistic PCA and logistic SVD objects
 
 These methods extract data from, and attribute new data to, objects of
-class `"lpca"` and `"lsvd"` from the
-**[logisticPCA](https://rdrr.io/pkg/logisticPCA/man/logisticPCA-package.html)**
-package.
+class `"lpca"` and `"lsvd"` from the **logisticPCA** package.
 
 These methods extract data from, and attribute new data to, objects of
-class `"lpca"` and `"lsvd"` from the
-**[logisticPCA](https://rdrr.io/pkg/logisticPCA/man/logisticPCA-package.html)**
-package.
+class `"lpca"` and `"lsvd"` from the **logisticPCA** package.
 
 These methods extract data from, and attribute new data to, objects of
-class `"lpca"` and `"lsvd"` from the
-**[logisticPCA](https://rdrr.io/pkg/logisticPCA/man/logisticPCA-package.html)**
-package.
+class `"lpca"` and `"lsvd"` from the **logisticPCA** package.
 
 ## Usage
 
@@ -148,39 +142,27 @@ implementation and extension of the logistic PCA introduced by Collins
 et al (2001). These methods use techniques from generalized linear
 regression to generalize classical principal components analysis (PCA)
 to the problem of dimension reduction for binary data. The signature
-functions
-[`logisticPCA::logisticPCA()`](https://rdrr.io/pkg/logisticPCA/man/logisticPCA.html),
-[`logisticPCA::logisticSVD()`](https://rdrr.io/pkg/logisticPCA/man/logisticSVD.html),
-and
-[`logisticPCA::convexLogisticPCA()`](https://rdrr.io/pkg/logisticPCA/man/convexLogisticPCA.html)
-have `*_ord()` wrappers that add row and column names from the input
-matrix to the output matrices.
+functions `logisticPCA::logisticPCA()`, `logisticPCA::logisticSVD()`,
+and `logisticPCA::convexLogisticPCA()` have `*_ord()` wrappers that add
+row and column names from the input matrix to the output matrices.
 
 Landgraf and Lee (2020) provide in their package **logisticPCA** a new
 implementation and extension of the logistic PCA introduced by Collins
 et al (2001). These methods use techniques from generalized linear
 regression to generalize classical principal components analysis (PCA)
 to the problem of dimension reduction for binary data. The signature
-functions
-[`logisticPCA::logisticPCA()`](https://rdrr.io/pkg/logisticPCA/man/logisticPCA.html),
-[`logisticPCA::logisticSVD()`](https://rdrr.io/pkg/logisticPCA/man/logisticSVD.html),
-and
-[`logisticPCA::convexLogisticPCA()`](https://rdrr.io/pkg/logisticPCA/man/convexLogisticPCA.html)
-have `*_ord()` wrappers that add row and column names from the input
-matrix to the output matrices.
+functions `logisticPCA::logisticPCA()`, `logisticPCA::logisticSVD()`,
+and `logisticPCA::convexLogisticPCA()` have `*_ord()` wrappers that add
+row and column names from the input matrix to the output matrices.
 
 Landgraf and Lee (2020) provide in their package **logisticPCA** a new
 implementation and extension of the logistic PCA introduced by Collins
 et al (2001). These methods use techniques from generalized linear
 regression to generalize classical principal components analysis (PCA)
 to the problem of dimension reduction for binary data. The signature
-functions
-[`logisticPCA::logisticPCA()`](https://rdrr.io/pkg/logisticPCA/man/logisticPCA.html),
-[`logisticPCA::logisticSVD()`](https://rdrr.io/pkg/logisticPCA/man/logisticSVD.html),
-and
-[`logisticPCA::convexLogisticPCA()`](https://rdrr.io/pkg/logisticPCA/man/convexLogisticPCA.html)
-have `*_ord()` wrappers that add row and column names from the input
-matrix to the output matrices.
+functions `logisticPCA::logisticPCA()`, `logisticPCA::logisticSVD()`,
+and `logisticPCA::convexLogisticPCA()` have `*_ord()` wrappers that add
+row and column names from the input matrix to the output matrices.
 
 ## References
 
@@ -292,33 +274,8 @@ finches_lsvd %>%
   expand_limits(x = c(-80, 60))
 
 }# {logisticPCA}
-#> rARPACK must be installed to use partial_decomp
-#> # A tbl_ord of class 'lsvd': (17 x 2) x (13 x 2)'
-#> # 2 coordinates: LSC1 and LSC2
-#> # 
-#> # Rows: [ 17 x 2 | 0 ]
-#>    LSC1   LSC2 | 
-#>                | 
-#> 1 -29.6 -27.3  | 
-#> 2 -29.6 -27.3  | 
-#> 3  39.4  22.9  | 
-#> 4  39.9  40.6  | 
-#> 5  20.2   3.50 | 
-#> 
-#> # 
-#> # Columns: [ 13 x 2 | 0 ]
-#>     LSC1   LSC2 | 
-#>                 | 
-#> 1 0.233   0.231 | 
-#> 2 0.223  -0.216 | 
-#> 3 0.164  -0.318 | 
-#> 4 0.0787  0.548 | 
-#> 5 0.240  -0.451 | 
-#> 
-#> `subset` will be applied after data are restricted to active elements.
-#> `subset` will be applied after data are restricted to active elements.
-#> Warning: `GeomTextRadiate` is deprecated; use `GeomVector` instead.
-
+#> Loading required package: logisticPCA
+#> Warning: there is no package called ‘logisticPCA’
 if (require(logisticPCA) && require(cooccur)) {# {logisticPCA}
 
 # site-species data frame of Sanderson Galapagos finches data
@@ -352,32 +309,8 @@ finches_lpca %>%
   expand_limits(x = c(-25, 35))
 
 }# {logisticPCA}
-#> # A tbl_ord of class 'lpca': (17 x 2) x (12 x 2)'
-#> # 2 coordinates: LPC1 and LPC2
-#> # 
-#> # Rows: [ 17 x 2 | 0 ]
-#>     LPC1   LPC2 | 
-#>                 | 
-#> 1   1.99 -10.5  | 
-#> 2   1.99 -10.5  | 
-#> 3 -11.5    4.60 | 
-#> 4  -8.62   7.51 | 
-#> 5 -10.6    1.65 | 
-#> 
-#> # 
-#> # Columns: [ 12 x 2 | 0 ]
-#>      LPC1   LPC2 | 
-#>                  | 
-#> 1 -0.190   0.373 | 
-#> 2 -0.367  -0.161 | 
-#> 3 -0.279  -0.279 | 
-#> 4  0.0412  0.569 | 
-#> 5 -0.358  -0.364 | 
-#> 
-#> `subset` will be applied after data are restricted to active elements.
-#> `subset` will be applied after data are restricted to active elements.
-#> Warning: `GeomTextRadiate` is deprecated; use `GeomVector` instead.
-
+#> Loading required package: logisticPCA
+#> Warning: there is no package called ‘logisticPCA’
 if (require(logisticPCA) && require(cooccur)) {# {logisticPCA}
 
 # site-species data frame of Sanderson Galapagos finches data
@@ -411,29 +344,6 @@ finches_clpca %>%
   expand_limits(x = c(-25, 35))
 
 }# {logisticPCA}
-#> # A tbl_ord of class 'clpca': (17 x 2) x (12 x 2)'
-#> # 2 coordinates: LPC1 and LPC2
-#> # 
-#> # Rows: [ 17 x 2 | 0 ]
-#>     LPC1   LPC2 | 
-#>                 | 
-#> 1   5.81 -9.59  | 
-#> 2   5.81 -9.59  | 
-#> 3 -10.0   3.39  | 
-#> 4  -7.81  6.94  | 
-#> 5  -9.14  0.958 | 
-#> 
-#> # 
-#> # Columns: [ 12 x 2 | 0 ]
-#>     LPC1   LPC2 | 
-#>                 | 
-#> 1 -0.232  0.275 | 
-#> 2 -0.355 -0.293 | 
-#> 3 -0.210 -0.315 | 
-#> 4 -0.110  0.568 | 
-#> 5 -0.275 -0.444 | 
-#> 
-#> `subset` will be applied after data are restricted to active elements.
-#> `subset` will be applied after data are restricted to active elements.
-#> Warning: `GeomTextRadiate` is deprecated; use `GeomVector` instead.
+#> Loading required package: logisticPCA
+#> Warning: there is no package called ‘logisticPCA’
 ```

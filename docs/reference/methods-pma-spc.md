@@ -1,8 +1,7 @@
 # Functionality for penalized multivariate analysis ('SPC') objects
 
 These methods extract data from, and attribute new data to, objects of
-class 'SPC' from the
-**[PMA](https://rdrr.io/pkg/PMA/man/PMA-package.html)** package.
+class 'SPC' from the **PMA** package.
 
 ## Usage
 
@@ -139,7 +138,6 @@ iris_spca %>%
   expand_limits(x = c(-.12, .2))
 
 }# {PMA}
-#> 123456789
-#> 123
-#> Warning: Predictive biplots are only implemented for linear methods (ED, SVD, PCA).
+#> Loading required package: PMA
+#> Warning: there is no package called ‘PMA’
 ```
