@@ -116,12 +116,6 @@ get_cols(iris_pca)
 (iris_pca <- augment_ord(iris_pca))
 
 }# {psych}
-#> Loading required package: psych
-#> 
-#> Attaching package: 'psych'
-#> The following objects are masked from 'package:ggplot2':
-#> 
-#>     %+%, alpha
 #> # A tbl_ord of class 'psych': (150 x 4) x (4 x 4)'
 #> # 4 coordinates: PC1, PC2, ..., PC4
 #> # 

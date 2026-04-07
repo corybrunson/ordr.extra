@@ -127,8 +127,6 @@ air_nipals %>%
   ggtitle("Row-principal PCA biplot of 1973 air quality measurements")
 
 }# {ade4}
-#> Loading required package: ade4
-#> Warning: package 'ade4' was built under R version 4.3.3
 #> # A tbl_ord of class 'nipals': (153 x 3) x (4 x 3)'
 #> # 3 coordinates: Fac1, Fac2, Fac3
 #> # 

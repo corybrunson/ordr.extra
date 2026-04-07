@@ -157,16 +157,5 @@ savings_cancor %>%
   expand_limits(x = c(-1, 1), y = c(-1, 1))
 
 }# {candisc}
-#> Loading required package: candisc
-#> Warning: package 'candisc' was built under R version 4.3.3
-#> Loading required package: heplots
-#> Warning: package 'heplots' was built under R version 4.3.3
-#> Loading required package: broom
-#> Warning: package 'broom' was built under R version 4.3.3
-#> 
-#> Attaching package: 'candisc'
-#> The following object is masked from 'package:stats':
-#> 
-#>     cancor
 #> Warning: `GeomTextRadiate` is deprecated; use `GeomVector` instead.
 ```

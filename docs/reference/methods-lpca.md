@@ -292,10 +292,6 @@ finches_lsvd %>%
   expand_limits(x = c(-80, 60))
 
 }# {logisticPCA}
-#> Loading required package: logisticPCA
-#> Warning: package 'logisticPCA' was built under R version 4.3.3
-#> Loading required package: cooccur
-#> Warning: package 'cooccur' was built under R version 4.3.3
 #> rARPACK must be installed to use partial_decomp
 #> # A tbl_ord of class 'lsvd': (17 x 2) x (13 x 2)'
 #> # 2 coordinates: LSC1 and LSC2
