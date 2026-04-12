@@ -13,7 +13,10 @@
 #'
 #' The methods for [candisc::candisc()] agree with those for [MASS::lda()] and
 #' extend them to include canonical structure coefficients as column
-#' supplementary points.
+#' supplementary points. The `plot()` method for `candisc` generates a biplot of
+#' markers for the centroid and case scores and vectors for the structure
+#' coefficients, which can be reproduced with [ordr::ggbiplot()] by specifying
+#' the supplementary elements (see the examples).
 #' 
 
 #' @name methods-candisc-candisc
@@ -66,8 +69,7 @@ recover_supp_rows.candisc <- function(x) {
 #' @export
 recover_supp_cols.candisc <- function(x) {
   rbind(
-    # TODO: Show how to obtain these from `recover_cols()` instead.
-    # x$coeffs.std,
+    # TODO: Show in examples how to obtain `x$coeffs.std` from `recover_cols()`.
     x$structure
   )
 }
