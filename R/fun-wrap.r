@@ -29,7 +29,7 @@
 #' @param ... Additional parameters passed to original functions.
 #' @return Objects slightly modified from the outputs of the original functions,
 #'   with new '*-ord' classes.
-#' @seealso [ordr::wrap-ord]
+#' @seealso [`ordr::wrap-ord`]
 NULL
 
 #' @rdname wrap-ord-extra

@@ -22,7 +22,7 @@
 #' @template return-methods
 #' @family methods for eigen-decomposition-based techniques
 #' @family models from the **candisc** package
-#' @seealso [ordr::methods-cancor]
+#' @seealso [`ordr::methods-cancor`]
 #' @example inst/examples/ex-methods-candisc-candisc-iris.r
 NULL
 

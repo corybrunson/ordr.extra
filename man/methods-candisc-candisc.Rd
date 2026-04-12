@@ -94,7 +94,7 @@ augment_ord(iris_cda)
 }# {candisc}
 }
 \seealso{
-\link[ordr:methods-cancor]{ordr::methods-cancor}
+\code{\link[ordr:methods-cancor]{ordr::methods-cancor}}
 
 Other methods for eigen-decomposition-based techniques: 
 \code{\link{methods-fa}},

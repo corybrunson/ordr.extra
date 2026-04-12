@@ -85,13 +85,15 @@ Boca Raton: Chapman & Hall/CRC, ISBN 978-1-58488-616-7.
 \url{http://www.carme-n.org/?sec=books2}
 }
 \seealso{
-\link[ordr:methods-correspondence]{ordr::methods-correspondence}
+\code{\link[ordr:methods-correspondence]{ordr::methods-correspondence}}
 
 Other methods for singular value decomposition-based techniques: 
 \code{\link{methods-ade4}},
 \code{\link{methods-ca-mjca}},
 \code{\link{methods-candisc-cancor}},
+\code{\link{methods-clpca}},
 \code{\link{methods-lpca}},
+\code{\link{methods-lsvd}},
 \code{\link{methods-nipals-empca}},
 \code{\link{methods-nipals-nipals}},
 \code{\link{methods-pma-cca}},

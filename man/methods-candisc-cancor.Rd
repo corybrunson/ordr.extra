@@ -119,13 +119,15 @@ biplots of structure correlations and weights". \emph{Psychometrika} 55(3),
 519--531. \doi{10.1007/BF02294765}
 }
 \seealso{
-\link[ordr:methods-cancor]{ordr::methods-cancor}
+\code{\link[ordr:methods-cancor]{ordr::methods-cancor}}
 
 Other methods for singular value decomposition-based techniques: 
 \code{\link{methods-ade4}},
 \code{\link{methods-ca-ca}},
 \code{\link{methods-ca-mjca}},
+\code{\link{methods-clpca}},
 \code{\link{methods-lpca}},
+\code{\link{methods-lsvd}},
 \code{\link{methods-nipals-empca}},
 \code{\link{methods-nipals-nipals}},
 \code{\link{methods-pma-cca}},

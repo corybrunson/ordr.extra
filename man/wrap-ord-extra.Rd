@@ -162,5 +162,5 @@ The following table summarizes the wrapped functions:\tabular{llll}{
 }
 }
 \seealso{
-\link[ordr:wrap-ord]{ordr::wrap-ord}
+\code{\link[ordr:wrap-ord]{ordr::wrap-ord}}
 }
