@@ -12,11 +12,17 @@
 #' detail.
 #'
 #' The methods for [candisc::candisc()] agree with those for [MASS::lda()] and
-#' extend them to include canonical structure coefficients as column
-#' supplementary points. The `plot()` method for `candisc` generates a biplot of
-#' markers for the centroid and case scores and vectors for the structure
-#' coefficients, which can be reproduced with [ordr::ggbiplot()] by specifying
-#' the supplementary elements (see the examples).
+#' extend them to include canonical structure coefficients as supplementary
+#' column points. These are the correlations between the observed and canonical
+#' variables and therefore, like the canonical coefficients recovered as active
+#' column elements, carry no inertia in the model object.
+#'
+#' The `plot()` method for `candisc` generates a biplot of markers for the
+#' centroid and case scores and vectors for the structure coefficients. This can
+#' be reproduced with [ordr::ggbiplot()] by specifying the supplementary
+#' elements (see the examples). This plot is distinct from those possible using
+#' [ordr::lda_ord()]: The vectors represent the locations of the observed
+#' variables in canonical space.
 #' 
 
 #' @name methods-candisc-candisc
