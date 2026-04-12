@@ -127,6 +127,7 @@ air_nipals %>%
   ggtitle("Row-principal PCA biplot of 1973 air quality measurements")
 
 }# {ade4}
+#> Loading required package: ade4
 #> # A tbl_ord of class 'nipals': (153 x 3) x (4 x 3)'
 #> # 3 coordinates: Fac1, Fac2, Fac3
 #> # 
@@ -138,6 +139,7 @@ air_nipals %>%
 #> 3 -1.27  -0.0592  0.279 | 
 #> 4 -1.16  -1.46   -1.44  | 
 #> 5 -3.41   0.906  -0.280 | 
+#> # ℹ 148 more rows | 
 #> 
 #> # 
 #> # Columns (standard): [ 4 x 3 | 0 ]
@@ -148,6 +150,7 @@ air_nipals %>%
 #> 3 -0.491 -0.497   0.623 | 
 #> 4  0.569 -0.0173  0.679 | 
 #> Warning: `GeomTextRadiate` is deprecated; use `GeomVector` instead.
+#> This warning is displayed once every 8 hours.
 #> Warning: Removed 111 rows containing missing values or values outside the scale range
 #> (`geom_point()`).
 ```

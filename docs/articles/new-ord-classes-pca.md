@@ -25,11 +25,6 @@ this developer vignette: `vignette("extension-checklist")`.
 
 ``` r
 library(ordr)
-```
-
-    Warning: package 'ggplot2' was built under R version 4.3.3
-
-``` r
 library(psych)
 ```
 
@@ -46,21 +41,19 @@ with an example using psychometric data.
 ### EVD and SVD
 
 PCA can be done by applying either of two matrix decomposition methods
-to a centered and (often) scaled data matrix $`\bar{X}_{n\times p}`$.
+to a centered and (often) scaled data matrix ${\bar{X}}_{n \times p}$.
 
 One method, used by
 [`stats::prcomp()`](https://rdrr.io/r/stats/prcomp.html), is singular
-value decomposition (SVD). Assuming $`n > p`$, SVD obtains the
+value decomposition (SVD). Assuming $n > p$, SVD obtains the
 decomposition
-``` math
-\bar{X}_{n\times{p}} = U_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^\top\text{,}
-```
-where the column vectors of $`U`$ and of $`V`$ have length $`1`$ and are
-pairwise perpendicular and $`D`$ is diagonal. The columns of $`U`$ are
-called the *left singular vectors* of $`\bar{X}`$ and those of $`V`$ the
-*right singular vectors*; the diagonal elements of $`D`$ are the
-*singular values*. Based on the equation, elements from $`U`$ and from
-$`V`$, respectively, are referred to as “row” and “column” elements.
+$${\bar{X}}_{n \times p} = U_{n \times p}D_{p \times p}\left( V_{p \times p} \right)^{\top}\text{,}$$
+where the column vectors of $U$ and of $V$ have length $1$ and are
+pairwise perpendicular and $D$ is diagonal. The columns of $U$ are
+called the *left singular vectors* of $\bar{X}$ and those of $V$ the
+*right singular vectors*; the diagonal elements of $D$ are the *singular
+values*. Based on the equation, elements from $U$ and from $V$,
+respectively, are referred to as “row” and “column” elements.
 
 ``` r
 scaled_iris <- scale(iris[1:4])
@@ -71,18 +64,14 @@ The other method uses eigenvalue decomposition (EVD), or just
 eigendecomposition, as in
 [`stats::princomp()`](https://rdrr.io/r/stats/princomp.html) and in
 [`psych::principal()`](https://rdrr.io/pkg/psych/man/principal.html).
-The EVD of a full-rank square matrix $`M`$ is the unique decomposition
-``` math
-M = V \Lambda V^\top
-```
-with $`\Lambda`$ diagonal; the entries of $`\Lambda`$ are called the
-eigenvalues, and the columns of $`V`$ are called the eigenvectors, of
-$`M`$. For PCA, we obtain $`U`$ as the matrix of eigenvectors of
-$`\bar{X}\bar{X}^\top`$ and $`V`$ as the that of
-$`\bar{X}^\top\bar{X}`$. The positive eigenvalues from these two
+The EVD of a full-rank square matrix $M$ is the unique decomposition
+$$M = V\Lambda V^{\top}$$ with $\Lambda$ diagonal; the entries of
+$\Lambda$ are called the eigenvalues, and the columns of $V$ are called
+the eigenvectors, of $M$. For PCA, we obtain $U$ as the matrix of
+eigenvectors of $\bar{X}{\bar{X}}^{\top}$ and $V$ as the that of
+${\bar{X}}^{\top}\bar{X}$. The positive eigenvalues from these two
 decompositions agree, and their square roots are the singular values of
-$`\bar{X}`$. The fold demonstrates these connections between SVD and
-EVD.
+$\bar{X}$. The fold demonstrates these connections between SVD and EVD.
 
 ``` r
 ( pca_psych <- principal(scaled_iris, nfactors = 4, rotate = "none") )
@@ -92,10 +81,10 @@ EVD.
     Call: principal(r = scaled_iris, nfactors = 4, rotate = "none")
     Standardized loadings (pattern matrix) based upon correlation matrix
                    PC1  PC2   PC3   PC4 h2       u2 com
-    Sepal.Length  0.89 0.36 -0.28 -0.04  1  1.1e-16 1.5
+    Sepal.Length  0.89 0.36 -0.28 -0.04  1  6.7e-16 1.5
     Sepal.Width  -0.46 0.88  0.09  0.02  1  4.4e-16 1.5
-    Petal.Length  0.99 0.02  0.05  0.12  1 -4.4e-16 1.0
-    Petal.Width   0.96 0.06  0.24 -0.08  1  0.0e+00 1.1
+    Petal.Length  0.99 0.02  0.05  0.12  1 -1.3e-15 1.0
+    Petal.Width   0.96 0.06  0.24 -0.08  1 -6.7e-16 1.1
 
                            PC1  PC2  PC3  PC4
     SS loadings           2.92 0.91 0.15 0.02
@@ -114,39 +103,37 @@ EVD.
 
 Derive EVD from SVD
 
-To understand EVD in terms of SVD, again take $`X=UDV^\top`$. Then when
-we consider the covariance matrix $`\bar{X}^\top \bar{X}`$, we have
+To understand EVD in terms of SVD, again take $X = UDV^{\top}$. Then
+when we consider the covariance matrix ${\bar{X}}^{\top}\bar{X}$, we
+have
 
-``` math
+$$\begin{aligned}
+{\left( {\bar{X}}_{n \times p} \right)^{\top}{\bar{X}}_{n \times p}} & {= \left( U_{n \times p}D_{p \times p}\left( V_{p \times p} \right)^{\top} \right)^{\top}U_{n \times p}D_{p \times p}\left( V_{p \times p} \right)^{\top}} \\
+ & {= \left( \left( V_{p \times p} \right)^{\top} \right)^{\top}D_{p \times p}^{\top}\left( U_{n \times p} \right)^{\top}U_{n \times p}D_{p \times p}\left( V_{p \times p} \right)^{\top}} \\
+ & {= V_{p \times p}D_{p \times p}D_{p \times p}\left( V_{p \times p} \right)^{\top}} \\
+ & {= V_{p \times p}\left( D_{p \times p} \right)^{2}\left( V_{p \times p} \right)^{\top}.} \\
+\end{aligned}$$
 
-\begin{align*}
-(\bar{X}_{n\times{p}})^\top \bar{X}_{n\times{p}} &= (U_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^\top )^\top  U_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^\top \tag{1}\\
-&= ((V_{p\times{p}})^\top )^\top D_{p\times{p}}^\top (U_{n\times{p}})^\top U_{n\times{p}}D_{p\times{p}}(V_{p\times{p}})^\top \tag{2}\\
-&= V_{p\times{p}}D_{p\times{p}}D_{p\times{p}}(V_{p\times{p}})^\top \tag{3}\\
-&= V_{p\times{p}}(D_{p\times{p}})^2(V_{p\times{p}})^\top \tag{4}.
-\end{align*}
-```
+Note: we use the orthogonality of $U$ to obtain (3) as
+$U^{\top} = U^{- 1}$.
 
-Note: we use the orthogonality of $`U`$ to obtain (3) as
-$`U^\top = U^{-1}`$.
+Indeed, the singular values of $\bar{X}$ are the square roots of the
+eigenvalues of ${\bar{X}}^{\top}\bar{X}$, meaning $D^{2} = \Lambda$.
 
-Indeed, the singular values of $`\bar{X}`$ are the square roots of the
-eigenvalues of $`\bar{X}^\top\bar{X}`$, meaning $`D^2 = \Lambda`$.
-
-In reference to factor analysis, $`V`$ is often called the loadings
+In reference to factor analysis, $V$ is often called the loadings
 matrix—the columns contain the linear coefficients of the measured
-variables as they load onto each principal component—while $`U`$
-contains the scores. Depending on whether the investigator’s focus is on
-the variables or the cases, they may want to study and visualize the
+variables as they load onto each principal component—while $U$ contains
+the scores. Depending on whether the investigator’s focus is on the
+variables or the cases, they may want to study and visualize the
 loadings or the scores, respectively. When focusing on the scores, the
 row data (the cases) may be studied using *principal coordinates*, the
-rows of $`UD`$, while the column data (the variables) are left in
-*standard coordinates*, the rows of $`V`$. Here, the inertia of $`D`$
-has been *conferred* onto the left singular vectors, changing the space
-in which they are being coordinatized. When focusing instead on the
+rows of $UD$, while the column data (the variables) are left in
+*standard coordinates*, the rows of $V$. Here, the inertia of $D$ has
+been *conferred* onto the left singular vectors, changing the space in
+which they are being coordinatized. When focusing instead on the
 variables, the inertia will often be conferred onto the right singular
 vectors, putting the variables in principal coordinates (the rows of
-$`VD`$) and the cases in standard coordinates (the rows of $`U`$).
+$VD$) and the cases in standard coordinates (the rows of $U$).
 
 ## Recovery Methods
 
@@ -180,10 +167,11 @@ illustrated below with the pre-loaded set of Anderson’s iris data:
         PC1    PC2     PC3 ... | 
                                | 
      [38;5;250m1 [39m - [31m2 [39m [31m. [39m [31m26 [39m - [31m0 [39m [31m. [39m [31m478 [39m  0.127      | 
-     [38;5;250m2 [39m - [31m2 [39m [31m. [39m [31m0 [39m [31m7 [39m  0.672  0.234  ... | 
-     [38;5;250m3 [39m - [31m2 [39m [31m. [39m [31m36 [39m  0.341 - [31m0 [39m [31m. [39m [31m0 [39m [31m44 [4m1 [24m [39m     | 
+     [38;5;250m2 [39m - [31m2 [39m [31m. [39m [31m0 [39m [31m7 [39m  0.672  0.234      | 
+     [38;5;250m3 [39m - [31m2 [39m [31m. [39m [31m36 [39m  0.341 - [31m0 [39m [31m. [39m [31m0 [39m [31m44 [4m1 [24m [39m ... | 
      [38;5;250m4 [39m - [31m2 [39m [31m. [39m [31m29 [39m  0.595 - [31m0 [39m [31m. [39m [31m0 [39m [31m91 [4m0 [24m [39m     | 
      [38;5;250m5 [39m - [31m2 [39m [31m. [39m [31m38 [39m - [31m0 [39m [31m. [39m [31m645 [39m - [31m0 [39m [31m. [39m [31m0 [39m [31m15 [4m7 [24m [39m     | 
+     [38;5;246m# ℹ 145 more rows [39m     | 
 
     # 
     # Columns (standard): [ 4 x 4 | 0 ]
@@ -200,27 +188,27 @@ We will begin by defining the following recoverers for a `principal`
 object:
 
 - [`ordr::recover_rows()`](https://corybrunson.github.io/ordr/reference/recoverers.html)
-  returns $`U`$, or more generally $`UD^a`$ for some $`a`$, which
-  factors in from the left.
+  returns $U$, or more generally $UD^{a}$ for some $a$, which factors in
+  from the left.
 - [`ordr::recover_cols()`](https://corybrunson.github.io/ordr/reference/recoverers.html)
-  returns $`V`$ or some $`VD^b`$, which factors into the SVD from the
+  returns $V$ or some $VD^{b}$, which factors into the SVD from the
   right.
 
-In an SVD $`\bar{X} = UDV^\top`$, the left and right matrix factors
+In an SVD $\bar{X} = UDV^{\top}$, the left and right matrix factors
 contain coefficients of the row elements and column elements,
-respectively, of the original data $`X`$ in a new coordinate space. This
-is why we refer to elements of the left factor $`U`$ (or $`UD`$) as “row
-elements” and those of the right factor $`V`$ (or $`VD`$) as “column
+respectively, of the original data $X$ in a new coordinate space. This
+is why we refer to elements of the left factor $U$ (or $UD$) as “row
+elements” and those of the right factor $V$ (or $VD$) as “column
 elements”. With SVD, both factors are said to contain “active” elements.
 
-An EVD-based method might be based on the row inner products
-$`X X^\top`$ or on the column inner products $`\bar{X}^\top \bar{X}`$.
-Either way, the EVD yields a symmetric factorization
-$`V \Lambda V^\top = (VD)(VD)^\top`$; the “left” and “right” factors are
-the same. EVD-based PCA uses the latter, a decomposition of the
-covariance matrix $`X^\top X`$ (which happily means that the $`V`$ in
-this paragraph is the same as that in the last). We therefore interpret
-the loadings $`VD`$ as active column elements, and we write the column
+An EVD-based method might be based on the row inner products $XX^{\top}$
+or on the column inner products ${\bar{X}}^{\top}\bar{X}$. Either way,
+the EVD yields a symmetric factorization
+$V\Lambda V^{\top} = (VD)(VD)^{\top}$; the “left” and “right” factors
+are the same. EVD-based PCA uses the latter, a decomposition of the
+covariance matrix $X^{\top}X$ (which happily means that the $V$ in this
+paragraph is the same as that in the last). We therefore interpret the
+loadings $VD$ as active column elements, and we write the column
 recovery method to extract this matrix:
 
 ``` r
@@ -254,7 +242,7 @@ recover_rows.principal(pca_psych)
 
 We do obtain case scores, which are unambiguously row elements; however,
 they are not obtained through SVD but computed internally. We can still
-verify that they multiply with the loadings to reconstruct $`\bar{X}`$:
+verify that they multiply with the loadings to reconstruct $\bar{X}$:
 
 Check that scores and loadings reconstruct data
 
@@ -314,7 +302,7 @@ principal axis:
 
 - [`ordr::recover_inertia()`](https://corybrunson.github.io/ordr/reference/recoverers.html)
   returns the eigenvalues of our EVD, or equivalently the squared
-  singular values of our SVD—the diagonal entries of $`D^2`$.
+  singular values of our SVD—the diagonal entries of $D^{2}$.
 
 From the documentation,
 [`psych::principal()`](https://rdrr.io/pkg/psych/man/principal.html)
@@ -335,9 +323,9 @@ recover_inertia(pca_stats) / pca_psych$values
 
     [1] 149 149 149 149
 
-Notice that $`149=n-1`$, indicating that these eigenvalues have been
+Notice that $149 = n - 1$, indicating that these eigenvalues have been
 scaled by the degrees of freedom. To obtain the inertia, we need then to
-multiply them by $`n-1`$:
+multiply them by $n - 1$:
 
 ``` r
 recover_inertia.principal <- function(x) {
@@ -370,13 +358,13 @@ recover_coord.principal(pca_psych)
     [1] "PC1" "PC2" "PC3" "PC4"
 
 The inertia is established, but the methods must also account for how it
-is conferred on the matrix factors ($`a`$ and $`b`$ above), which brings
-us to the next recoverer:
+is conferred on the matrix factors ($a$ and $b$ above), which brings us
+to the next recoverer:
 
 - [`ordr::recover_conference()`](https://corybrunson.github.io/ordr/reference/conference.html)
-  indicates how the inertia is distributed to the rows or columns ($`U`$
-  or $`V`$) in the object. (**stats** and **psych** make different
-  choices here.)
+  indicates how the inertia is distributed to the rows or columns ($U$
+  or $V$) in the object. (**stats** and **psych** make different choices
+  here.)
 
 Implications of different conferences of inertia
 
@@ -387,11 +375,11 @@ matrix factors during recovery, we use the
 [`recover_conference()`](https://corybrunson.github.io/ordr/reference/conference.html)
 method to inform **ordr** how this conference is done.
 
-Not distributing the inertia (i.e. not multiplying out the matrix $`D`$
-in SVD or EVD) maintains $`U`$ and $`V`$ as matrices of unit vectors.
-Thus, we say that the cases and variables are in standard coordinates.
-But when we *do* distribute the inertia to one or both other matrices in
-the decomposition, we obtain the cases and/or variables in principal
+Not distributing the inertia (i.e. not multiplying out the matrix $D$ in
+SVD or EVD) maintains $U$ and $V$ as matrices of unit vectors. Thus, we
+say that the cases and variables are in standard coordinates. But when
+we *do* distribute the inertia to one or both other matrices in the
+decomposition, we obtain the cases and/or variables in principal
 coordinates.
 
 Assuming we desire principal coordinates, EVD-based techniques leave
@@ -416,7 +404,7 @@ The conference recovery method is, so far, always a static vector, since
 the methods don’t confer inertia differently based on the input. Here,
 we see that [`stats::prcomp()`](https://rdrr.io/r/stats/prcomp.html)
 automatically confers all inertia onto the left singular vectors (a
-conference of $`(0,1)`$, alternatively, would indicate that a PCA has
+conference of $(0,1)$, alternatively, would indicate that a PCA has
 conferred its inertia onto the right singular vectors). This means that
 the scores of `pca_stats` are in principal coordinates and the loadings
 are in standard coordinates.
@@ -425,17 +413,14 @@ This is straightforward for the loadings: We expect from the EVD that
 they are in principal coordinates, i.e. that they have full inertia, and
 we checked that the loadings matrix agrees with the full-inertia
 loadings obtained from
-[`stats::prcomp()`](https://rdrr.io/r/stats/prcomp.html). So,
-$`L = VD`$. We also checked that the product $`SL^\top`$ reconstructs
-$`\bar{X}`$, which suggests that $`S = U`$. So, the scores should be in
-standard coordinates, i.e. they have been conferred no inertia.
-Symbolically:
+[`stats::prcomp()`](https://rdrr.io/r/stats/prcomp.html). So, $L = VD$.
+We also checked that the product $SL^{\top}$ reconstructs $\bar{X}$,
+which suggests that $S = U$. So, the scores should be in standard
+coordinates, i.e. they have been conferred no inertia. Symbolically:
 
-``` math
- X = UDV^\top = (UD^0)(VD^1)^\top = SL^\top
-```
+$$X = UDV^{\top} = \left( UD^{0} \right)\left( VD^{1} \right)^{\top} = SL^{\top}$$
 
-This yields a conference of $`(0,1)`$. A careful check follows.
+This yields a conference of $(0,1)$. A careful check follows.
 
 Check that the loadings matrix has full inertia
 
@@ -453,7 +438,7 @@ evd <- eigen(cov)
     Petal.Length   1  -1  -1  -1
     Petal.Width    1  -1  -1  -1
 
-Hence we have $`L_{p\times{p}} = V_{p\times{p}}D_{p\times{p}}`$.
+Hence we have $L_{p \times p} = V_{p \times p}D_{p \times p}$.
 
 As such, we define the following recovery method:
 
@@ -496,11 +481,6 @@ these models as “PCA *followed by* rotation”.
 
 ``` r
 library(GPArotation)
-```
-
-    Warning: package 'GPArotation' was built under R version 4.3.3
-
-``` r
 ( pca_ortho <- principal(scaled_iris, rotate = "varimax", nfactors = 4) )
 ```
 
@@ -508,10 +488,10 @@ library(GPArotation)
     Call: principal(r = scaled_iris, nfactors = 4, rotate = "varimax")
     Standardized loadings (pattern matrix) based upon correlation matrix
                    RC1   RC3   RC2   RC4 h2       u2 com
-    Sepal.Length  0.53  0.85  0.00  0.00  1  1.1e-16 1.7
+    Sepal.Length  0.53  0.85  0.00  0.00  1  6.7e-16 1.7
     Sepal.Width  -0.17 -0.04  0.98 -0.01  1  4.4e-16 1.1
-    Petal.Length  0.78  0.54 -0.28  0.14  1 -4.4e-16 2.2
-    Petal.Width   0.89  0.41 -0.20 -0.06  1  0.0e+00 1.5
+    Petal.Length  0.78  0.54 -0.28  0.14  1 -1.3e-15 2.2
+    Petal.Width   0.89  0.41 -0.20 -0.06  1 -6.7e-16 1.5
 
                            RC1  RC3  RC2  RC4
     SS loadings           1.71 1.18 1.09 0.02
@@ -539,10 +519,10 @@ library(GPArotation)
     Call: principal(r = scaled_iris, nfactors = 4, rotate = "oblimin")
     Standardized loadings (pattern matrix) based upon correlation matrix
                   TC1   TC3   TC2   TC4 h2       u2 com
-    Sepal.Length 0.00  1.00  0.00 -0.01  1  1.1e-16 1.0
+    Sepal.Length 0.00  1.00  0.00 -0.01  1  6.7e-16 1.0
     Sepal.Width  0.00  0.00  1.00  0.01  1  4.4e-16 1.0
-    Petal.Length 0.92  0.05 -0.03  0.14  1 -4.4e-16 1.1
-    Petal.Width  1.02 -0.01  0.01 -0.11  1  0.0e+00 1.0
+    Petal.Length 0.92  0.05 -0.03  0.14  1 -1.3e-15 1.1
+    Petal.Width  1.02 -0.01  0.01 -0.11  1 -6.7e-16 1.0
 
                            TC1  TC3  TC2  TC4
     SS loadings           1.92 1.04 1.01 0.03
@@ -569,11 +549,21 @@ library(GPArotation)
 ``` r
 op <- par(mfrow = c(1, 3))
 biplot.psych(pca_psych, choose = c(1, 2), main = "no rotation")
-biplot.psych(pca_ortho, choose = c("RC1","RC2"), main = "orthogonal rotation")
-biplot.psych(pca_obliq, choose = c("TC1","TC2"), main = "oblique rotation")
 ```
 
 ![](new-ord-classes-pca_files/figure-html/unnamed-chunk-18-1.png)
+
+``` r
+biplot.psych(pca_ortho, choose = c("RC1","RC2"), main = "orthogonal rotation")
+```
+
+![](new-ord-classes-pca_files/figure-html/unnamed-chunk-18-2.png)
+
+``` r
+biplot.psych(pca_obliq, choose = c("TC1","TC2"), main = "oblique rotation")
+```
+
+![](new-ord-classes-pca_files/figure-html/unnamed-chunk-18-3.png)
 
 ``` r
 par(op)
@@ -595,8 +585,8 @@ Check and interpret rotated loadings
 
 This extended fold examines the linear algebra at play in each rotation.
 In PCA followed by an orthogonal rotation, the rotated loadings are the
-original loadings matrix $`L_{p\times{p}}`$ multiplied by the orthogonal
-rotation matrix $`T_{p\times{p}}`$:
+original loadings matrix $L_{p \times p}$ multiplied by the orthogonal
+rotation matrix $T_{p \times p}$:
 
 ``` r
 pca_ortho$loadings[, c("RC1", "RC2", "RC3", "RC4")] /
@@ -610,9 +600,9 @@ pca_ortho$loadings[, c("RC1", "RC2", "RC3", "RC4")] /
     Petal.Width    1   1  -1   1
 
 In the oblique case, we obtain two loading matrices. The first is the
-*pattern matrix* $`L_{p\times{p}} T_{p\times{p}}`$. The `$loadings`
-element extractable from an oblique-transformed `principal` object is
-the pattern matrix:
+*pattern matrix* $L_{p \times p}T_{p \times p}$. The `$loadings` element
+extractable from an oblique-transformed `principal` object is the
+pattern matrix:
 
 ``` r
 pca_obliq$loadings[, c("TC1", "TC2", "TC3", "TC4")] /
@@ -629,9 +619,9 @@ The pattern matrix quantifies how much each principal component loads
 into each variable.
 
 The second loadings object is the *structure matrix*
-$`S_{p\times{p}} = L_{p\times{p}}T_{p\times{p}}\Phi_{p\times p}`$. The
+$S_{p \times p} = L_{p \times p}T_{p \times p}\Phi_{p \times p}$. The
 structure matrix is obtained from the pattern matrix via multiplying by
-the interfactor correlation matrix $`\Phi_{p\times p}`$.
+the interfactor correlation matrix $\Phi_{p \times p}$.
 
 ``` r
 (pca_obliq$loadings %*% pca_obliq$Phi) /
@@ -647,7 +637,7 @@ the interfactor correlation matrix $`\Phi_{p\times p}`$.
 The structure matrix contains correlations between factors and
 variables, and it tends to be more stable between samples.
 
-In the orthogonal case, $`\Phi_{p\times p}`$ is the identity matrix,
+In the orthogonal case, $\Phi_{p \times p}$ is the identity matrix,
 which is why we have just one loadings matrix. Accordingly, a
 `principal` object only contains `$Structure` and `$Phi` elements if it
 contains an oblique rotation.
@@ -714,8 +704,8 @@ library(tibble)
 ```
 
 The most important annotations are the names, which will usually have
-been taken from the row and column names of the data set $`\bar{X}`$.
-But they may also include information specific to these units (cases and
+been taken from the row and column names of the data set $\bar{X}$. But
+they may also include information specific to these units (cases and
 variables for PCA) that was carried over from the data object, e.g. the
 `Species` column from the `iris` data, or that governed pre-processing,
 e.g. the variable means and standard deviations when variables are
@@ -828,11 +818,12 @@ pca_psych |>
         PC1    PC2     PC3 ... |   .element
                                |    [3m [38;5;246m<chr> [39m [23m   
      [38;5;250m1 [39m - [31m1 [39m [31m. [39m [31m32 [39m  0.500 - [31m0 [39m [31m. [39m [31m332 [39m      |  [38;5;250m1 [39m score   
-     [38;5;250m2 [39m - [31m1 [39m [31m. [39m [31m21 [39m - [31m0 [39m [31m. [39m [31m703 [39m - [31m0 [39m [31m. [39m [31m610 [39m  ... |  [38;5;250m2 [39m score   
-     [38;5;250m3 [39m - [31m1 [39m [31m. [39m [31m38 [39m - [31m0 [39m [31m. [39m [31m356 [39m  0.115      |  [38;5;250m3 [39m score   
+     [38;5;250m2 [39m - [31m1 [39m [31m. [39m [31m21 [39m - [31m0 [39m [31m. [39m [31m703 [39m - [31m0 [39m [31m. [39m [31m610 [39m      |  [38;5;250m2 [39m score   
+     [38;5;250m3 [39m - [31m1 [39m [31m. [39m [31m38 [39m - [31m0 [39m [31m. [39m [31m356 [39m  0.115  ... |  [38;5;250m3 [39m score   
      [38;5;250m4 [39m - [31m1 [39m [31m. [39m [31m34 [39m - [31m0 [39m [31m. [39m [31m623 [39m  0.238      |  [38;5;250m4 [39m score   
      [38;5;250m5 [39m - [31m1 [39m [31m. [39m [31m39 [39m  0.674  0.040 [4m9 [24m     |  [38;5;250m5 [39m score   
-     [38;5;246m# ℹ 145 more rows [39m
+     [38;5;246m# ℹ 145 more rows [39m     |  [38;5;246m# ℹ 145 more rows [39m
+
     # 
     # Columns (principal): [ 4 x 4 | 2 ]
          PC1    PC2     PC3 ... |   name         .element
@@ -856,11 +847,12 @@ ordinate(scaled_iris, ~ principal(., nfactors = 4, rotate = "none"))
         PC1    PC2     PC3 ... |   .element
                                |    [3m [38;5;246m<chr> [39m [23m   
      [38;5;250m1 [39m - [31m1 [39m [31m. [39m [31m32 [39m  0.500 - [31m0 [39m [31m. [39m [31m332 [39m      |  [38;5;250m1 [39m score   
-     [38;5;250m2 [39m - [31m1 [39m [31m. [39m [31m21 [39m - [31m0 [39m [31m. [39m [31m703 [39m - [31m0 [39m [31m. [39m [31m610 [39m  ... |  [38;5;250m2 [39m score   
-     [38;5;250m3 [39m - [31m1 [39m [31m. [39m [31m38 [39m - [31m0 [39m [31m. [39m [31m356 [39m  0.115      |  [38;5;250m3 [39m score   
+     [38;5;250m2 [39m - [31m1 [39m [31m. [39m [31m21 [39m - [31m0 [39m [31m. [39m [31m703 [39m - [31m0 [39m [31m. [39m [31m610 [39m      |  [38;5;250m2 [39m score   
+     [38;5;250m3 [39m - [31m1 [39m [31m. [39m [31m38 [39m - [31m0 [39m [31m. [39m [31m356 [39m  0.115  ... |  [38;5;250m3 [39m score   
      [38;5;250m4 [39m - [31m1 [39m [31m. [39m [31m34 [39m - [31m0 [39m [31m. [39m [31m623 [39m  0.238      |  [38;5;250m4 [39m score   
      [38;5;250m5 [39m - [31m1 [39m [31m. [39m [31m39 [39m  0.674  0.040 [4m9 [24m     |  [38;5;250m5 [39m score   
-     [38;5;246m# ℹ 145 more rows [39m
+     [38;5;246m# ℹ 145 more rows [39m     |  [38;5;246m# ℹ 145 more rows [39m
+
     # 
     # Columns (principal): [ 4 x 4 | 2 ]
          PC1    PC2     PC3 ... |   name         .element
@@ -886,8 +878,6 @@ our methods pass the tests, we attach the **testthat** package:
 library(testthat)
 ```
 
-    Warning: package 'testthat' was built under R version 4.3.3
-
     Attaching package: 'testthat'
 
     The following object is masked from 'package:psych':
@@ -909,7 +899,7 @@ test_that("'principal' accessors have consistent dimensions", {
 })
 ```
 
-     [32mTest passed [39m 🥇
+     [1mTest passed with 2 successes 🥇 [22m.
 
 ``` r
 test_that("'principal' has specified distribution of inertia", {
@@ -918,7 +908,7 @@ test_that("'principal' has specified distribution of inertia", {
 })
 ```
 
-     [32mTest passed [39m 🎊
+     [1mTest passed with 2 successes 🎊 [22m.
 
 ``` r
 test_that("'principal' augmentations are consistent with '.element' column", {
@@ -927,7 +917,7 @@ test_that("'principal' augmentations are consistent with '.element' column", {
 })
 ```
 
-     [32mTest passed [39m 🌈
+     [1mTest passed with 1 success 🌈 [22m.
 
 ``` r
 test_that("`as_tbl_ord()` coerces 'principal' objects", {
@@ -935,7 +925,7 @@ test_that("`as_tbl_ord()` coerces 'principal' objects", {
 })
 ```
 
-     [32mTest passed [39m 🎊
+     [1mTest passed with 1 success 🎊 [22m.
 
 ### Examples
 

@@ -68,15 +68,16 @@ methods with access to the recoverers and hence to the model components.
 Principal components analysis (PCA), as performed by
 [`psych::principal()`](https://rdrr.io/pkg/psych/man/principal.html),
 relies on an eigenvalue decomposition (EVD) of the covariance matrix
-\\X^TX\\ of a data set \\X\\.
+\\(X^TX\\) of a data set \\(X\\).
 [`psych::principal()`](https://rdrr.io/pkg/psych/man/principal.html)
-returns the right singular vectors with full inertia \\VD\\ from the EVD
-as the loadings `$loadings`. The scores `$scores` are obtained as \\XV\\
-and are accessible as supplementary elements.
+returns the right singular vectors with full inertia \\(VD\\) from the
+EVD as the loadings `$loadings`. The scores `$scores` are obtained as
+\\(XV\\) and are accessible as supplementary elements.
 
 ## See also
 
 Other methods for eigen-decomposition-based techniques:
+[`methods-candisc-candisc`](methods-candisc-candisc.md),
 [`methods-fa`](methods-fa.md)
 
 Other models from the psych package: [`methods-fa`](methods-fa.md)
@@ -116,6 +117,15 @@ get_cols(iris_pca)
 (iris_pca <- augment_ord(iris_pca))
 
 }# {psych}
+#> Loading required package: psych
+#> 
+#> Attaching package: ‘psych’
+#> The following object is masked from ‘package:candisc’:
+#> 
+#>     reflect
+#> The following objects are masked from ‘package:ggplot2’:
+#> 
+#>     %+%, alpha
 #> # A tbl_ord of class 'psych': (150 x 4) x (4 x 4)'
 #> # 4 coordinates: PC1, PC2, ..., PC4
 #> # 
@@ -123,10 +133,11 @@ get_cols(iris_pca)
 #>     PC1    PC2     PC3 ... | 
 #>                            | 
 #> 1 -1.32  0.500 -0.332      | 
-#> 2 -1.21 -0.703 -0.610  ... | 
-#> 3 -1.38 -0.356  0.115      | 
+#> 2 -1.21 -0.703 -0.610      | 
+#> 3 -1.38 -0.356  0.115  ... | 
 #> 4 -1.34 -0.623  0.238      | 
 #> 5 -1.39  0.674  0.0409     | 
+#> # ℹ 145 more rows     | 
 #> 
 #> # 
 #> # Columns (principal): [ 4 x 4 | 0 ]
@@ -143,11 +154,12 @@ get_cols(iris_pca)
 #>     PC1    PC2     PC3 ... |   .element
 #>                            |   <chr>   
 #> 1 -1.32  0.500 -0.332      | 1 score   
-#> 2 -1.21 -0.703 -0.610  ... | 2 score   
-#> 3 -1.38 -0.356  0.115      | 3 score   
+#> 2 -1.21 -0.703 -0.610      | 2 score   
+#> 3 -1.38 -0.356  0.115  ... | 3 score   
 #> 4 -1.34 -0.623  0.238      | 4 score   
 #> 5 -1.39  0.674  0.0409     | 5 score   
-#> # ℹ 145 more rows
+#> # ℹ 145 more rows     | # ℹ 145 more rows
+#> 
 #> # 
 #> # Columns (principal): [ 4 x 4 | 2 ]
 #>      PC1    PC2     PC3 ... |   name         .element

@@ -154,7 +154,8 @@ admissions_mca %>%
 #> 3  3.33  2.68 | 3 3     0.000221 0.00672     9.97e-9
 #> 4  3.33  2.68 | 4 4     0.000221 0.00672     9.97e-9
 #> 5  3.33  2.68 | 5 5     0.000221 0.00672     9.97e-9
-#> # ℹ 4,521 more rows
+#> # ℹ 4,521 more rows | # ℹ 4,521 more rows
+#> 
 #> # 
 #> # Columns (standard): [ 10 x 2 | 6 ]
 #>      Dim1    Dim2 |    name    factor level   mass  dist

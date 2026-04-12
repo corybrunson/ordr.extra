@@ -80,6 +80,7 @@ commutes through both score calculations.
 ## See also
 
 Other methods for eigen-decomposition-based techniques:
+[`methods-candisc-candisc`](methods-candisc-candisc.md),
 [`methods-principal`](methods-principal.md)
 
 Other models from the psych package:
@@ -121,7 +122,8 @@ iris |>
 #> 3 -1.38  -0.380  | 3 score            3.2 setosa 
 #> 4 -1.50   0.0351 | 4 score            3.1 setosa 
 #> 5 -1.01  -0.926  | 5 score            3.6 setosa 
-#> # ℹ 145 more rows
+#> # ℹ 145 more rows | # ℹ 145 more rows
+#> 
 #> # 
 #> # Columns (principal): [ 8 x 2 | 5 ]
 #>        ML1      ML2 |   .element    name        uniqueness
@@ -175,7 +177,8 @@ head(get_rows(iris_fa, elements = "score"))
 #> 3 -1.38  -0.380  | 3 score            3.2 setosa 
 #> 4 -1.50   0.0351 | 4 score            3.1 setosa 
 #> 5 -1.01  -0.926  | 5 score            3.6 setosa 
-#> # ℹ 145 more rows
+#> # ℹ 145 more rows | # ℹ 145 more rows
+#> 
 #> # 
 #> # Columns (principal): [ 8 x 2 | 5 ]
 #>        ML1      ML2 |   .element    name        uniqueness
@@ -206,5 +209,4 @@ ggbiplot(iris_fa, scale_cols = 3) +
   scale_y_continuous(limits = ~ range(.x, c(-4, 3)))
 #> Warning: Ignoring unknown parameters: `linetype`
 #> Warning: Ignoring unknown parameters: `linetype`
-#> Warning: `GeomTextRadiate` is deprecated; use `GeomVector` instead.
 ```

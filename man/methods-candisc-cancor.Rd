@@ -13,8 +13,7 @@
 \alias{recover_aug_rows.cancor}
 \alias{recover_aug_cols.cancor}
 \alias{recover_aug_coord.cancor}
-\title{Functionality for canonical correlation ('cancor') and discriminant
-('candisc') objects}
+\title{Functionality for canonical correlation ('cancor') objects}
 \usage{
 \method{as_tbl_ord}{cancor}(x)
 
@@ -53,17 +52,19 @@ the model components.
 }
 \description{
 These methods extract data from, and attribute new data to,
-objects of class 'cancor' and 'candisc' from the
-\strong{\link[candisc:candisc-package]{candisc}} package.
+objects of class 'cancor' from the \strong{\link[candisc:candisc-package]{candisc}}
+package.
 }
 \details{
 ter Braak (1990) recommends two families of biplots for the canonical
-correspondence analysis of data matrices \eqn{X} and \eqn{Y}. For the first,
-using structural correlations, either the interset correlations of \eqn{X}
-(equivalent to principal coordinates) are plotted with the intraset
-correlations of \eqn{Y} (standard coordinates) or vice-versa, so that their
-product recovers the inner product matrix \eqn{XY'}. ter Braak's biplots can
-then be recovered by balancing the inertia across the two factors.
+correspondence analysis of data matrices \eqn{X} and \eqn{Y}.
+
+For the first, using structural correlations, either the interset
+correlations of \eqn{X} (equivalent to principal coordinates) are plotted
+with the intraset correlations of \eqn{Y} (standard coordinates) or
+vice-versa, so that their product recovers the inner product matrix
+\eqn{XY'}. ter Braak's biplots can then be recovered by balancing the inertia
+across the two factors.
 
 For the second, if the variables are distinguished as predictors and
 criteria, then the superposition of the interset correlations of the criteria
@@ -76,11 +77,11 @@ The methods for \code{\link[candisc:cancor]{candisc::cancor()}} mirror those for
 inversely scaled by \eqn{n - 1}.
 }
 \examples{
+if (require(candisc)) {# {candisc}
+
 # data frame of life-cycle savings across countries
 class(LifeCycleSavings)
 head(LifeCycleSavings)
-
-if (require(candisc)) {# {candisc}
 
 # canonical correlation analysis of age distributions and financial factors
 savings_cancor <- candisc::cancor(
@@ -129,6 +130,9 @@ Other methods for singular value decomposition-based techniques:
 \code{\link{methods-nipals-nipals}},
 \code{\link{methods-pma-cca}},
 \code{\link{methods-pma-spc}}
+
+Other models from the \strong{candisc} package: 
+\code{\link{methods-candisc-candisc}}
 }
 \concept{methods for singular value decomposition-based techniques}
 \concept{models from the \strong{candisc} package}

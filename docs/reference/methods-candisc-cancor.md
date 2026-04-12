@@ -1,7 +1,7 @@
-# Functionality for canonical correlation ('cancor') and discriminant ('candisc') objects
+# Functionality for canonical correlation ('cancor') objects
 
 These methods extract data from, and attribute new data to, objects of
-class 'cancor' and 'candisc' from the
+class 'cancor' from the
 **[candisc](https://friendly.github.io/candisc/reference/candisc-package.html)**
 package.
 
@@ -70,13 +70,14 @@ methods with access to the recoverers and hence to the model components.
 ## Details
 
 ter Braak (1990) recommends two families of biplots for the canonical
-correspondence analysis of data matrices \\X\\ and \\Y\\. For the first,
-using structural correlations, either the interset correlations of \\X\\
-(equivalent to principal coordinates) are plotted with the intraset
-correlations of \\Y\\ (standard coordinates) or vice-versa, so that
-their product recovers the inner product matrix \\XY'\\. ter Braak's
-biplots can then be recovered by balancing the inertia across the two
-factors.
+correspondence analysis of data matrices \\(X\\) and \\(Y\\).
+
+For the first, using structural correlations, either the interset
+correlations of \\(X\\) (equivalent to principal coordinates) are
+plotted with the intraset correlations of \\(Y\\) (standard coordinates)
+or vice-versa, so that their product recovers the inner product matrix
+\\(XY'\\). ter Braak's biplots can then be recovered by balancing the
+inertia across the two factors.
 
 For the second, if the variables are distinguished as predictors and
 criteria, then the superposition of the interset correlations of the
@@ -89,7 +90,7 @@ The methods for
 mirror those for
 [`ordr::cancor_ord()`](https://corybrunson.github.io/ordr/reference/wrap-ord.html)
 in **ordr**, though the canonical coefficients (hence the canonical
-scores) are inversely scaled by \\n - 1\\.
+scores) are inversely scaled by \\(n - 1\\).
 
 ## References
 
@@ -111,22 +112,17 @@ Other methods for singular value decomposition-based techniques:
 [`methods-pma-cca`](methods-pma-cca.md),
 [`methods-pma-spc`](methods-pma-spc.md)
 
+Other models from the **candisc** package:
+[`methods-candisc-candisc`](methods-candisc-candisc.md)
+
 ## Examples
 
 ``` r
+if (require(candisc)) {# {candisc}
+
 # data frame of life-cycle savings across countries
 class(LifeCycleSavings)
-#> [1] "data.frame"
 head(LifeCycleSavings)
-#>              sr pop15 pop75     dpi ddpi
-#> Australia 11.43 29.35  2.87 2329.68 2.87
-#> Austria   12.07 23.32  4.41 1507.99 3.93
-#> Belgium   13.17 23.80  4.43 2108.47 3.82
-#> Bolivia    5.75 41.89  1.67  189.13 0.22
-#> Brazil    12.88 42.19  0.83  728.47 4.56
-#> Canada     8.79 31.72  2.85 2982.88 2.43
-
-if (require(candisc)) {# {candisc}
 
 # canonical correlation analysis of age distributions and financial factors
 savings_cancor <- candisc::cancor(
@@ -157,5 +153,12 @@ savings_cancor %>%
   expand_limits(x = c(-1, 1), y = c(-1, 1))
 
 }# {candisc}
-#> Warning: `GeomTextRadiate` is deprecated; use `GeomVector` instead.
+#> Loading required package: candisc
+#> Loading required package: heplots
+#> Loading required package: broom
+#> 
+#> Attaching package: ‘candisc’
+#> The following object is masked from ‘package:stats’:
+#> 
+#>     cancor
 ```

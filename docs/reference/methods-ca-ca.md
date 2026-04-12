@@ -119,6 +119,7 @@ get_cols(haireye_ca)
 (haireye_ca <- augment_ord(haireye_ca))
 
 }# {ca}
+#> Loading required package: ca
 #> # A tbl_ord of class 'ca': (4 x 3) x (4 x 3)'
 #> # 3 coordinates: Dim1, Dim2, Dim3
 #> # 

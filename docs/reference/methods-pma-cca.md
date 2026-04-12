@@ -156,11 +156,9 @@ savings_cca %>%
   expand_limits(x = c(-1, 1), y = c(-1, 1))
 
 }# {PMA}
+#> Loading required package: PMA
 #> 12
 #> 12
 #> `subset` will be applied after data are restricted to active elements.
-#> `subset` will be applied after data are restricted to active elements.
-#> `subset` will be applied after data are restricted to active elements.
-#> `subset` will be applied after data are restricted to active elements.
-#> Warning: `GeomTextRadiate` is deprecated; use `GeomVector` instead.
+#> This message is displayed once per session.
 ```

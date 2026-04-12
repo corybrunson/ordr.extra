@@ -31,8 +31,8 @@ is that this user must manually install **candisc** as well.
 
 ## example
 
-Joint correspondence analysis[^1], implemented in the **ca** package,
-essentially applies PCA to a high-dimensional contingency table
+Joint correspondence analysis[¹](#fn1), implemented in the **ca**
+package, essentially applies PCA to a high-dimensional contingency table
 reformatted as a data frame with one observation per row. To illustrate
 the technique, recall the UC Berkeley admissions data set, reformatted
 here as a data frame of counts:
@@ -51,8 +51,8 @@ head(as.data.frame(UCBAdmissions))
 
 We can use **ordr** syntax to model these data using joint
 correspondence analysis with the function
-[`ca::mjca()`](https://rdrr.io/pkg/ca/man/mjca.html)[^2], once we’ve
-ensured that **ca** is installed:
+[`ca::mjca()`](https://rdrr.io/pkg/ca/man/mjca.html)[²](#fn2), once
+we’ve ensured that **ca** is installed:
 
 ``` r
 # install {ca} if not already installed
@@ -88,8 +88,8 @@ if (! "ca" %in% rownames(installed.packages())) install.packages("ca")
 #> # ℹ 1 more variable: inertia <dbl>
 ```
 
-We can then generate a monoplot[^3] of the group masses for each of the
-three categorical variables:
+We can then generate a monoplot[³](#fn3) of the group masses for each of
+the three categorical variables:
 
 ``` r
 # build biplot of admissions JCA model with variance distributed to variables
@@ -112,16 +112,18 @@ admissions_jca %>%
 See [the **ordr** repo](https://github.com/corybrunson/ordr) for full
 acknowledgments.
 
-[^1]: Greenacre MJ (2005) “From Correspondence Analysis to Multiple and
+------------------------------------------------------------------------
+
+1.  Greenacre MJ (2005) “From Correspondence Analysis to Multiple and
     Joint Correspondence Analysis”. Available at SSRN:
     <https://ssrn.com/abstract=847664>
 
-[^2]: Note that the array is being passed as input.
+2.  Note that the array is being passed as input.
     [`ca::mjca()`](https://rdrr.io/pkg/ca/man/mjca.html) can also take
     data frame input, but it requires a format that differs from that
     produced by
     [`as.data.frame()`](https://rdrr.io/r/base/as.data.frame.html).
 
-[^3]: This is a monoplot because JCA is based on the SVD of a
+3.  This is a monoplot because JCA is based on the SVD of a
     case-by-variable matrix, and only variable elements are plotted
     here.

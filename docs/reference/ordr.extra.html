@@ -85,7 +85,8 @@ common models.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> -<span style="color: #BB0000;">1.27</span>  -<span style="color: #BB0000;">0.059</span><span style="color: #BB0000; text-decoration: underline;">2</span> | <span style="color: #BCBCBC;">3</span> 3         5     3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> -<span style="color: #BB0000;">1.16</span>  -<span style="color: #BB0000;">1.46</span>   | <span style="color: #BCBCBC;">4</span> 4         5     4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> -<span style="color: #BB0000;">3.41</span>   0.906  | <span style="color: #BCBCBC;">5</span> 5         5     5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 148 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 148 more rows</span> | <span style="color: #949494;"># ℹ 148 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # Columns (standard): [ 4 x 2 | 1 ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Fac1    Fac2 |   name   </span>
@@ -128,29 +129,8 @@ common models.</p>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">finches</span>, package <span class="op">=</span> <span class="st">"cooccur"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">ordinate</span><span class="op">(</span><span class="va">finches</span>, <span class="va">logisticSVD_ord</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span><span class="co"># {logisticPCA}</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> rARPACK must be installed to use partial_decomp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # A tbl_ord of class 'lsvd': (13 x 2) x (17 x 2)'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # 2 coordinates: LSC1 and LSC2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # Rows: [ 13 x 2 | 1 ]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    LSC1  LSC2 |   name                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               |   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 27.4   31.3 | <span style="color: #BCBCBC;">1</span> Geospiza magnirostris</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 47.5  -<span style="color: #BB0000;">20.3</span> | <span style="color: #BCBCBC;">2</span> Geospiza fortis      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 49.2   15.9 | <span style="color: #BCBCBC;">3</span> Geospiza fuliginosa  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> -<span style="color: #BB0000;">6.31</span>  32.6 | <span style="color: #BCBCBC;">4</span> Geospiza difficilis  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 57.6  -<span style="color: #BB0000;">67.7</span> | <span style="color: #BCBCBC;">5</span> Geospiza scandens    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 8 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # Columns: [ 17 x 2 | 2 ]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    LSC1    LSC2 |   name          mu</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 |   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 0.290 -<span style="color: #BB0000;">0.050</span><span style="color: #BB0000; text-decoration: underline;">1</span> | <span style="color: #BCBCBC;">1</span> Seymour    -<span style="color: #BB0000;">9.73</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 0.290 -<span style="color: #BB0000;">0.050</span><span style="color: #BB0000; text-decoration: underline;">1</span> | <span style="color: #BCBCBC;">2</span> Baltra     -<span style="color: #BB0000;">9.73</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 0.149  0.177  | <span style="color: #BCBCBC;">3</span> Isabella   11.4 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 0.188  0.398  | <span style="color: #BCBCBC;">4</span> Fernandina 13.4 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 0.216  0.073<span style="text-decoration: underline;">4</span> | <span style="color: #BCBCBC;">5</span> Santiago    7.22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 12 more rows</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: cooccur</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>there is no package called ‘cooccur’</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

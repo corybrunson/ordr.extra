@@ -139,6 +139,7 @@ iris_spca %>%
   expand_limits(x = c(-.12, .2))
 
 }# {PMA}
+#> Warning: PMDL1L1 was run without first subtracting out the mean of x.
 #> 123456789
 #> 123
 #> Warning: Predictive biplots are only implemented for linear methods (ED, SVD, PCA).
