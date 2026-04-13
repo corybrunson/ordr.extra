@@ -107,7 +107,7 @@ get_cols(iris_cda, elements = "structure")
 
 # monoplot of canonical score markers and canonical mean markers
 # (note that ellipses are inequivalent)
-iris_monoplot <- ggbiplot(iris_cda, sec.axes = "cols") +
+iris_monoplot <- ggbiplot(iris_cda, sec.axes = "cols", scale.factor = 3) +
   theme_scaffold() +
   coord_scaffold() +
   stat_rows_ellipse(elements = "score", aes(color = name), level = 2/3) +
@@ -119,7 +119,9 @@ iris_monoplot <- ggbiplot(iris_cda, sec.axes = "cols") +
 # biplot with raw canonical coefficient vectors
 iris_monoplot + geom_cols_vector(aes(label = name))
 # biplot with canonical structure coefficient vectors
-iris_monoplot + geom_cols_vector(elements = "structure", aes(label = name))
+iris_monoplot +
+  geom_unit_circle(scale.factor = 3) +
+  geom_cols_vector(elements = "structure", aes(label = name))
 
 }# {candisc}
 }
