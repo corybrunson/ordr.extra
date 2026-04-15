@@ -6,6 +6,20 @@ fit_lsvd <- logisticSVD_ord(t(finches))
 fit_lpca <- logisticPCA_ord(t(finches))
 fit_clpca <- convexLogisticPCA_ord(t(finches[-13L, , drop = FALSE]))
 
+test_that("'logisticPCA' accessors have consistent dimensions", {
+  expect_equal(nrow(recover_rows(fit_lsvd)), nrow(recover_aug_rows(fit_lsvd)))
+  expect_equal(nrow(recover_cols(fit_lsvd)), nrow(recover_aug_cols(fit_lsvd)))
+  expect_equal(ncol(get_rows(fit_lsvd)), ncol(get_cols(fit_lsvd)))
+  
+  expect_equal(nrow(recover_rows(fit_lpca)), nrow(recover_aug_rows(fit_lpca)))
+  expect_equal(nrow(recover_cols(fit_lpca)), nrow(recover_aug_cols(fit_lpca)))
+  expect_equal(ncol(get_rows(fit_lpca)), ncol(get_cols(fit_lpca)))
+  
+  expect_equal(nrow(recover_rows(fit_clpca)), nrow(recover_aug_rows(fit_clpca)))
+  expect_equal(nrow(recover_cols(fit_clpca)), nrow(recover_aug_cols(fit_clpca)))
+  expect_equal(ncol(get_rows(fit_clpca)), ncol(get_cols(fit_clpca)))
+})
+
 test_that("`as_tbl_ord()` coerces 'lsvd', 'lpca', & 'clpca' objects", {
   expect_true(valid_tbl_ord(as_tbl_ord(fit_lsvd)))
   expect_true(valid_tbl_ord(as_tbl_ord(fit_lpca)))

@@ -11,6 +11,11 @@ test_that("'cancor' accessors have consistent dimensions", {
                length(recover_inertia(fit_cancor)))
 })
 
+test_that("'cancor' has specified distribution of inertia", {
+  expect_type(recover_conference(fit_cancor), "double")
+  expect_vector(recover_conference(fit_cancor), size = 2L)
+})
+
 test_that("`as_tbl_ord()` coerces 'cancor' objects", {
   expect_true(valid_tbl_ord(as_tbl_ord(fit_cancor)))
 })

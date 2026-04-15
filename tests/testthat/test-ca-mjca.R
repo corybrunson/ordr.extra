@@ -8,6 +8,11 @@ test_that("'mjca' accessors have consistent dimensions", {
                length(recover_inertia(fit_mjca)))
 })
 
+test_that("'mjca' has specified distribution of inertia", {
+  expect_type(recover_conference(fit_mjca), "double")
+  expect_vector(recover_conference(fit_mjca), size = 2L)
+})
+
 test_that("`as_tbl_ord()` coerces 'ca' objects", {
   expect_true(valid_tbl_ord(as_tbl_ord(fit_mjca)))
 })
