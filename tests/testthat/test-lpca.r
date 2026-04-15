@@ -26,6 +26,12 @@ test_that("'logisticPCA' has specified distribution of inertia", {
   expect_equal(recover_inertia(fit_clpca), as.double(NA))
 })
 
+test_that("changing conference of inertia for 'logisticPCA' returns error", {
+  expect_error(confer_inertia(fit_lsvd, "rows"))
+  expect_error(confer_inertia(fit_lpca, "rows"))
+  expect_error(confer_inertia(fit_clpca, "rows"))
+})
+
 test_that("`as_tbl_ord()` coerces 'lsvd', 'lpca', & 'clpca' objects", {
   expect_true(valid_tbl_ord(as_tbl_ord(fit_lsvd)))
   expect_true(valid_tbl_ord(as_tbl_ord(fit_lpca)))
