@@ -17,8 +17,8 @@ Occurrence data for 13 species from 17 sites. Columns are sites, rows are
 species. 1's are presences and 0's are absences.
 }
 \details{
-This data set is unchanged from the {cooccur} package (version 1.3),
-currently archived on CRAN.
+This data set is unchanged from the \strong{cooccur} package (version
+1.3), currently archived on CRAN.
 }
 \examples{
 data(finches)
