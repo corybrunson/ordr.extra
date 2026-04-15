@@ -105,7 +105,9 @@ Other methods for singular value decomposition-based techniques:
 \code{\link{methods-ca-ca}},
 \code{\link{methods-ca-mjca}},
 \code{\link{methods-candisc-cancor}},
+\code{\link{methods-clpca}},
 \code{\link{methods-lpca}},
+\code{\link{methods-lsvd}},
 \code{\link{methods-nipals-empca}},
 \code{\link{methods-pma-cca}},
 \code{\link{methods-pma-spc}}

@@ -9,7 +9,7 @@
 #' @template ref-landgraf2020
 #' @template ref-collins2001
 #' 
-#' @name methods-lpca
+#' @name methods-clpca
 #' @include ordr-extra.r
 #' @include methods-logisticpca-lpca.r
 #' @template param-methods
@@ -21,23 +21,23 @@ NULL
 
 #' @importFrom stats plogis
 
-#' @rdname methods-lpca
+#' @rdname methods-clpca
 #' @export
 as_tbl_ord.clpca <- as_tbl_ord_default
 
-#' @rdname methods-lpca
+#' @rdname methods-clpca
 #' @export
 recover_rows.clpca <- function(x) recover_dims_lpca(x, "rows")
 
-#' @rdname methods-lpca
+#' @rdname methods-clpca
 #' @export
 recover_cols.clpca <- function(x) recover_dims_lpca(x, "cols")
 
-#' @rdname methods-lpca
+#' @rdname methods-clpca
 #' @export
 recover_coord.clpca <- function(x) paste0("LPC", 1:ncol(x$U))
 
-#' @rdname methods-lpca
+#' @rdname methods-clpca
 #' @export
 recover_aug_rows.clpca <- function(x) {
   name <- rownames(x$PCs)
@@ -49,7 +49,7 @@ recover_aug_rows.clpca <- function(x) {
   res
 }
 
-#' @rdname methods-lpca
+#' @rdname methods-clpca
 #' @export
 recover_aug_cols.clpca <- function(x) {
   name <- rownames(x$U)
@@ -62,7 +62,7 @@ recover_aug_cols.clpca <- function(x) {
   res
 }
 
-#' @rdname methods-lpca
+#' @rdname methods-clpca
 #' @export
 recover_aug_coord.clpca <- function(x) {
   tibble(

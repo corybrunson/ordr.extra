@@ -9,7 +9,7 @@
 #' @template ref-landgraf2020
 #' @template ref-collins2001
 #' 
-#' @name methods-lpca
+#' @name methods-lsvd
 #' @include ordr-extra.r
 #' @template param-methods
 #' @template return-methods
@@ -20,7 +20,7 @@ NULL
 
 #' @importFrom stats plogis
 
-#' @rdname methods-lpca
+#' @rdname methods-lsvd
 #' @export
 as_tbl_ord.lsvd <- as_tbl_ord_default
 
@@ -31,19 +31,19 @@ recover_dims_lsvd <- function(x, .matrix) {
   res
 }
 
-#' @rdname methods-lpca
+#' @rdname methods-lsvd
 #' @export
 recover_rows.lsvd <- function(x) recover_dims_lsvd(x, "rows")
 
-#' @rdname methods-lpca
+#' @rdname methods-lsvd
 #' @export
 recover_cols.lsvd <- function(x) recover_dims_lsvd(x, "cols")
 
-#' @rdname methods-lpca
+#' @rdname methods-lsvd
 #' @export
 recover_coord.lsvd <- function(x) paste0("LSC", 1:ncol(x$A))
 
-#' @rdname methods-lpca
+#' @rdname methods-lsvd
 #' @export
 recover_aug_rows.lsvd <- function(x) {
   name <- rownames(x$A)
@@ -55,7 +55,7 @@ recover_aug_rows.lsvd <- function(x) {
   res
 }
 
-#' @rdname methods-lpca
+#' @rdname methods-lsvd
 #' @export
 recover_aug_cols.lsvd <- function(x) {
   name <- rownames(x$B)
@@ -68,7 +68,7 @@ recover_aug_cols.lsvd <- function(x) {
   res
 }
 
-#' @rdname methods-lpca
+#' @rdname methods-lsvd
 #' @export
 recover_aug_coord.lsvd <- function(x) {
   tibble(

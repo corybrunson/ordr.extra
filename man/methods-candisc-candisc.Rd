@@ -62,8 +62,17 @@ multivariate linear regression; see documentation in that package for more
 detail.
 
 The methods for \code{\link[candisc:candisc]{candisc::candisc()}} agree with those for \code{\link[MASS:lda]{MASS::lda()}} and
-extend them to include canonical structure coefficients as column
-supplementary points.
+extend them to include canonical structure coefficients as supplementary
+column points. These are the correlations between the observed and canonical
+variables and therefore, like the canonical coefficients recovered as active
+column elements, carry no inertia in the model object.
+
+The \code{plot()} method for \code{candisc} generates a biplot of markers for the
+centroid and case scores and vectors for the structure coefficients. This can
+be reproduced with \code{\link[ordr:ggbiplot]{ordr::ggbiplot()}} by specifying the supplementary
+elements (see the examples). This plot is distinct from those possible using
+\code{\link[ordr:lda-ord]{ordr::lda_ord()}}: The vectors represent the locations of the observed
+variables in canonical space.
 }
 \examples{
 if (require(candisc)) {# {candisc}
@@ -80,21 +89,44 @@ iris_mlm <-lm(
 aov(iris_mlm)
 
 # canonical discriminant analysis
-( iris_cda <- as_tbl_ord(candisc::candisc(iris_mlm)) )
+( iris_cda <- augment_ord(as_tbl_ord(candisc::candisc(iris_mlm))) )
+# biplot of canonical score markers, canonical mean markers, and canonical
+# structure coefficient vectors
+# `candisc:::plot.candisc()`
+plot(
+  iris_cda,
+  conf = .99, ellipse = TRUE, ellipse.prob = 2/3,
+  main = "Canonical discriminant analysis of Anderson's iris data"
+)
 
 # recover centroid coordinates and discriminant coefficients
 get_rows(iris_cda, elements = "active")
-get_rows(iris_cda, elements = "score")
+head(get_rows(iris_cda, elements = "score"))
 get_cols(iris_cda, elements = "active")
 get_cols(iris_cda, elements = "structure")
 
-# augment ordination
-augment_ord(iris_cda)
+# monoplot of canonical score markers and canonical mean markers
+# (note that ellipses are inequivalent)
+iris_monoplot <- ggbiplot(iris_cda, sec.axes = "cols", scale.factor = 3) +
+  theme_scaffold() +
+  coord_scaffold() +
+  stat_rows_ellipse(elements = "score", aes(color = name), level = 2/3) +
+  geom_rows_point(aes(color = name, shape = name), size = 5, alpha = .75) +
+  geom_rows_point(
+    elements = "score",
+    aes(color = name, shape = name), alpha = .5
+  )
+# biplot with raw canonical coefficient vectors
+iris_monoplot + geom_cols_vector(aes(label = name))
+# biplot with canonical structure coefficient vectors
+iris_monoplot +
+  geom_unit_circle(scale.factor = 3) +
+  geom_cols_vector(elements = "structure", aes(label = name))
 
 }# {candisc}
 }
 \seealso{
-\link[ordr:methods-cancor]{ordr::methods-cancor}
+\code{\link[ordr:methods-cancor]{ordr::methods-cancor}}
 
 Other methods for eigen-decomposition-based techniques: 
 \code{\link{methods-fa}},

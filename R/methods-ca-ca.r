@@ -13,7 +13,7 @@
 #' @template return-methods
 #' @family methods for singular value decomposition-based techniques
 #' @family models from the **ca** package
-#' @seealso [ordr::methods-correspondence]
+#' @seealso [`ordr::methods-correspondence`]
 #' @example inst/examples/ex-methods-ca-ca-haireye.r
 NULL
 

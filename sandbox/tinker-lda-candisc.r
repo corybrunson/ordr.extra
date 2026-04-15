@@ -53,9 +53,6 @@ diab_can$coeffs.raw
 # agreement
 diab_lda$scaling / diab_can$coeffs.raw
 
-# structure coefficients - `recover_supp_cols()`
-diab_can$structure
-
 # scores - `recover_supp_rows()`
 scale(
   subset(Diabetes, select = c(glufast, glutest, instest, sspg)),
@@ -74,3 +71,9 @@ diab_can$scores |> head()
     as.matrix(diab_can$scores[, 2:3])
 ) |> 
   head()
+
+# structure coefficients - `recover_supp_cols()`
+diab_can$structure
+# agreement
+cor(model.response(model.frame(diab_mlm)), diab_can$scores[, 2:3]) /
+  diab_can$structure
