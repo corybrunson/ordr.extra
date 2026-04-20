@@ -137,3 +137,21 @@
 #' }
 #' @source <https://pubmed.ncbi.nlm.nih.gov/35949164/>
 "hcw"
+
+#' Finch occurrence data from Sanderson (2000)
+#'
+#' Occurrence data for 13 species from 17 sites. Columns are sites, rows are
+#' species. 1's are presences and 0's are absences.
+#'
+#' @details This data set is unchanged from the **cooccur** package (version
+#'   1.3), currently archived on CRAN.
+#'
+#' @name finches
+#' @keywords datasets
+#' @usage data(finches)
+#' @format A data frame with 13 observations on 17 variables.
+#' @examples
+#' data(finches)
+#' @template ref-sanderson2000
+#' @source Sanderson (2000)
+NULL

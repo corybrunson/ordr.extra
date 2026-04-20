@@ -1,7 +1,6 @@
 skip_if_not_installed("logisticPCA")
-skip_if_not_installed("cooccur")
 
-data(finches, package = "cooccur")
+data(finches)
 fit_lsvd <- logisticSVD_ord(t(finches))
 fit_lpca <- logisticPCA_ord(t(finches))
 fit_clpca <- convexLogisticPCA_ord(t(finches[-13L, , drop = FALSE]))

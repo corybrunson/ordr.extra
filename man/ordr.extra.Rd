@@ -45,9 +45,9 @@ ordinate(
 )
 }# {PMA}
 
-if (require(logisticPCA) && require(cooccur)) {# {logisticPCA}
+if (require(logisticPCA)) {# {logisticPCA}
 # lSVD of finches data
-data(finches, package = "cooccur")
+data(finches)
 ordinate(finches, logisticSVD_ord)
 }# {logisticPCA}
 }

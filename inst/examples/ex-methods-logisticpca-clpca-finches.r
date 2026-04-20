@@ -1,7 +1,7 @@
-if (require(logisticPCA) && require(cooccur)) {# {logisticPCA}
+if (require(logisticPCA)) {# {logisticPCA}
 
 # site-species data frame of Sanderson Galapagos finches data
-data(finches, package = "cooccur")
+data(finches)
 class(finches)
 finches[seq(6L), seq(6L)]
 
