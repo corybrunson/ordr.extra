@@ -21,9 +21,9 @@ test_that("'logisticPCA' accessors have consistent dimensions", {
 })
 
 test_that("'logisticPCA' has specified distribution of inertia", {
-  expect_equal(recover_inertia(fit_lsvd), as.double(NA))
-  expect_equal(recover_inertia(fit_lpca), as.double(NA))
-  expect_equal(recover_inertia(fit_clpca), as.double(NA))
+  expect_equal(recover_inertia(fit_lsvd), NA_real_)
+  expect_equal(recover_inertia(fit_lpca), NA_real_)
+  expect_equal(recover_inertia(fit_clpca), NA_real_)
 })
 
 test_that("changing conference of inertia for 'logisticPCA' returns error", {
